@@ -1,0 +1,25 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-videoaudiotranscribe-dev-223636-authRole",
+            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-videoaudiotranscribe-dev-223636-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-videoaudiotranscribe-dev-223636-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-videoaudiotranscribe-dev-223636-deployment",
+            "UnauthRoleName": "amplify-videoaudiotranscribe-dev-223636-unauthRole",
+            "StackName": "amplify-videoaudiotranscribe-dev-223636",
+            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-videoaudiotranscribe-dev-223636/a0de56a0-8513-11ea-8b14-0e3259ee6b3b",
+            "AmplifyAppId": "d268j5ju384i2d"
+        },
+        "categories": {
+            "function": {
+                "videoaudiotranscribe3d261324PreSignup": {
+                    "DOMAINBLACKLIST": ""
+                }
+            },
+            "auth": {
+                "videoaudiotranscribe3d261324": {}
+            }
+        }
+    }
+}
