@@ -26,7 +26,6 @@
     <span class="text-danger text-sm">{{ errors.first('password') }}</span>
 
     <div class="flex flex-wrap justify-between my-5">
-        <vs-checkbox v-model="checkbox_remember_me" class="mb-3">Remember Me</vs-checkbox>
         <router-link to="/pages/forgot-password">Forgot Password?</router-link>
     </div>
     <vs-button  type="border" @click="registerUser">Register</vs-button>
@@ -60,12 +59,12 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
 export default {
   data() {
     return {
-      email: 'demo@demo.com',
-      password: 'demodemo',
-      checkbox_remember_me: false
+      email: '',
+      password: '',
     }
   },
   computed: {
@@ -74,13 +73,13 @@ export default {
     }
   },
   methods: {
-    checkLogin() {
+    checkLogin() 
+    {
       // If user is already logged in notify
-      if (this.$store.state.auth.isUserLoggedIn()) {
-
+      if (this.$store.state.auth.isUserLoggedIn()) 
+      {
         // Close animation if passed as payload
         // this.$vs.loading.close()
-
         this.$vs.notify({
           title: 'Login Attempt',
           text: 'You are already logged in!',
@@ -88,17 +87,15 @@ export default {
           icon: 'icon-alert-circle',
           color: 'warning'
         })
-
         return false
       }
       return true
     },
-    login() {
+    login() 
+    {
       // Loading
       this.$vs.loading()
-
       const payload = {
-        checkbox_remember_me: this.checkbox_remember_me,
         userDetails: {
           email: this.email,
           password: this.password
@@ -108,23 +105,15 @@ export default {
       }
       this.$store.dispatch('auth/loginAttempt', payload);
     },
-
-    // Google login
     loginWithGoogle() {
       this.$store.dispatch('auth/loginWithGoogle', { notify: this.$vs.notify })
     },
-
-    // Facebook login
     loginWithFacebook() {
       this.$store.dispatch('auth/loginWithFacebook', { notify: this.$vs.notify })
     },
-
-    // Twitter login
     loginWithTwitter() {
       this.$store.dispatch('auth/loginWithTwitter', { notify: this.$vs.notify })
     },
-
-    // Github login
     loginWithGithub() {
       this.$store.dispatch('auth/loginWithGithub', { notify: this.$vs.notify })
     },
@@ -134,10 +123,7 @@ export default {
     }
   }
 }
-
 </script>
-
-
 <style lang="scss">
 #page-login {
   .social-login-buttons {

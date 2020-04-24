@@ -88,6 +88,11 @@ require('vue-tour/dist/vue-tour.css')
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate);
 
+import Amplify, * as AmplifyModules from 'aws-amplify';
+import { AmplifyPlugin } from 'aws-amplify-vue';
+import aws_exports from './aws-exports';
+Amplify.configure(aws_exports);
+Vue.use(AmplifyPlugin, AmplifyModules);
 
 // Google Maps
 import * as VueGoogleMaps from 'vue2-google-maps'

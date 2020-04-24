@@ -23,19 +23,19 @@
                                     <h4 class="mb-4">Create Account</h4>
                                     <p>Fill the below form to create a new account.</p>
                                 </div>
-                                <vs-tabs>
+                                <!--<vs-tabs>
                                   <vs-tab label="JWT">
                                     <register-jwt></register-jwt>
                                   </vs-tab>
 
-                                  <vs-tab label="Firebase">
+                                  <vs-tab label="Firebase">-->
                                     <register-firebase></register-firebase>
-                                  </vs-tab>
+                                  <!--</vs-tab>
 
                                   <vs-tab label="Auth0">
                                     <register-auth0></register-auth0>
                                   </vs-tab>
-                                </vs-tabs>
+                                </vs-tabs>-->
                             </div>
                         </div>
                     </div>
@@ -45,16 +45,24 @@
     </div>
 </template>
 
-<script>
-import RegisterJwt from "./RegisterJWT.vue"
-import RegisterFirebase from "./RegisterFirebase.vue"
-import RegisterAuth0 from "./RegisterAuth0.vue"
+<script lang="ts">
+/* import RegisterFirebase from "./RegisterFirebase.vue";
+import { Component, Prop, Vue } from 'vue-property-decorator';
+@Component({
+  components: {RegisterFirebase}
+})
+export default class Register extends Vue 
+{
+} */
+</script>
 
-export default {
-    components: {
-      RegisterJwt,
+<script>
+import RegisterFirebase from "./RegisterFirebase.vue";
+export default 
+{
+    components: 
+    {
       RegisterFirebase,
-      RegisterAuth0
     }
 }
 </script>
