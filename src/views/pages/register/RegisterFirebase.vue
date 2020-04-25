@@ -67,6 +67,7 @@ export default
         })
         .catch((error) => 
         {
+          console.log(error);
           this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
         });
     }

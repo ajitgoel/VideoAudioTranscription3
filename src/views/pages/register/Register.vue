@@ -45,17 +45,6 @@
     </div>
 </template>
 
-<script lang="ts">
-/* import RegisterFirebase from "./RegisterFirebase.vue";
-import { Component, Prop, Vue } from 'vue-property-decorator';
-@Component({
-  components: {RegisterFirebase}
-})
-export default class Register extends Vue 
-{
-} */
-</script>
-
 <script>
 import RegisterFirebase from "./RegisterFirebase.vue";
 export default 
