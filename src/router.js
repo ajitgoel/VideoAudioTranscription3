@@ -1383,6 +1383,23 @@ const router = new Router({
                         rule: 'editor'
                     }
                 },
+                {
+                    path: '/pages/terms-conditions',
+                    name: 'terms-conditions',
+                    component: () => import('@/views/pages/TermsConditions.vue'),
+                    meta: {
+                        rule: 'editor'
+                    }
+                },
+                
+                {
+                    path: '/pages/privacy-policy',
+                    name: 'privacy-policy',
+                    component: () => import('@/views/pages/PrivacyPolicy.vue'),
+                    meta: {
+                        rule: 'editor'
+                    }
+                },
             ]
         },
         // Redirect to 404 page, if no match found

@@ -1,18 +1,6 @@
-<!-- =========================================================================================
-    File Name: Main.vue
-    Description: Main layout
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-    Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
-========================================================================================== -->
-
-
 <template>
   <div class="layout--main" :class="[layoutTypeClass, navbarClasses, footerClasses, {'no-scroll': isAppPage}]">
-
     <vx-tour :steps="steps" v-if="!disableThemeTour && (windowWidth >= 1200 && mainLayoutType === 'vertical' && verticalNavMenuWidth == 'default')" />
-
     <the-customizer
       v-if                    = "!disableCustomizer"
       :footerType             = "footerType"
@@ -52,7 +40,6 @@
         ]"
         :navMenuItems="navMenuItems" />
     </template>
-
     <template v-else>
       <the-navbar-vertical
         :navbarColor="navbarColor"
@@ -62,7 +49,6 @@
         ]" />
     </template>
     <!-- /Navbar -->
-
       <div class="content-wrapper">
 
         <div class="router-view">
@@ -127,8 +113,6 @@
     </div>
   </div>
 </template>
-
-
 <script>
 import BackToTop           from 'vue-backtotop'
 import HNavMenu            from "@/layouts/components/horizontal-nav-menu/HorizontalNavMenu.vue"
@@ -139,9 +123,7 @@ import TheNavbarVertical   from '@/layouts/components/navbar/TheNavbarVertical.v
 import TheFooter           from '@/layouts/components/TheFooter.vue'
 import themeConfig         from '@/../themeConfig.js'
 import VNavMenu            from '@/layouts/components/vertical-nav-menu/VerticalNavMenu.vue'
-
 const VxTour = () => import('@/components/VxTour.vue')
-
 export default {
   components: {
     BackToTop,
@@ -311,6 +293,5 @@ export default {
     })
   }
 }
-
 </script>
 

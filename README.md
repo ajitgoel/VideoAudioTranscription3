@@ -32,8 +32,41 @@ https://github.com/aws-amplify/amplify-js/tree/master/packages/aws-amplify-vue
 ### How to Build Production-ready Vue Authentication: 
 https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.to/dabit3/how-to-build-production-ready-vue-authentication-23mk+&cd=5&hl=en&ct=clnk&gl=us
 
-### TypeScript:
-    #### Vue Class Component: 
-    https://class-component.vuejs.org/guide/class-component.html#other-options
-    #### Vue Property Decorator: 
-    https://github.com/kaorun343/vue-property-decorator
+### AUTHENTICATION: Password & user management: 
+https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
+
+amplify init
+amplify add auth
+amplify add storage
+amplify add hosting
+amplify push
+amplify publish
+##### Delete user from aws app pool:
+aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username ajitgoel@gmail.com --profile amplify-workshop-user
+
+| Category | Resource name               | Operation | Provider plugin   |
+| -------- | --------------------------- | --------- | ----------------- |
+| Auth     | vidaudtranscriptionf4ea9b8a | Create    | awscloudformation |
+
+#### Tasks:
+
+1. 	Full Page layout
+	- [ ] should have header
+    - [x] ~~should have footer~~
+2. Register screen
+    => - [ ] after registering, user has to confirm his email using confirmation code
+    - [ ] privacy policy will need to be checked
+    - [ ] terms and conditions will need to be checked
+    - [ ] Clicking on privacy policy, terms and conditions should open those pages in a new tab. 
+3. Login screen
+	- [ ] Add users to register using Twitter, Github.
+    - [ ] Add users to register using Facebook, Google.
+4. Logout screen
+	- [ ] 
+5. Forget password screen
+    - [ ] send email to user to confirm email. 
+    - [ ] Add confirm email screen
+6. Dashboard screen
+    - [ ] the application should show the logged in user and his name.
+
+aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username ajitgoel@gmail.com

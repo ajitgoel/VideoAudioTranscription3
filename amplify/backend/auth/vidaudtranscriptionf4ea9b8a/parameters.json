@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "videoaudiotranscribe3d261324_identitypool_3d261324",
+    "identityPoolName": "vidaudtranscriptionf4ea9b8a_identitypool_f4ea9b8a",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "videoa3d261324",
-    "userPoolName": "videoaudiotranscribe3d261324_userpool_3d261324",
+    "resourceNameTruncated": "vidaudf4ea9b8a",
+    "userPoolName": "vidaudtranscriptionf4ea9b8a_userpool_f4ea9b8a",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,9 +28,9 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "videoa3d261324_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "vidaudf4ea9b8a_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "videoaudiotranscribe3d261324",
+    "resourceName": "vidaudtranscriptionf4ea9b8a",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -45,24 +45,6 @@
         ]
     },
     "useDefault": "default",
-    "usernameAttributes": [
-        "email"
-    ],
-    "triggers": "{\"PreSignup\":[\"email-filter-blacklist\"]}",
     "userPoolGroupList": [],
-    "parentStack": {
-        "Ref": "AWS::StackId"
-    },
-    "permissions": [],
-    "dependsOn": [
-        {
-            "category": "function",
-            "resourceName": "videoaudiotranscribe3d261324PreSignup",
-            "triggerProvider": "Cognito",
-            "attributes": [
-                "Arn",
-                "Name"
-            ]
-        }
-    ]
+    "dependsOn": []
 }
