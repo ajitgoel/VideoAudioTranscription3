@@ -34,13 +34,17 @@ https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.t
 
 ### AUTHENTICATION: Password & user management: 
 https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
+### AWS CLI Command Reference: 
+https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
 
+### Commands:
 amplify init
 amplify add auth
 amplify add storage
 amplify add hosting
 amplify push
 amplify publish
+
 ##### Delete user from aws app pool:
 aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username ajitgoel@gmail.com --profile amplify-workshop-user
 
@@ -68,5 +72,3 @@ aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username 
     - [ ] Add confirm email screen
 6. Dashboard screen
     - [ ] the application should show the logged in user and his name.
-
-aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username ajitgoel@gmail.com
