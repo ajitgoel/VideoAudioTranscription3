@@ -32,16 +32,18 @@
                       <!-- <vs-input v-validate="'required|alpha_dash|min:3'" data-vv-validate-on="blur" label-placeholder="Name" 
                       name="displayName" placeholder="Name" v-model="displayName" scope="CreateAccount" class="w-full" />
                       <span class="text-danger text-sm">{{ errors.first('displayName') }}</span> -->
-                      <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" label-placeholder="Email"
-                        placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" />
+                      <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" 
+                      label-placeholder="Email" placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" 
+                      icon-no-border icon="icon icon-user" icon-pack="feather" />
                       <span class="text-danger text-sm">{{ errors.first('email') }}</span>
                       <vs-input ref="password" type="password" data-vv-validate-on="blur" v-validate="'required|min:6|max:10'"
                         name="password" label-placeholder="Password" placeholder="Password" v-model="password" scope="CreateAccount" 
-                        class="w-full mt-6" />
+                        class="w-full mt-6" icon="icon icon-lock" icon-pack="feather" icon-no-border/>
                       <span class="text-danger text-sm">{{ errors.first('password') }}</span>
                       <vs-input type="password" v-validate="'min:6|max:10|confirmed:password'" data-vv-validate-on="blur"
                         data-vv-as="password" name="confirm_password" label-placeholder="Confirm Password" placeholder="Confirm Password"
-                        v-model="confirm_password" scope="CreateAccount" class="w-full mt-6" />
+                        v-model="confirm_password" scope="CreateAccount" class="w-full mt-6"  icon="icon icon-lock" icon-pack="feather" 
+                        icon-no-border/>
                       <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
                       <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">
                         <a href="/pages/terms-conditions" target="_blank">I accept the terms & conditions.</a>

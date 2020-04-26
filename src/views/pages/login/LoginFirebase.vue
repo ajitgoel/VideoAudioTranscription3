@@ -1,7 +1,6 @@
 <template>
   <div>
-    <vs-input
-        v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border icon="icon icon-user"
+    <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border icon="icon icon-user"
         icon-pack="feather" label-placeholder="Email" v-model="email" class="w-full"/>
     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
     <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" name="password" icon-no-border

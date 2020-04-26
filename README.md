@@ -37,6 +37,13 @@ https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
 ### AWS CLI Command Reference: 
 https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
 
+#### Tailwindcss documentation:
+https://tailwindcss.com/docs/margin/
+#### vee-validate version 2 documentation:
+http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
+#### Vuesax documentation:
+https://lusaxweb.github.io/vuesax/components/input.html#default
+
 ### Commands:
 amplify init
 amplify add auth
