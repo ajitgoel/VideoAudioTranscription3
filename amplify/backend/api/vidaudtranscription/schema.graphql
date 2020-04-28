@@ -1,0 +1,49 @@
+type Album 
+@model 
+@auth(rules: [
+  {allow: owner},
+  {allow: private}
+]) {
+    id: ID!
+    name: String!
+    Videos: [Video] @connection(keyName: "byAlbum", fields: ["id"])
+}
+
+type Video 
+@model 
+@key(name: "byAlbum", fields: ["albumId"], queryField: "listVideosByAlbum")
+@auth(rules: [
+  {allow: owner},
+  {allow: private}
+])
+{
+    id: ID!
+    albumId: ID!
+    album: Album @connection(fields: ["albumId"])
+    bucket: String!
+    fullsize: VideoS3Info!
+    thumbnail: VideoS3Info!
+    labels: [String]
+}
+
+type VideoS3Info {
+    key: String!
+    width: Int!
+    height: Int!
+}
+
+input CreateVideoInput {
+	id: ID
+  owner: String
+	albumId: ID!
+	bucket: String!
+	fullsize: VideoS3InfoInput!
+	thumbnail: VideoS3InfoInput!
+  labels: [String]
+}
+
+input VideoS3InfoInput {
+	key: String!
+	width: Int!
+	height: Int!
+}

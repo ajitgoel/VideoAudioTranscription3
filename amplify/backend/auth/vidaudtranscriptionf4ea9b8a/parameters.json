@@ -1,6 +1,6 @@
 {
     "identityPoolName": "vidaudtranscriptionf4ea9b8a_identitypool_f4ea9b8a",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "vidaudf4ea9b8a",
     "userPoolName": "vidaudtranscriptionf4ea9b8a_userpool_f4ea9b8a",
     "autoVerifiedAttributes": [

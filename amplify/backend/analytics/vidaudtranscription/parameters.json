@@ -1,0 +1,21 @@
+{
+    "appName": "vidaudtranscription",
+    "roleName": "pinpointLambdaRolee8038b7e",
+    "cloudformationPolicyName": "cloudformationPolicye8038b7e",
+    "cloudWatchPolicyName": "cloudWatchPolicye8038b7e",
+    "pinpointPolicyName": "pinpointPolicye8038b7e",
+    "authPolicyName": "pinpoint_amplify_e8038b7e",
+    "unauthPolicyName": "pinpoint_amplify_e8038b7e",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authRoleArn": {
+        "Fn::GetAtt": [
+            "AuthRole",
+            "Arn"
+        ]
+    }
+}

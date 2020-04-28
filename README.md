@@ -43,21 +43,43 @@ https://tailwindcss.com/docs/margin/
 http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
 #### Vuesax documentation:
 https://lusaxweb.github.io/vuesax/components/input.html#default
+#### Material Icons documentation:
+https://material.io/resources/icons/?style=baseline
 
-### Commands:
+###### Commands:
+npm install -g @aws-amplify/cli
+amplify configure
+npm install -g @vue/cli
+npm install aws-amplify @aws-amplify/ui-vue
+
 amplify init
 amplify add auth
 amplify add storage
 amplify add hosting
 amplify push
 amplify publish
+delete folders very fast: RMDIR /Q/S node_modules
 
-##### Delete user from aws app pool:
+####### Delete user from aws app pool:
 aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username ajitgoel@gmail.com --profile amplify-workshop-user
+####### GraphQL endpoint: 
+https://vjakaofrbngqvdeayxuiehs72u.appsync-api.us-east-1.amazonaws.com/graphql
+####### Application url: 
+http://vidaudtranscription-20200426180010-hostingbucket-dev.s3-website-us-east-1.amazonaws.com
 
-| Category | Resource name               | Operation | Provider plugin   |
-| -------- | --------------------------- | --------- | ----------------- |
-| Auth     | vidaudtranscriptionf4ea9b8a | Create    | awscloudformation |
+Full Stack Serverless: Introduction to Authentication: https://www.oreilly.com/library/view/full-stack-serverless/9781492059882/ch04.html
+https://webcache.googleusercontent.com/search?q=cache:qACxLV5U1GsJ:https://dev.to/aws/the-complete-react-native-guide-to-user-authentication-with-the-amplify-framework-ib2+&cd=12&hl=en&ct=clnk&gl=us
+####### Build Production-ready Vue Authentication:
+https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.to/dabit3/how-to-build-production-ready-vue-authentication-23mk+&cd=1&hl=en&ct=clnk&gl=us
+
+| Category  | Resource name               | Operation | Provider plugin   |
+| --------- | --------------------------- | --------- | ----------------- |
+| Analytics | vidaudtranscription         | Create    | awscloudformation |
+| Auth      | vidaudtranscriptionf4ea9b8a | Update    | awscloudformation |
+| Api       | vidaudtranscription         | No Change | awscloudformation |
+| Function  | S3Trigger355399e5           | No Change | awscloudformation |
+| Storage   | vidaudtranscription         | No Change | awscloudformation |
+| Hosting   | S3AndCloudFront             | No Change | awscloudformation |
 
 #### Tasks:
 
@@ -65,7 +87,7 @@ aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username 
 	- [ ] should have header
     - [x] ~~should have footer~~
 2. Register screen
-    => - [ ] after registering, user has to confirm his email using confirmation code
+    - [x] ~~after registering, user has to confirm his email using confirmation code~~
     - [ ] privacy policy will need to be checked
     - [ ] terms and conditions will need to be checked
     - [ ] Clicking on privacy policy, terms and conditions should open those pages in a new tab. 
@@ -75,7 +97,13 @@ aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username 
 4. Logout screen
 	- [ ] 
 5. Forget password screen
-    - [ ] send email to user to confirm email. 
-    - [ ] Add confirm email screen
+    - [x] ~~send email to user to confirm email. ~~
+    - [x] ~~Add confirm email screen~~
+    - [ ] Error messages do not show correctly below input element.
 6. Dashboard screen
     - [ ] the application should show the logged in user and his name.
+    - [x] ~~Dashboard screens should be secured.~~
+7. FAQ screen
+    - [ ] Add FAQ's.
+8. General Tasks
+	- [x] Add AWS analytics
