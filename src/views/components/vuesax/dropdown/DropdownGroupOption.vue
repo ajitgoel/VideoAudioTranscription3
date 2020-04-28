@@ -1,10 +1,7 @@
 <!-- =========================================================================================
     File Name: DropdownGroupOption.vue
     Description: Group dropdown items using vs-dropdown-group
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 

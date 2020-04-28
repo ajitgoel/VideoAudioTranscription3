@@ -7,7 +7,7 @@
         icon="icon icon-lock" icon-pack="feather" label-placeholder="Password" v-model="password" class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('password') }}</span>
     <div class="flex flex-wrap justify-between my-5">
-        <router-link to="/pages/forgot-password">Forgot Password?</router-link>
+        <router-link to="/forgot-password">Forgot Password?</router-link>
     </div>
     <vs-button  type="border" @click="registerUser">Register</vs-button>
     <vs-button class="float-right" :disabled="!validateForm" @click="login">Login</vs-button>
@@ -64,7 +64,7 @@ export default
       try 
       {
         const cognitoUser = await Auth.signIn(this.email, this.password);
-        this.$router.push('/').catch(() => {});  
+        this.$router.push('/transcripts').catch(() => {});  
         this.$vs.notify({title: 'Logged in', text: 'You are successfully logged in!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
       } 
@@ -92,7 +92,7 @@ export default
       {
         return;
       }
-      this.$router.push('/pages/register').catch(() => {});
+      this.$router.push('/register').catch(() => {});
     }
   }
 }

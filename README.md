@@ -90,7 +90,7 @@ https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.t
     - [x] ~~after registering, user has to confirm his email using confirmation code~~
     - [ ] privacy policy will need to be checked
     - [ ] terms and conditions will need to be checked
-    - [ ] Clicking on privacy policy, terms and conditions should open those pages in a new tab. 
+    - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~ 
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
     - [ ] Add users to register using Facebook, Google.

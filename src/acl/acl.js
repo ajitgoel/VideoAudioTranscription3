@@ -11,7 +11,7 @@ if(userInfo && userInfo.userRole) initialRole = userInfo.userRole
 
 export default new AclCreate({
   initial: initialRole,
-  notfound: "/pages/not-authorized",
+  notfound: "/not-authorized",
   router,
   acceptLocalRules: true,
   globalRules: {

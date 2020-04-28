@@ -1,10 +1,7 @@
 <!-- =========================================================================================
     File Name: InputIcon.vue
     Description: Add icon to input using icon prop
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 

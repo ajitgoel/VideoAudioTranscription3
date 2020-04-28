@@ -1,7 +1,7 @@
 /*=========================================================================================
   File Name: sidebarItems.js
   Description: Sidebar Items list. Add / Remove menu items from here.
-  Strucutre:
+  Structure:
           url     => router path
           name    => name to display in sidebar
           slug    => router path name
@@ -11,14 +11,8 @@
           i18n    => Internationalization
           submenu   => submenu of current item (current item will become dropdown )
                 NOTE: Submenu don't have any icon(you can add icon if u want to display)
-          isDisabled  => disable sidebar item/group
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
+          isDisabled  => disable sidebar item/group  
 ==========================================================================================*/
-
-
 export default [
   // {
   //   url: "/apps/email",
@@ -27,7 +21,7 @@ export default [
   //   icon: "MailIcon",
   //   i18n: "Email",
   // },
-  {
+  /* {
     url: null,
     name: "Dashboard",
     tag: "2",
@@ -41,14 +35,14 @@ export default [
         slug: "dashboard-analytics",
         i18n: "Analytics",
       },
-      /*{
+      {
         url: '/dashboard/ecommerce',
         name: "eCommerce",
         slug: "dashboard-ecommerce",
         i18n: "eCommerce",
-      },*/
+      },
     ]
-  },
+  }, */
   /*{
     header: "Apps",
     icon: "PackageIcon",
@@ -607,44 +601,65 @@ export default [
     i18n: "Pages",
     items: [
       /*{
-        url: '/pages/profile',
+        url: '/profile',
         slug: 'page-profile',
         name: "Profile",
         icon: "UserIcon",
         i18n: "Profile",
       },*/
       {
-        url: '/pages/user-settings',
+        url: '/transcripts',
+        slug: 'page-transcripts',
+        name: "Transcripts",
+        icon: "SettingsIcon",
+        i18n: "Transcripts",
+      },
+      {
+        url: '/top-off-payment',
+        slug: 'page-top-off-payment',
+        name: "TopOffPayment",
+        icon: "SettingsIcon",
+        i18n: "TopOffPayment",
+      },      
+      {
+        url: '/vocabulary',
+        slug: 'page-vocabulary',
+        name: "Vocabulary",
+        icon: "SettingsIcon",
+        i18n: "Vocabulary",
+      },
+      {
+        url: '/user-settings',
         slug: 'page-user-settings',
         name: "User Settings",
         icon: "SettingsIcon",
         i18n: "UserSettings",
       },
       /*{
-        url: '/pages/faq',
+        url: '/faq',
         slug: 'page-faq',
         name: "FAQ",
         icon: "HelpCircleIcon",
         i18n: "FAQ",
       },
       {
-        url: '/pages/knowledge-base',
+        url: '/knowledge-base',
         slug: 'page-knowledge-base',
         name: "Knowledge Base",
         icon: "InfoIcon",
         i18n: "KnowledgeBase",
       },
       {
-        url: '/pages/search',
+        url: '/search',
         slug: 'page-search',
         name: "Search",
         icon: "SearchIcon",
         i18n: "Search",
       },*/
       {
-        url: '/pages/invoice',
+        url: '/invoices',
         slug: 'page-invoice',
-        name: "Invoice",
+        name: "Invoices",
         icon: "InfoIcon",
         i18n: "Invoice",
       },
@@ -655,35 +670,35 @@ export default [
         i18n: "Authentication",
         submenu: [
           {
-            url: '/pages/login',
+            url: '/login',
             name: "Login",
             slug: "pages-login",
             i18n: "Login",
             target: '_blank',
           },
           {
-            url: '/pages/register',
+            url: '/register',
             name: "Register",
             slug: "pages-register",
             i18n: "Register",
             target: '_blank',
           },
           {
-            url: '/pages/forgot-password',
+            url: '/forgot-password',
             name: "Forgot Password",
             slug: "pages-forgot-password",
             i18n: "ForgotPassword",
             target: '_blank',
           },
           {
-            url: '/pages/reset-password',
+            url: '/reset-password',
             name: "Reset Password",
             slug: "pages-reset-password",
             i18n: "ResetPassword",
             target: '_blank',
           },
           {
-            url: '/pages/lock-screen',
+            url: '/lock-screen',
             name: "Lock Screen",
             slug: "pages-lock-screen",
             i18n: "LockScreen",
@@ -698,7 +713,7 @@ export default [
         i18n: "Miscellaneous",
         submenu: [
           {
-            url: '/pages/not-authorized',
+            url: '/not-authorized',
             name: "Not Authorized",
             slug: "page-not-authorized",
             icon: "XCircleIcon",
@@ -706,7 +721,7 @@ export default [
             target: '_blank',
           },
           {
-            url: '/pages/maintenance',
+            url: '/maintenance',
             name: "Maintenance",
             slug: "page-maintenance",
             icon: "AnchorIcon",
@@ -714,7 +729,7 @@ export default [
             target: '_blank',
           },
           {
-            url: '/pages/comingsoon',
+            url: '/comingsoon',
             slug: 'page-coming-soon',
             name: "Coming Soon",
             icon: "ClockIcon",
@@ -722,14 +737,14 @@ export default [
             target: '_blank',
           },
           {
-            url: '/pages/error-404',
+            url: '/error-404',
             name: "404",
             slug: "page-error-404",
             i18n: "404",
             target: '_blank',
           },
           {
-            url: '/pages/error-500',
+            url: '/error-500',
             name: "500",
             slug: "page-error-500",
             i18n: "500",

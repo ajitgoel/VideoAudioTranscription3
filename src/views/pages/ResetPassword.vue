@@ -1,10 +1,7 @@
 <!-- =========================================================================================
     File Name: ResetPassword.vue
     Description: Reset Password Page
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 
@@ -28,7 +25,7 @@
                                 <vs-input type="password" label-placeholder="Confirm Password" v-model="value3" class="w-full mb-8" />
 
                                 <div class="flex flex-wrap justify-between flex-col-reverse sm:flex-row">
-                                    <vs-button type="border" to="/pages/login" class="w-full sm:w-auto mb-8 sm:mb-auto mt-3 sm:mt-auto">Go Back To Login</vs-button>
+                                    <vs-button type="border" to="/login" class="w-full sm:w-auto mb-8 sm:mb-auto mt-3 sm:mt-auto">Go Back To Login</vs-button>
                                     <vs-button class="w-full sm:w-auto">Reset</vs-button>
                                 </div>
 

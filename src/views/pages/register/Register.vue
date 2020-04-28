@@ -46,15 +46,15 @@
                         icon-no-border/>
                       <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
                       
-                      <a @click="openPageInNewTab('/pages/terms-conditions')">
+                      <a @click="openPageInNewTab('/terms-conditions')">
                         <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>    
                       </a>
                       
-                      <a @click="openPageInNewTab('/pages/privacy-policy')">
+                      <a @click="openPageInNewTab('/privacy-policy')">
                         <vs-checkbox v-model="isPrivacyPolicyAccepted" class="mt-6">I accept the privacy policy.</vs-checkbox>                       
                       </a>
 
-                      <vs-button  type="border" to="/pages/login" class="mt-6">Login</vs-button>
+                      <vs-button  type="border" to="/login" class="mt-6">Login</vs-button>
                       <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
                     </div>
                     <!--Register: End-->

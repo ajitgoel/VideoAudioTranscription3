@@ -2,10 +2,7 @@
     File Name: VxBreadcrumb.vue
     Description: Breadcrumb component
     Component Name: VxBreadcrumb
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 

@@ -1,10 +1,7 @@
 <!-- =========================================================================================
     File Name: SliderColor.vue
     Description: Change color of slider
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 

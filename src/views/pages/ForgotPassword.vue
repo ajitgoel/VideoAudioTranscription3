@@ -25,7 +25,7 @@
                         scope="ConfirmSignup" class="w-full mb-8"  icon="icon icon-lock" icon-pack="feather" icon-no-border/>
                     <span class="text-danger text-sm">{{ errors.first('password') }}</span>                    
 		    
-                    <vs-button type="border" to="/pages/login" class="px-4 w-full md:w-auto">Back To Login</vs-button>
+                    <vs-button type="border" to="/login" class="px-4 w-full md:w-auto">Back To Login</vs-button>
                     <vs-button class="float-right px-4 w-full md:w-auto mt-3 mb-8 md:mt-0 md:mb-0" 
                     @click="confirmSignUp" :disabled="!validateConfirmationCode">Reset Password</vs-button>
                     <!--Confirm Signup: End-->                 
@@ -40,7 +40,7 @@
 		                icon-no-border icon="icon icon-user" icon-pack="feather" />
                     <span class="text-danger text-sm">{{ errors.first('email') }}</span> 
 
-                    <vs-button type="border" to="/pages/login" class="px-4 w-full md:w-auto">Back To Login</vs-button>
+                    <vs-button type="border" to="/login" class="px-4 w-full md:w-auto">Back To Login</vs-button>
                     <vs-button class="float-right px-4 w-full md:w-auto mt-3 mb-8 md:mt-0 md:mb-0" 
                     @click="forgotPassword" :disabled="!validateForm">Recover Password</vs-button>
                 </div>

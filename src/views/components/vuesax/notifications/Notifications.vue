@@ -1,10 +1,7 @@
 <!-- =========================================================================================
     File Name: Notifications.vue
     Description: Notifications - Imports all page portions
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 

@@ -1,10 +1,7 @@
 <!-- =========================================================================================
     File Name: ChipDefault.vue
     Description: Rendering of default chip
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 

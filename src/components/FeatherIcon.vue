@@ -2,10 +2,7 @@
     File Name: FeatherIcon.vue
     Description: Feather icon component. Creates feather icon based on 'icon' prop
     Component Name: FeatherIcon
-    ----------------------------------------------------------------------------------------
-    Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-      Author: Pixinvent
-    Author URL: http://www.themeforest.net/user/pixinvent
+    
 ========================================================================================== -->
 
 <script>
