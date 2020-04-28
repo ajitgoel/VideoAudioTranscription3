@@ -45,12 +45,15 @@
                         v-model="confirm_password" scope="CreateAccount" class="w-full mt-6"  icon="icon icon-lock" icon-pack="feather" 
                         icon-no-border/>
                       <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
-                      <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">
-                        <a href="/pages/terms-conditions" target="_blank">I accept the terms & conditions.</a>
-                      </vs-checkbox>    
-                      <vs-checkbox v-model="isPrivacyPolicyAccepted" class="mt-6">
-                        <a href="/pages/privacy-policy" target="_blank">I accept the privacy policy.</a>
-                      </vs-checkbox> 
+                      
+                      <a @click="openPageInNewTab('/pages/terms-conditions')">
+                        <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>    
+                      </a>
+                      
+                      <a @click="openPageInNewTab('/pages/privacy-policy')">
+                        <vs-checkbox v-model="isPrivacyPolicyAccepted" class="mt-6">I accept the privacy policy.</vs-checkbox>                       
+                      </a>
+
                       <vs-button  type="border" to="/pages/login" class="mt-6">Login</vs-button>
                       <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
                     </div>
@@ -66,7 +69,7 @@
 <script>
 import { Auth } from 'aws-amplify';
 export default 
-{
+{  
   data() 
   {
     return {email: '', password: '', confirm_password: '', isTermsConditionAccepted: false, isPrivacyPolicyAccepted:false, 
@@ -86,6 +89,10 @@ export default
   },
   methods: 
   {
+    openPageInNewTab(url) 
+    {   
+          window.open(url, "_blank");    
+    },
     checkLogin() 
     {
       if(this.$store.state.auth.isUserLoggedIn()) // If user is already logged in notify          
