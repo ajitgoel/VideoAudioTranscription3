@@ -626,7 +626,14 @@ export default [
         slug: 'page-vocabulary',
         name: "Vocabulary",
         icon: "SettingsIcon",
-        i18n: "Vocabulary",
+        i18n: "YourVocabulary",
+      },
+      {
+        url: '/invoices',
+        slug: 'page-invoice',
+        name: "Invoices",
+        icon: "InfoIcon",
+        i18n: "Invoices",
       },
       {
         url: '/user-settings',
@@ -656,13 +663,6 @@ export default [
         icon: "SearchIcon",
         i18n: "Search",
       },*/
-      {
-        url: '/invoices',
-        slug: 'page-invoice',
-        name: "Invoices",
-        icon: "InfoIcon",
-        i18n: "Invoice",
-      },
       /*{
         url: null,
         name: "Authentication",

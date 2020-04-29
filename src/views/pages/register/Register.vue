@@ -15,10 +15,13 @@
                         <p>Enter the confirmation code to confirm signup.</p>
                     </div>
                     <!--Confirm Signup: Start-->
-                    <vs-input v-validate="'required|length:6|numeric'" data-vv-validate-on="blur" label-placeholder="Confirmation code" 
-                      v-model="confirmationCode" scope="ConfirmSignup" placeholder="Confirmation code" class="w-full mt-6" />
+                    <vs-input name="confirmationCode" placeholder="Confirmation code" class="w-full mt-6" 
+                    label-placeholder="Confirmation code" v-model="confirmationCode" scope="ConfirmSignup" 
+                    v-validate="'required|length:6|numeric'" data-vv-validate-on="blur"/>
                     <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
-                    <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">Confirm email</vs-button>
+                    <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">
+                      Confirm email
+                    </vs-button>
                     <!--Confirm Signup: End-->
                   </div>
 
@@ -113,13 +116,14 @@ export default
       try
       {
         const result=await Auth.confirmSignUp(this.email, this.confirmationCode);
+        console.log(`confirmSignUp result: ${JSON.stringify(result)}`);
         this.$router.push('/').catch(() => {});
         this.$vs.notify({title: 'Account signup', text: 'Account confirmed successfully!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
       }
       catch(error)
       {
-        console.log(error);
+        console.log(`confirmSignUp error: ${error}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
       };
     },
@@ -133,6 +137,10 @@ export default
       {
         const params = {username: this.email, password: this.password, attributes: {email: this.email}};
         const iSignUpResult=await Auth.signUp(params);
+        
+        localStorage.setItem("userInfo", JSON.stringify(iSignUpResult));
+
+        console.log(`signUp iSignUpResult: ${JSON.stringify(iSignUpResult)}`);
         this.isSignUpConfirmed=true;
         this.$vs.notify({title: 'Register user', text: 'Please check your email to confirm your account!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
@@ -140,7 +148,7 @@ export default
       catch(error)
       {
         this.isSignUpConfirmed=false;
-        console.log(error);
+        console.log(`signUp error: ${error}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
       };
     }

@@ -27,41 +27,28 @@ npm run lint
 https://medium.com/@dabit3/how-to-build-serverless-vue-applications-with-aws-amplify-67d16c79e9d6
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/development/installation.html#follow-along-to-get-everything-running
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/development/routing.html#using-parent-property-of-route
-### AWS Amplify Package - aws-amplify-vue: 
+###### AWS Amplify Package - aws-amplify-vue: 
 https://github.com/aws-amplify/amplify-js/tree/master/packages/aws-amplify-vue
-### How to Build Production-ready Vue Authentication: 
+###### How to Build Production-ready Vue Authentication: 
 https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.to/dabit3/how-to-build-production-ready-vue-authentication-23mk+&cd=5&hl=en&ct=clnk&gl=us
-
-### AUTHENTICATION: Password & user management: 
+###### AWS Amplify Storage: 
+https://docs.amplify.aws/lib/storage/upload/q/platform/js
+###### A Vue.js starter app integrated with AWS Amplify: 
+https://github.com/aws-samples/aws-amplify-vue
+###### AUTHENTICATION: Password & user management: 
 https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
 ### AWS CLI Command Reference: 
 https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
 
-#### Tailwindcss documentation:
+###### Tailwindcss documentation:
 https://tailwindcss.com/docs/margin/
 #### vee-validate version 2 documentation:
 http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
-#### Vuesax documentation:
+###### Vuesax documentation:
 https://lusaxweb.github.io/vuesax/components/input.html#default
-#### Material Icons documentation:
+###### Material Icons documentation:
 https://material.io/resources/icons/?style=baseline
 
-###### Commands:
-npm install -g @aws-amplify/cli
-amplify configure
-npm install -g @vue/cli
-npm install aws-amplify @aws-amplify/ui-vue
-
-amplify init
-amplify add auth
-amplify add storage
-amplify add hosting
-amplify push
-amplify publish
-delete folders very fast: RMDIR /Q/S node_modules
-
-####### Delete user from aws app pool:
-aws cognito-idp admin-delete-user --user-pool-id us-east-1_Fvp76tzTJ --username ajitgoel@gmail.com --profile amplify-workshop-user
 ####### GraphQL endpoint: 
 https://vjakaofrbngqvdeayxuiehs72u.appsync-api.us-east-1.amazonaws.com/graphql
 ####### Application url: 
@@ -106,4 +93,7 @@ https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.t
 7. FAQ screen
     - [ ] Add FAQ's.
 8. General Tasks
-	- [x] Add AWS analytics
+	- [x] ~~Add AWS analytics~~
+9. Settings
+	- [ ] 
+

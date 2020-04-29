@@ -26,6 +26,17 @@ type Video
     labels: [String]
 }
 
+type Vocabulary
+@model 
+@key(name: "byUser", fields: ["userId"], queryField: "listVocabulariesByUser")
+@auth(rules: [
+  {allow: owner}
+{
+	id: ID
+  userId: String
+  vocabularies: [String]
+}
+
 type VideoS3Info {
     key: String!
     width: Int!
