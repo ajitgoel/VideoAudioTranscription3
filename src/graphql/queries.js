@@ -94,6 +94,41 @@ export const listVideos = /* GraphQL */ `
     }
   }
 `;
+export const getVocabulary = /* GraphQL */ `
+  query GetVocabulary($userId: String!) {
+    getVocabulary(userId: $userId) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;
+export const listVocabularys = /* GraphQL */ `
+  query ListVocabularys(
+    $userId: String
+    $filter: ModelVocabularyFilterInput
+    $limit: Int
+    $nextToken: String
+    $sortDirection: ModelSortDirection
+  ) {
+    listVocabularys(
+      userId: $userId
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
+      items {
+        id
+        userId
+        vocabularies
+        owner
+      }
+      nextToken
+    }
+  }
+`;
 export const listVideosByAlbum = /* GraphQL */ `
   query ListVideosByAlbum(
     $albumId: ID

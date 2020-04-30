@@ -39,7 +39,8 @@ https://github.com/aws-samples/aws-amplify-vue
 https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
 ### AWS CLI Command Reference: 
 https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
-
+### API (GRAPHQL) Directives
+https://docs.amplify.aws/cli/graphql-transformer/directives#usage
 ###### Tailwindcss documentation:
 https://tailwindcss.com/docs/margin/
 #### vee-validate version 2 documentation:

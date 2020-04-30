@@ -1,21 +1,14 @@
-type Album 
-@model 
-@auth(rules: [
-  {allow: owner},
-  {allow: private}
-]) {
+type Album @model 
+@auth(rules: [{allow: owner},{allow: private}]) 
+{
     id: ID!
     name: String!
     Videos: [Video] @connection(keyName: "byAlbum", fields: ["id"])
 }
 
-type Video 
-@model 
-@key(name: "byAlbum", fields: ["albumId"], queryField: "listVideosByAlbum")
-@auth(rules: [
-  {allow: owner},
-  {allow: private}
-])
+type Video @model 
+@key(fields:["albumId"],name: "byAlbum", queryField: "listVideosByAlbum")
+@auth(rules: [{allow: owner},{allow: private}])
 {
     id: ID!
     albumId: ID!
@@ -26,15 +19,13 @@ type Video
     labels: [String]
 }
 
-type Vocabulary
-@model 
-@key(name: "byUser", fields: ["userId"], queryField: "listVocabulariesByUser")
-@auth(rules: [
-  {allow: owner}
+type Vocabulary @model 
+@key(fields:["userId"])
+@auth(rules: [{allow: owner}])
 {
-	id: ID
-  userId: String
-  vocabularies: [String]
+	id: ID!
+  userId: String!
+  vocabularies: [String!]!
 }
 
 type VideoS3Info {

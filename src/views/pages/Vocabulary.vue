@@ -15,23 +15,25 @@
             </code><br/><br/>
         </span>
         <div class="mt-100">
-            <vs-textarea v-model="textarea" height="200px" 
+            <vs-textarea v-model="vocabularies" height="200px" 
             oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'/>
         </div>        
         <vs-button class="float-right" :disabled="!validateForm" @click="Save">Save Changes</vs-button>
     </vx-card>    
 </template>
 <script>
+import { createVocabulary } from '@/graphql/mutations';
+import {getVocabulary, listVocabularys} from '@/graphql/queries';
+import API, {graphqlOperation} from '@aws-amplify/api';
+
 export default
 {
-    data() {
-        return {textarea: '',}
-    },
+    data() {return {vocabularies: '',}},
     computed: 
     {
         validateForm() 
         {
-            return !this.errors.any() && this.textarea != '';
+            return !this.errors.any() && this.vocabularies != '';
         }
     },
     methods: 
@@ -40,6 +42,7 @@ export default
         {
             try 
             {
+                //debugger;
                 const userInfo= JSON.parse(localStorage.getItem('userInfo'));
                 const userid1=userInfo && userInfo.attributes && userInfo.attributes.sub;
                 const userid2=userInfo && userInfo.userSub;
@@ -50,8 +53,22 @@ export default
                     icon: 'icon-alert-circle', color: 'danger'});
                     return;   
                 }
-                console.log(`userid1: ${userid1} userid2: ${userid2}`);
+                if(userid1 != null)
+                {
+                 userid=userid1;
+                }
+                else if(userid2 != null)
+                {
+                 userid=userid2;
+                }
+                console.log(`userId: ${userid} userid2: ${userid2}`);
                 //save vocabularies in dynamodb
+                const vocabulariesArray=this.vocabularies.split("\n");
+                const createVocabularyInput={userId:userid, vocabularies:vocabulariesArray};
+
+                //await API.graphql({query: createVocabulary,variables: {input: createVocabularyInput},});
+                await API.graphql(graphqlOperation(createVocabulary, {input: createVocabularyInput}));
+
                 this.$router.push('/transcripts').catch(() => {});  
                 this.$vs.notify({title: 'Success', text: 'Your vocabularies have been saved successfully!', iconPack: 'feather',
                     icon: 'icon-check',color: 'success'}); 

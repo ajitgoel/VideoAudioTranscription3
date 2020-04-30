@@ -1,13 +1,7 @@
 /*=========================================================================================
   File Name: vue.config.js
-  Description: configuration file of vue
-  ----------------------------------------------------------------------------------------
-  Item Name: Vuexy - Vuejs, HTML & Laravel Admin Dashboard Template
-  Author: Pixinvent
-  Author URL: http://www.themeforest.net/user/pixinvent
+  Description: configuration file of vue  
 ==========================================================================================*/
-
-
 module.exports = {
   publicPath: '/',
   transpileDependencies: [
@@ -15,6 +9,7 @@ module.exports = {
     'resize-detector'
   ],
   configureWebpack: {
+    devtool: 'source-map',
     optimization: {
       splitChunks: {
         chunks: 'all'
@@ -22,4 +17,3 @@ module.exports = {
     }
   }
 }
-

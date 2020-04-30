@@ -151,3 +151,42 @@ export const deleteVideo = /* GraphQL */ `
     }
   }
 `;
+export const createVocabulary = /* GraphQL */ `
+  mutation CreateVocabulary(
+    $input: CreateVocabularyInput!
+    $condition: ModelVocabularyConditionInput
+  ) {
+    createVocabulary(input: $input, condition: $condition) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;
+export const updateVocabulary = /* GraphQL */ `
+  mutation UpdateVocabulary(
+    $input: UpdateVocabularyInput!
+    $condition: ModelVocabularyConditionInput
+  ) {
+    updateVocabulary(input: $input, condition: $condition) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;
+export const deleteVocabulary = /* GraphQL */ `
+  mutation DeleteVocabulary(
+    $input: DeleteVocabularyInput!
+    $condition: ModelVocabularyConditionInput
+  ) {
+    deleteVocabulary(input: $input, condition: $condition) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;

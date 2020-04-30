@@ -133,3 +133,33 @@ export const onDeleteVideo = /* GraphQL */ `
     }
   }
 `;
+export const onCreateVocabulary = /* GraphQL */ `
+  subscription OnCreateVocabulary($owner: String!) {
+    onCreateVocabulary(owner: $owner) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;
+export const onUpdateVocabulary = /* GraphQL */ `
+  subscription OnUpdateVocabulary($owner: String!) {
+    onUpdateVocabulary(owner: $owner) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;
+export const onDeleteVocabulary = /* GraphQL */ `
+  subscription OnDeleteVocabulary($owner: String!) {
+    onDeleteVocabulary(owner: $owner) {
+      id
+      userId
+      vocabularies
+      owner
+    }
+  }
+`;
