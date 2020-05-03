@@ -58,9 +58,9 @@ const router = new Router({
                         breadcrumb: [
                             { title: 'Home', url: '/' },
                             { title: 'Pages' },
-                            { title: 'TopOffPayment', active: true },
+                            { title: 'Top Off Payment', active: true },
                         ],
-                        pageTitle: 'TopOffPayment',
+                        pageTitle: 'Top Off Payment',
                         rule: 'editor',
                         requiresAuth: true,
                     },
@@ -82,7 +82,7 @@ const router = new Router({
                 },              
                 {
                     path: '/invoices',
-                    name: 'page-invoices',
+                    name: 'invoices',
                     component: () => import('@/views/pages/Invoices.vue'),
                     meta: {
                         breadcrumb: [
@@ -97,7 +97,7 @@ const router = new Router({
                 },  
                 {
                     path: '/user-settings',
-                    name: 'page-user-settings',
+                    name: 'user-settings',
                     component: () => import('@/views/pages/user-settings/UserSettings.vue'),
                     meta: {
                         breadcrumb: [

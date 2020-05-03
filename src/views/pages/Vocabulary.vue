@@ -15,10 +15,14 @@
             </code><br/><br/>
         </span>
         <div class="mt-100">
-            <vs-textarea v-model="vocabularies" height="200px" 
-            oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'/>
-        </div>        
-        <vs-button class="float-right" :disabled="!validateForm" @click="Save">Save Changes</vs-button>
+            <!-- <vs-textarea v-model="vocabularies" height="200px" 
+            oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'/>  -->
+            <ejs-grid :editSettings='editSettings' :toolbar='toolbar' height='273px'>
+                <e-columns>
+                    <e-column field='CustomerID' headerText='Customer ID' width=120></e-column>
+                </e-columns>
+            </ejs-grid>
+        </div>                
     </vx-card>    
 </template>
 <script>
@@ -28,13 +32,25 @@ import API, {graphqlOperation} from '@aws-amplify/api';
 
 export default
 {
-    data() {return {vocabularies: '',}},
+    data() {
+        return {
+            vocabularies: '',
+            editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Batch' },
+            toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel']
+        }
+    },
+   /*  provide: {
+        grid: [Page, Edit, Toolbar]
+    }, */
     computed: 
     {
-        validateForm() 
-        {
-            return !this.errors.any() && this.vocabularies != '';
-        }
+    },
+    async created() 
+    {
+        const userId=this.userIdFromLocalStorage();
+        const listVocabularysFilter={userId:{eq:userId}};
+        const vocabulariesTemp = await API.graphql(graphqlOperation(listVocabularys, {filter: listVocabularysFilter}));
+        this.vocabularies  = vocabulariesTemp.data.listVocabularys.items[0].vocabularies;
     },
     methods: 
     {
@@ -42,34 +58,20 @@ export default
         {
             try 
             {
-                //debugger;
-                const userInfo= JSON.parse(localStorage.getItem('userInfo'));
-                const userid1=userInfo && userInfo.attributes && userInfo.attributes.sub;
-                const userid2=userInfo && userInfo.userSub;
-                let userid;
-                if(userid1 == null && userid2 == null)
+                const userId=this.userIdFromLocalStorage();
+                if(userId == null)
                 {
                  this.$vs.notify({title: 'Error',text: 'There was an error saving your vocabulary', iconPack: 'feather', 
                     icon: 'icon-alert-circle', color: 'danger'});
                     return;   
                 }
-                if(userid1 != null)
-                {
-                 userid=userid1;
-                }
-                else if(userid2 != null)
-                {
-                 userid=userid2;
-                }
-                console.log(`userId: ${userid} userid2: ${userid2}`);
-                //save vocabularies in dynamodb
+                console.log(`userId: ${userId}`);
+                //#region save vocabularies in dynamodb
                 const vocabulariesArray=this.vocabularies.split("\n");
                 const createVocabularyInput={userId:userid, vocabularies:vocabulariesArray};
 
-                //await API.graphql({query: createVocabulary,variables: {input: createVocabularyInput},});
                 await API.graphql(graphqlOperation(createVocabulary, {input: createVocabularyInput}));
-
-                this.$router.push('/transcripts').catch(() => {});  
+                //#endregion save vocabularies in dynamodb
                 this.$vs.notify({title: 'Success', text: 'Your vocabularies have been saved successfully!', iconPack: 'feather',
                     icon: 'icon-check',color: 'success'}); 
             } 

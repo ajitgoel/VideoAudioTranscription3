@@ -20,7 +20,6 @@ type Video @model
 }
 
 type Vocabulary @model 
-@key(fields:["userId"])
 @auth(rules: [{allow: owner}])
 {
 	id: ID!

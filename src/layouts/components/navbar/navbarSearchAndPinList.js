@@ -80,7 +80,13 @@ export default {
       {title: "User List",                 url: "/user/user-list",               icon: "ListIcon",           is_bookmarked: false},
       {title: "User View",                 url: "/user/user-view/268",           icon: "UserIcon",           is_bookmarked: false},
       {title: "User Edit",                 url: "/user/user-edit/268",           icon: "EditIcon",           is_bookmarked: false},
+
+      {title: "Transcripts",               url: "/transcripts",                  icon: "SettingsIcon",       is_bookmarked: false},
+      {title: "Top Off Payment",           url: "/top-off-payment",              icon: "SettingsIcon",       is_bookmarked: false},
+      {title: "Vocabulary",                url: "/vocabulary",                   icon: "SettingsIcon",       is_bookmarked: false},
+      {title: "Invoices",                  url: "/invoices",                     icon: "InfoIcon",       is_bookmarked: false},
       {title: "User Settings",             url: "/user-settings",                icon: "SettingsIcon",       is_bookmarked: false},
+
       {title: "FAQ Page",                  url: "/faq",                          icon: "HelpCircleIcon",     is_bookmarked: false},
       {title: "KnowledgeBase Page",        url: "/knowledge-base",               icon: "BookIcon",           is_bookmarked: false},
       {title: "Search Page",               url: "/search",                       icon: "SearchIcon",         is_bookmarked: false},

@@ -59,6 +59,9 @@ Full Stack Serverless: Introduction to Authentication: https://www.oreilly.com/l
 https://webcache.googleusercontent.com/search?q=cache:qACxLV5U1GsJ:https://dev.to/aws/the-complete-react-native-guide-to-user-authentication-with-the-amplify-framework-ib2+&cd=12&hl=en&ct=clnk&gl=us
 ####### Build Production-ready Vue Authentication:
 https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.to/dabit3/how-to-build-production-ready-vue-authentication-23mk+&cd=1&hl=en&ct=clnk&gl=us
+###### Amplify aws Community Resources:
+https://amplify.aws/community/resources
+
 
 | Category  | Resource name               | Operation | Provider plugin   |
 | --------- | --------------------------- | --------- | ----------------- |

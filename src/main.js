@@ -1,5 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
+import '@/mixins/generalMixins.js';
+
+import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
+Vue.use(GridPlugin);
 
 // Vuesax Component Framework
 import Vuesax from 'vuesax'

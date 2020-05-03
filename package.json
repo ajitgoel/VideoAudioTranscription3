@@ -12,6 +12,7 @@
     "@aws-amplify/ui-vue": "^0.2.3",
     "@chenfengyuan/vue-countdown": "^1.1.2",
     "@react-native-community/netinfo": "^5.5.0",
+    "@syncfusion/ej2-vue-grids": "^18.1.46",
     "ag-grid-community": "^21.0.1",
     "ag-grid-vue": "^21.0.1",
     "algoliasearch": "^3.33.0",
@@ -82,6 +83,8 @@
     "vue-template-compiler": "^2.6.10"
   },
   "jest": {
-    "setupFiles": ["jest-localstorage-mock"]
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
   }
 }

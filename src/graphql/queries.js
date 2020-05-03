@@ -95,8 +95,8 @@ export const listVideos = /* GraphQL */ `
   }
 `;
 export const getVocabulary = /* GraphQL */ `
-  query GetVocabulary($userId: String!) {
-    getVocabulary(userId: $userId) {
+  query GetVocabulary($id: ID!) {
+    getVocabulary(id: $id) {
       id
       userId
       vocabularies
@@ -106,19 +106,11 @@ export const getVocabulary = /* GraphQL */ `
 `;
 export const listVocabularys = /* GraphQL */ `
   query ListVocabularys(
-    $userId: String
     $filter: ModelVocabularyFilterInput
     $limit: Int
     $nextToken: String
-    $sortDirection: ModelSortDirection
   ) {
-    listVocabularys(
-      userId: $userId
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      sortDirection: $sortDirection
-    ) {
+    listVocabularys(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         userId
