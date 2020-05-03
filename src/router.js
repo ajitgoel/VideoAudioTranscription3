@@ -1328,14 +1328,14 @@ const router = new Router({
         // =============================================================================
         // PAGES
         // =============================================================================
-                {
+                /* {
                     path: '/callback',
                     name: 'auth-callback',
                     component: () => import('@/views/Callback.vue'),
                     meta: {
                         rule: 'editor'
                     }
-                },
+                }, */
                 {
                     path: '/login',
                     name: 'page-login',

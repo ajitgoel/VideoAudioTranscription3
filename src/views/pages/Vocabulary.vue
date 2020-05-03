@@ -17,10 +17,10 @@
         <div class="mt-100">
             <!-- <vs-textarea v-model="vocabularies" height="200px" 
             oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'/>  -->
-            <ejs-grid :editSettings='editSettings' :toolbar='toolbar' height='273px'>
-                <e-columns>
-                    <e-column field='CustomerID' headerText='Customer ID' width=120></e-column>
-                </e-columns>
+            <ejs-grid :dataSource="vocabularies" :editSettings='editSettings' :toolbar='toolbar' height='273px'>
+                <!-- <e-columns>
+                    <e-column field='CustomerID' headerText='Vocabulary' width=120></e-column>
+                </e-columns> -->
             </ejs-grid>
         </div>                
     </vx-card>    
@@ -34,7 +34,7 @@ export default
 {
     data() {
         return {
-            vocabularies: '',
+            vocabularies: [],
             editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Batch' },
             toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel']
         }
@@ -51,6 +51,7 @@ export default
         const listVocabularysFilter={userId:{eq:userId}};
         const vocabulariesTemp = await API.graphql(graphqlOperation(listVocabularys, {filter: listVocabularysFilter}));
         this.vocabularies  = vocabulariesTemp.data.listVocabularys.items[0].vocabularies;
+        console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
     },
     methods: 
     {

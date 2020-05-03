@@ -54,10 +54,5 @@
 			"providerPlugin": "awscloudformation"
 		}
 	},
-	"analytics": {
-		"vidaudtranscription": {
-			"service": "Pinpoint",
-			"providerPlugin": "awscloudformation"
-		}
-	}
+	"analytics": {}
 }
