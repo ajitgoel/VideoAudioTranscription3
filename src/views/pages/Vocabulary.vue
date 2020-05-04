@@ -15,8 +15,6 @@
             </code><br/><br/>
         </span>
         <div class="mt-100">
-            <!-- <vs-textarea v-model="vocabularies" height="200px" 
-            oninput='this.style.height="";this.style.height=this.scrollHeight+"px"'/>  -->
             <ejs-grid :dataSource="vocabularies" :editSettings='editSettings' :toolbar='toolbar' height='273px'>
                 <!-- <e-columns>
                     <e-column field='CustomerID' headerText='Vocabulary' width=120></e-column>
@@ -26,8 +24,8 @@
     </vx-card>    
 </template>
 <script>
-import { createVocabulary } from '@/graphql/mutations';
-import {getVocabulary, listVocabularys} from '@/graphql/queries';
+//import { createVocabulary } from '@/graphql/mutations';
+//import {getVocabulary, listVocabularys} from '@/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 
 export default
@@ -39,9 +37,6 @@ export default
             toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel']
         }
     },
-   /*  provide: {
-        grid: [Page, Edit, Toolbar]
-    }, */
     computed: 
     {
     },
@@ -49,9 +44,9 @@ export default
     {
         const userId=this.userIdFromLocalStorage();
         const listVocabularysFilter={userId:{eq:userId}};
-        const vocabulariesTemp = await API.graphql(graphqlOperation(listVocabularys, {filter: listVocabularysFilter}));
-        this.vocabularies  = vocabulariesTemp.data.listVocabularys.items[0].vocabularies;
-        console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
+        //const vocabulariesTemp = await API.graphql(graphqlOperation(listVocabularys, {filter: listVocabularysFilter}));
+        //this.vocabularies  = vocabulariesTemp.data.listVocabularys.items[0].vocabularies;
+        //console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
     },
     methods: 
     {
@@ -71,7 +66,7 @@ export default
                 const vocabulariesArray=this.vocabularies.split("\n");
                 const createVocabularyInput={userId:userid, vocabularies:vocabulariesArray};
 
-                await API.graphql(graphqlOperation(createVocabulary, {input: createVocabularyInput}));
+                //await API.graphql(graphqlOperation(createVocabulary, {input: createVocabularyInput}));
                 //#endregion save vocabularies in dynamodb
                 this.$vs.notify({title: 'Success', text: 'Your vocabularies have been saved successfully!', iconPack: 'feather',
                     icon: 'icon-check',color: 'success'}); 

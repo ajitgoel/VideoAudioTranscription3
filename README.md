@@ -24,6 +24,15 @@ npm run test
 ```
 npm run lint
 ```
+### Project related documentation:
+###### AUTHENTICATION: Password & user management: 
+https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
+### AWS CLI Command Reference: 
+https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
+#### vee-validate version 2 documentation:
+http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
+
+### Articles:
 https://medium.com/@dabit3/how-to-build-serverless-vue-applications-with-aws-amplify-67d16c79e9d6
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/development/installation.html#follow-along-to-get-everything-running
 https://pixinvent.com/demo/vuexy-vuejs-admin-dashboard-template/documentation/development/routing.html#using-parent-property-of-route
@@ -35,16 +44,12 @@ https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.t
 https://docs.amplify.aws/lib/storage/upload/q/platform/js
 ###### A Vue.js starter app integrated with AWS Amplify: 
 https://github.com/aws-samples/aws-amplify-vue
-###### AUTHENTICATION: Password & user management: 
-https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
-### AWS CLI Command Reference: 
-https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
+
 ### API (GRAPHQL) Directives
 https://docs.amplify.aws/cli/graphql-transformer/directives#usage
 ###### Tailwindcss documentation:
 https://tailwindcss.com/docs/margin/
-#### vee-validate version 2 documentation:
-http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
+
 ###### Vuesax documentation:
 https://lusaxweb.github.io/vuesax/components/input.html#default
 ###### Material Icons documentation:
@@ -62,16 +67,6 @@ https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.t
 ###### Amplify aws Community Resources:
 https://amplify.aws/community/resources
 
-
-| Category  | Resource name               | Operation | Provider plugin   |
-| --------- | --------------------------- | --------- | ----------------- |
-| Analytics | vidaudtranscription         | Create    | awscloudformation |
-| Auth      | vidaudtranscriptionf4ea9b8a | Update    | awscloudformation |
-| Api       | vidaudtranscription         | No Change | awscloudformation |
-| Function  | S3Trigger355399e5           | No Change | awscloudformation |
-| Storage   | vidaudtranscription         | No Change | awscloudformation |
-| Hosting   | S3AndCloudFront             | No Change | awscloudformation |
-
 #### Tasks:
 
 1. 	Full Page layout
@@ -81,6 +76,7 @@ https://amplify.aws/community/resources
     - [x] ~~after registering, user has to confirm his email using confirmation code~~
     - [ ] privacy policy will need to be checked
     - [ ] terms and conditions will need to be checked
+    - [x] Open privacy policy, terms and conditions in a new modal. 
     - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~ 
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
@@ -99,5 +95,7 @@ https://amplify.aws/community/resources
 8. General Tasks
 	- [x] ~~Add AWS analytics~~
 9. Settings
-	- [ ] 
+	a. Change Password screen:
+    - [ ] check old password is valid. 
+    - [ ] changing the password a second time does not work. 
 

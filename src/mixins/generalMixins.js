@@ -25,6 +25,12 @@ Vue.mixin({
         return userid2;
       }
       return null;
-    }  
+    },
+    saveUser(cognitoUser)
+    {
+      localStorage.removeItem("userInfo");
+      localStorage.setItem("userInfo", JSON.stringify(cognitoUser));
+    },
+
   }
 })

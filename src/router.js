@@ -128,7 +128,7 @@ const router = new Router({
         // =============================================================================
         // Application Routes
         // =============================================================================
-                {
+                /* {
                     path: '/apps/todo',
                     redirect: '/apps/todo/all',
                     name: 'todo',
@@ -215,7 +215,7 @@ const router = new Router({
                         pageTitle: 'Checkout',
                         rule: 'editor',requiresAuth: true,
                     }
-                },
+                }, */
                 /*
                   Below route is for demo purpose
                   You can use this route in your app
@@ -225,7 +225,7 @@ const router = new Router({
                         redirect: '/apps/eCommerce/shop',
                     }
                 */
-                {
+                /* {
                     path: '/apps/eCommerce/item/',
                     redirect: '/apps/eCommerce/item/5546604',
                 },
@@ -286,11 +286,11 @@ const router = new Router({
                         pageTitle: 'User Edit',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                }, */
         // =============================================================================
         // UI ELEMENTS
         // =============================================================================
-                {
+                /* {
                     path: '/ui-elements/data-list/list-view',
                     name: 'data-list-list-view',
                     component: () => import('@/views/ui-elements/data-list/list-view/DataListListView.vue'),
@@ -454,12 +454,12 @@ const router = new Router({
                         pageTitle: 'agGrid Table',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                }, */
 
         // =============================================================================
         // COMPONENT ROUTES
         // =============================================================================
-                {
+               /*  {
                     path: '/components/alert',
                     name: 'component-alert',
                     component: () => import('@/views/components/vuesax/alert/Alert.vue'),
@@ -766,7 +766,7 @@ const router = new Router({
                         pageTitle: 'Upload',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                }, */
 
 
         // =============================================================================
@@ -775,7 +775,7 @@ const router = new Router({
             // =============================================================================
             // FORM ELEMENTS
             // =============================================================================
-                {
+                /* {
                     path: '/forms/form-elements/select',
                     name: 'form-element-select',
                     component: () => import('./views/forms/form-elements/select/Select.vue'),
@@ -872,9 +872,9 @@ const router = new Router({
                         pageTitle: 'Textarea',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                }, */
         // -------------------------------------------------------------------------------------------------------------------------------------------
-                {
+                /* {
                     path: '/forms/form-layouts',
                     name: 'forms-form-layouts',
                     component: () => import('@/views/forms/FormLayouts.vue'),
@@ -929,12 +929,12 @@ const router = new Router({
                       pageTitle: 'Form Input Group',
                       rule: 'editor',requiresAuth: true,
                   },
-                },
+                }, */
 
         // =============================================================================
         // Pages Routes
         // =============================================================================
-                {
+                /* {
                     path: '/profile',
                     name: 'page-profile',
                     component: () => import('@/views/pages/Profile.vue'),
@@ -1020,13 +1020,13 @@ const router = new Router({
                         pageTitle: 'Search',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                }, */
 
                 //#region CHARTS & MAPS
                 // =============================================================================
                 // CHARTS & MAPS
                 // =============================================================================
-                {
+                /* {
                     path: '/charts-and-maps/charts/apex-charts',
                     name: 'extra-component-charts-apex-charts',
                     component: () => import('@/views/charts-and-maps/charts/apex-charts/ApexCharts.vue'),
@@ -1081,7 +1081,7 @@ const router = new Router({
                         pageTitle: 'Google Map',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                }, */
                 //#endregion CHARTS & MAPS
 
                 //#region EXTENSIONS
@@ -1368,7 +1368,7 @@ const router = new Router({
                         rule: 'editor',requiresAuth: false,
                     }
                 },
-                {
+                /* {
                     path: '/lock-screen',
                     name: 'page-lock-screen',
                     component: () => import('@/views/pages/LockScreen.vue'),
@@ -1383,7 +1383,7 @@ const router = new Router({
                     meta: {
                         rule: 'editor',requiresAuth: false,
                     }
-                },
+                }, */
                 {
                     path: '/error-404',
                     name: 'page-error-404',

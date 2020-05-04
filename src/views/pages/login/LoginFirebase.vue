@@ -1,10 +1,11 @@
 <template>
   <div>
-    <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border icon="icon icon-user"
-        icon-pack="feather" label-placeholder="Email" v-model="email" class="w-full"/>
+    <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border 
+      icon="icon icon-user" icon-pack="feather" label-placeholder="Email" v-model="email" class="w-full"/>
     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
-    <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" name="password" icon-no-border
-        icon="icon icon-lock" icon-pack="feather" label-placeholder="Password" v-model="password" class="w-full mt-6" />
+    <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" name="password" 
+      icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Password" v-model="password" 
+      class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('password') }}</span>
     <div class="flex flex-wrap justify-between my-5">
         <router-link to="/forgot-password">Forgot Password?</router-link>
@@ -64,10 +65,8 @@ export default
       try 
       {
         const cognitoUser = await Auth.signIn(this.email, this.password);
-        console.log(`cognitoUser: ${JSON.stringify(cognitoUser)}`);
-        
-        localStorage.setItem("userInfo", JSON.stringify(cognitoUser));
-
+        console.log(`cognitoUser: ${JSON.stringify(cognitoUser)}`);        
+        saveUser(cognitoUser);
         this.$router.push('/transcripts').catch(() => {});  
         this.$vs.notify({title: 'Logged in', text: 'You are successfully logged in!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 

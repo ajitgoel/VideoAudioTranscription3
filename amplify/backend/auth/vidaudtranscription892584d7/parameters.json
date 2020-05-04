@@ -1,8 +1,8 @@
 {
-    "identityPoolName": "vidaudtranscriptionf4ea9b8a_identitypool_f4ea9b8a",
-    "allowUnauthenticatedIdentities": true,
-    "resourceNameTruncated": "vidaudf4ea9b8a",
-    "userPoolName": "vidaudtranscriptionf4ea9b8a_userpool_f4ea9b8a",
+    "identityPoolName": "vidaudtranscription892584d7_identitypool_892584d7",
+    "allowUnauthenticatedIdentities": false,
+    "resourceNameTruncated": "vidaud892584d7",
+    "userPoolName": "vidaudtranscription892584d7_userpool_892584d7",
     "autoVerifiedAttributes": [
         "email"
     ],
@@ -28,9 +28,9 @@
     "userpoolClientReadAttributes": [
         "email"
     ],
-    "userpoolClientLambdaRole": "vidaudf4ea9b8a_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "vidaud892584d7_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "resourceName": "vidaudtranscriptionf4ea9b8a",
+    "resourceName": "vidaudtranscription892584d7",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
         "Fn::GetAtt": [
@@ -45,6 +45,24 @@
         ]
     },
     "useDefault": "default",
+    "usernameAttributes": [
+        "email"
+    ],
+    "triggers": "{\"PreSignup\":[\"email-filter-blacklist\"]}",
     "userPoolGroupList": [],
-    "dependsOn": []
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "permissions": [],
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "vidaudtranscription892584d7PreSignup",
+            "triggerProvider": "Cognito",
+            "attributes": [
+                "Arn",
+                "Name"
+            ]
+        }
+    ]
 }

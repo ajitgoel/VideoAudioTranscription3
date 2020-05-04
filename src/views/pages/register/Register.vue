@@ -76,7 +76,7 @@ export default
   data() 
   {
     return {email: '', password: '', confirm_password: '', isTermsConditionAccepted: false, isPrivacyPolicyAccepted:false, 
-    isSignUpConfirmed:false, confirmationCode:''};
+    isSignUpConfirmed:false, iSignUpResult:null, confirmationCode:''};
   },
   computed: 
   {
@@ -94,7 +94,7 @@ export default
   {
     openPageInNewTab(url) 
     {   
-          window.open(url, "_blank");    
+      window.open(url, "_blank");    
     },
     checkLogin() 
     {
@@ -117,6 +117,7 @@ export default
       {
         const result=await Auth.confirmSignUp(this.email, this.confirmationCode);
         console.log(`confirmSignUp result: ${JSON.stringify(result)}`);
+        saveUser(this.iSignUpResult);
         this.$router.push('/').catch(() => {});
         this.$vs.notify({title: 'Account signup', text: 'Account confirmed successfully!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
@@ -136,10 +137,7 @@ export default
       try
       {
         const params = {username: this.email, password: this.password, attributes: {email: this.email}};
-        const iSignUpResult=await Auth.signUp(params);
-        
-        localStorage.setItem("userInfo", JSON.stringify(iSignUpResult));
-
+        this.iSignUpResult=await Auth.signUp(params);
         console.log(`signUp iSignUpResult: ${JSON.stringify(iSignUpResult)}`);
         this.isSignUpConfirmed=true;
         this.$vs.notify({title: 'Register user', text: 'Please check your email to confirm your account!', iconPack: 'feather',
