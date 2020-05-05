@@ -27,10 +27,12 @@ npm run lint
 ### Project related documentation:
 ###### AUTHENTICATION: Password & user management: 
 https://docs.amplify.aws/lib/auth/manageusers/q/platform/js#change-password
-### AWS CLI Command Reference: 
+###### AWS CLI Command Reference: 
 https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.html
-#### vee-validate version 2 documentation:
+###### vee-validate version 2 documentation:
 http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
+###### Feather Icons: 
+https://feathericons.com/?query=code
 
 ### Articles:
 https://medium.com/@dabit3/how-to-build-serverless-vue-applications-with-aws-amplify-67d16c79e9d6
@@ -74,10 +76,9 @@ https://amplify.aws/community/resources
     - [x] ~~should have footer~~
 2. Register screen
     - [x] ~~after registering, user has to confirm his email using confirmation code~~
-    - [ ] privacy policy will need to be checked
-    - [ ] terms and conditions will need to be checked
-    - [x] Open privacy policy, terms and conditions in a new modal. 
-    - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~ 
+    - [ ] privacy policy needs to be proof read.
+    - [ ] terms and conditions needs to be proof read.
+    - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
     - [ ] Add users to register using Facebook, Google.
@@ -96,6 +97,7 @@ https://amplify.aws/community/resources
 	- [x] ~~Add AWS analytics~~
 9. Settings
 	a. Change Password screen:
-    - [ ] check old password is valid. 
-    - [ ] changing the password a second time does not work. 
-
+    - [x] ~~check old password is valid.~~
+    - [x] ~~changing the password a second time does not work.~~
+10. Vocabulary screen
+    => - [ ] Work with AWS appsync and syncfusion grid to save updated, deleted, inserted info to array.

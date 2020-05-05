@@ -10,7 +10,7 @@
     <div class="flex flex-wrap justify-between my-5">
         <router-link to="/forgot-password">Forgot Password?</router-link>
     </div>
-    <vs-button  type="border" @click="registerUser">Register</vs-button>
+    <vs-button type="border" @click="registerUser">Register</vs-button>
     <vs-button class="float-right" :disabled="!validateForm" @click="login">Login</vs-button>
     <!--<vs-divider>OR</vs-divider>
     <div class="social-login-buttons flex flex-wrap items-center mt-4">
@@ -66,7 +66,7 @@ export default
       {
         const cognitoUser = await Auth.signIn(this.email, this.password);
         console.log(`cognitoUser: ${JSON.stringify(cognitoUser)}`);        
-        saveUser(cognitoUser);
+        this.saveUser(cognitoUser);
         this.$router.push('/transcripts').catch(() => {});  
         this.$vs.notify({title: 'Logged in', text: 'You are successfully logged in!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 

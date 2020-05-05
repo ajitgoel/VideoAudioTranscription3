@@ -63,42 +63,24 @@
       <p>Please do not hesitate to contact (<a href="mailto:hi@happyscribe.co" rel="nofollow" target="_blank">hi@happyscribe.co</a>) us regarding any matter relating to these Terms or the Statement.</p>      
     </div>
 </template>
-
 <script>
-import { Auth } from 'aws-amplify';
 export default 
 {
+    name: "TermsConditions",
     data() 
     {
-        return {email: ''};
+        return {};
     },
     computed: 
     {
         validateForm() 
         {
-            return !this.errors.any() && this.email != '';
         }
     },
     methods: 
     {
         async forgotPassword() 
         {
-            if (!this.validateForm) // If form is not validated or user is already login return            
-            {
-                return;
-            }
-            try
-            {
-                var result=await Auth.forgotPassword(this.email);       
-                this.$router.push('/').catch(() => {});  
-                this.$vs.notify({title: 'Forgot password', text: 'Please check your email for instructions on how to reset your password!', 
-                    iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
-            }
-            catch(error)
-            {
-                console.log(error);
-                this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
-            };
         },
     }
 }

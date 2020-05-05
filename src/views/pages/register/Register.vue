@@ -15,9 +15,14 @@
                         <p>Enter the confirmation code to confirm signup.</p>
                     </div>
                     <!--Confirm Signup: Start-->
-                    <vs-input name="confirmationCode" placeholder="Confirmation code" class="w-full mt-6" 
-                    label-placeholder="Confirmation code" v-model="confirmationCode" scope="ConfirmSignup" 
-                    v-validate="'required|length:6|numeric'" data-vv-validate-on="blur"/>
+                    <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" 
+                      label-placeholder="Email" placeholder="Email" v-model="email" scope="ConfirmSignup" class="w-full mt-6" 
+                      icon-no-border icon="icon icon-user" icon-pack="feather" />
+                    <span class="text-danger text-sm">{{ errors.first('email') }}</span>
+                    
+                    <vs-input v-validate="'required|length:6|numeric'" data-vv-validate-on="blur" name="confirmationCode" 
+                    placeholder="Confirmation code" class="w-full mt-6" label-placeholder="Confirmation code" v-model="confirmationCode" 
+                    scope="ConfirmSignup" icon-no-border icon="icon icon-code" icon-pack="feather" />
                     <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
                     <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">
                       Confirm email
@@ -36,8 +41,8 @@
                       name="displayName" placeholder="Name" v-model="displayName" scope="CreateAccount" class="w-full" />
                       <span class="text-danger text-sm">{{ errors.first('displayName') }}</span> -->
                       <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" 
-                      label-placeholder="Email" placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" 
-                      icon-no-border icon="icon icon-user" icon-pack="feather" />
+                        label-placeholder="Email" placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" 
+                        icon-no-border icon="icon icon-user" icon-pack="feather" />
                       <span class="text-danger text-sm">{{ errors.first('email') }}</span>
                       <vs-input ref="password" type="password" data-vv-validate-on="blur" v-validate="'required|min:6|max:10'"
                         name="password" label-placeholder="Password" placeholder="Password" v-model="password" scope="CreateAccount" 
@@ -48,16 +53,21 @@
                         v-model="confirm_password" scope="CreateAccount" class="w-full mt-6"  icon="icon icon-lock" icon-pack="feather" 
                         icon-no-border/>
                       <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
-                      
-                      <a @click="openPageInNewTab('/terms-conditions')">
-                        <vs-checkbox v-model="isTermsConditionAccepted" class="mt-6">I accept the terms & conditions.</vs-checkbox>    
-                      </a>
-                      
-                      <a @click="openPageInNewTab('/privacy-policy')">
-                        <vs-checkbox v-model="isPrivacyPolicyAccepted" class="mt-6">I accept the privacy policy.</vs-checkbox>                       
-                      </a>
 
-                      <vs-button  type="border" to="/login" class="mt-6">Login</vs-button>
+                      <vs-checkbox id="termsAndConditionsPrivacyPolicy" v-model="isTermsConditionAcceptedPrivacyPolicy" class="mt-6">                        
+                        <label for="termsAndConditionsPrivacyPolicy">By clicking <strong>Register</strong>, I</label>
+                      </vs-checkbox><br/>
+                      1. Agree and consent to the <span><a href='/terms-conditions' target='_blank' rel="nofollow">User Agreement</a></span>, its policies, and the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
+                      2. Expressly instruct VideoAudioTranscription service to communicate specific information about me and my account to third parties in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
+                      3. Specifically and expressly consent to the use of website tracking methods, including cookies, and to the safe and secure transmission of your personal information outside the European Economic Area in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>.
+
+                      <!-- <br/><strong>User Agreement and Privacy Policy</strong><br/>
+                      These documents are designed to inform you of your rights and obligations when using the VideoAudioTranscription service. <br/>-->
+
+                      <div class="flex flex-wrap justify-between my-5">
+                        <a href='#' @click='isSignUpConfirmed=true'>Enter Verification Code</a>
+                      </div>                    
+                      <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
                       <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
                     </div>
                     <!--Register: End-->
@@ -73,10 +83,11 @@
 import { Auth } from 'aws-amplify';
 export default 
 {  
+  name: "Register",
   data() 
   {
-    return {email: '', password: '', confirm_password: '', isTermsConditionAccepted: false, isPrivacyPolicyAccepted:false, 
-    isSignUpConfirmed:false, iSignUpResult:null, confirmationCode:''};
+    return {email: '', password: '', confirm_password: '', isTermsConditionAcceptedPrivacyPolicy: false, 
+      isSignUpConfirmed:false, confirmationCode:''};
   },
   computed: 
   {
@@ -87,15 +98,11 @@ export default
     validateForm() 
     {
         return !this.errors.any('CreateAccount') && this.email != '' && this.password != '' && this.confirm_password != '' && 
-          this.isTermsConditionAccepted === true && this.isPrivacyPolicyAccepted === true;
+          this.isTermsConditionAcceptedPrivacyPolicy === true;
     }
   },
   methods: 
   {
-    openPageInNewTab(url) 
-    {   
-      window.open(url, "_blank");    
-    },
     checkLogin() 
     {
       if(this.$store.state.auth.isUserLoggedIn()) // If user is already logged in notify          
@@ -116,15 +123,22 @@ export default
       try
       {
         const result=await Auth.confirmSignUp(this.email, this.confirmationCode);
-        console.log(`confirmSignUp result: ${JSON.stringify(result)}`);
-        saveUser(this.iSignUpResult);
-        this.$router.push('/').catch(() => {});
-        this.$vs.notify({title: 'Account signup', text: 'Account confirmed successfully!', iconPack: 'feather',
-          icon: 'icon-check',color: 'success'}); 
+        if(result === 'SUCCESS')
+        {
+          console.log(`confirmSignUp result: ${JSON.stringify(result)}`);
+          this.$vs.notify({title: 'Account signup', text: 'Account confirmed successfully. Please login to continue!', 
+          iconPack: 'feather', icon: 'icon-check',color: 'success'});                    
+          this.$router.push('/login').catch(() => {});  
+        }
+        else
+        {
+          this.$vs.notify({title: 'Error',text: 'There was an error confirming your account', iconPack: 'feather', 
+            icon: 'icon-alert-circle', color: 'danger'});
+        }
       }
       catch(error)
       {
-        console.log(`confirmSignUp error: ${error}`);
+        console.log(`confirmSignUp error: ${JSON.stringify(error)}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
       };
     },
@@ -137,8 +151,8 @@ export default
       try
       {
         const params = {username: this.email, password: this.password, attributes: {email: this.email}};
-        this.iSignUpResult=await Auth.signUp(params);
-        console.log(`signUp iSignUpResult: ${JSON.stringify(iSignUpResult)}`);
+        const iSignUpResult=await Auth.signUp(params);
+        console.log(`signUp iSignUpResult: ${JSON.stringify(this.iSignUpResult)}`);
         this.isSignUpConfirmed=true;
         this.$vs.notify({title: 'Register user', text: 'Please check your email to confirm your account!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
@@ -146,10 +160,10 @@ export default
       catch(error)
       {
         this.isSignUpConfirmed=false;
-        console.log(`signUp error: ${error}`);
+        console.log(`signUp error: ${JSON.stringify(error)}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
       };
-    }
+    },
   }
 }
 </script>

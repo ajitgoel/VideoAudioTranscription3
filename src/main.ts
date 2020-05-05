@@ -5,6 +5,13 @@ import '@/mixins/generalMixins.js';
 import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
 Vue.use(GridPlugin);
 
+//#region Globally register components
+import TermsConditions from '@/views/pages/TermsConditions.vue';
+import PrivacyPolicy from '@/views/pages/PrivacyPolicy.vue';
+Vue.component('TermsConditions', TermsConditions);
+Vue.component('PrivacyPolicy', PrivacyPolicy);
+//#endregion
+
 // Vuesax Component Framework
 import Vuesax from 'vuesax';
 import 'material-icons/iconfont/material-icons.css'; //Material Icons

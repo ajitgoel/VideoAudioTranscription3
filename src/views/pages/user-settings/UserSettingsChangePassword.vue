@@ -1,11 +1,7 @@
 <template>
   <vx-card no-shadow>
 
-    <!-- <vs-input class="w-full mb-base" label-placeholder="Old Password" type="password" v-model="oldPassword" />
-    <vs-input class="w-full mb-base" label-placeholder="New Password" type="password" v-model="newPassword" />
-    <vs-input class="w-full mb-base" label-placeholder="Confirm Password" type="password" v-model="confirmPassword" /> -->
-
-     <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" 
+    <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" 
       v-model="oldPassword" name="oldPassword" ref="oldPassword" 
       icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Old password" class="w-full mb-base" />
     <span class="text-danger text-sm">{{ errors.first('oldPassword') }}</span>
@@ -41,14 +37,21 @@ export default {
     {
       try 
       {
-        const user=await Auth.currentAuthenticatedUser();
-        console.log(`user: ${JSON.stringify(user)}`);
-        //ToDo: check if old password is valid or not. 
+        const user=await Auth.currentAuthenticatedUser();                 
         const result=await Auth.changePassword(user, this.oldPassword, this.newPassword);
-        console.log(`result: ${JSON.stringify(result)}`);   
-        this.$vs.notify({title: 'Change password', text: 'Your password has been successfully changed!', 
+        if(result === 'SUCCESS')
+        {
+          this.$vs.notify({title: 'Change password', text: 'Your password has been successfully changed!', 
           iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
-        this.$router.push('/user-settings').catch(() => {});  
+          this.oldPassword=""; 
+          this.newPassword= ""; 
+          this.confirmPassword="";
+        }
+        else
+        {
+          this.$vs.notify({title: 'Error',text: 'There was an error changing your password', iconPack: 'feather', 
+            icon: 'icon-alert-circle', color: 'danger'});
+        }
       } 
       catch (error) 
       {
