@@ -79,11 +79,13 @@ https://amplify.aws/community/resources
     - [ ] privacy policy needs to be proof read.
     - [ ] terms and conditions needs to be proof read.
     - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~
+    - [ ] Save profile information(Full name, email) in user profile table. 
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
     - [ ] Add users to register using Facebook, Google.
+    - [ ] Show loading message when the user says register.
 4. Logout screen
-	- [ ] 
+	- [ ] Show user profile information(Full name, email) from user profile table. 
 5. Forget password screen
     - [x] ~~send email to user to confirm email. ~~
     - [x] ~~Add confirm email screen~~
@@ -99,5 +101,11 @@ https://amplify.aws/community/resources
 	a. Change Password screen:
     - [x] ~~check old password is valid.~~
     - [x] ~~changing the password a second time does not work.~~
+    b. Save Profile screen:
+    - [] 
+    - [] 
 10. Vocabulary screen
     => - [ ] Work with AWS appsync and syncfusion grid to save updated, deleted, inserted info to array.
+11. Home page screen
+    - [ ] 
+    

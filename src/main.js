@@ -42,6 +42,7 @@ import '@/firebase/firebaseConfig';
 import acl from './acl/acl';
 
 // Globally Registered Components
+
 import './globalComponents.js';
 
 // Styles: SCSS
@@ -78,6 +79,7 @@ Vue.use(VeeValidate);
 import Amplify from 'aws-amplify';
 //import Amplify, { Analytics} from 'aws-amplify';
 import '@aws-amplify/ui-vue';
+
 import aws_exports from './aws-exports';
 
 Amplify.configure(aws_exports);

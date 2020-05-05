@@ -10,8 +10,8 @@
         pageTitle => Display title besides breadcrumb
     }  
 ==========================================================================================*/
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from 'vue';
+import Router from 'vue-router';
 Vue.use(Router);
 
 const router = new Router({
@@ -1455,17 +1455,20 @@ router.beforeResolve((to, from, next) =>
 {
     if (to.matched.some(record => record.meta.requiresAuth)) 
     {
-      let user;
-      Vue.prototype.$Amplify.Auth.currentAuthenticatedUser().then(data => {
-        if (data && data.signInUserSession) 
+        try
         {
-          user = data;
+            const currentAuthenticatedUser = Vue.prototype.$Amplify.Auth.currentAuthenticatedUser();
+            if(currentAuthenticatedUser && currentAuthenticatedUser.signInUserSession)
+            {
+            }
+            next();
         }
-        next();
-      }).catch((e) => {
-        next({path: '/login'});
-      });
+        catch(error)
+        {
+            console.log(`confirmSignUp error: ${JSON.stringify(error)}`);
+            next({path: '/login'});
+        }
     }
-    next()
+    next();
 })
 export default router
