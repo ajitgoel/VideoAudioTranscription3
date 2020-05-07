@@ -33,7 +33,7 @@
     "src/**/*.tsx",
     "src/**/*.vue",
     "tests/**/*.ts",
-    "tests/**/*.tsx", "src/main.ts", "src/axios.js", "src/axios.js", "src/typescript-types/any_d_ts"
+    "tests/**/*.tsx",
   ],
   "exclude": [
     "node_modules"

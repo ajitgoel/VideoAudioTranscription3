@@ -1,10 +1,10 @@
 {
-    "AppSyncApiName": "videoaudiotranscription",
+    "AppSyncApiName": "vidaudtranscription",
     "DynamoDBBillingMode": "PAY_PER_REQUEST",
     "DynamoDBEnableServerSideEncryption": "false",
     "AuthCognitoUserPoolId": {
         "Fn::GetAtt": [
-            "authvidaudtranscription892584d7",
+            "authvidaudtranscription1ea69154",
             "Outputs.UserPoolId"
         ]
     }

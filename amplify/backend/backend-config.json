@@ -1,24 +1,24 @@
 {
 	"function": {
-		"vidaudtranscription892584d7PreSignup": {
+		"vidaudtranscription1ea69154PreSignup": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
 		},
-		"S3Trigger10c7ee61": {
+		"S3Triggere1eb1907": {
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true
 		}
 	},
 	"auth": {
-		"vidaudtranscription892584d7": {
+		"vidaudtranscription1ea69154": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "vidaudtranscription892584d7PreSignup",
+					"resourceName": "vidaudtranscription1ea69154PreSignup",
 					"triggerProvider": "Cognito",
 					"attributes": [
 						"Arn",
@@ -28,6 +28,23 @@
 			]
 		}
 	},
+	"api": {
+		"vidaudtranscription": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [],
+					"defaultAuthentication": {
+						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
+						"userPoolConfig": {
+							"userPoolId": "authvidaudtranscription1ea69154"
+						}
+					}
+				}
+			}
+		}
+	},
 	"storage": {
 		"vidaudtranscription": {
 			"service": "S3",
@@ -35,7 +52,7 @@
 			"dependsOn": [
 				{
 					"category": "function",
-					"resourceName": "S3Trigger10c7ee61",
+					"resourceName": "S3Triggere1eb1907",
 					"attributes": [
 						"Name",
 						"Arn",
@@ -49,23 +66,6 @@
 		"S3AndCloudFront": {
 			"service": "S3AndCloudFront",
 			"providerPlugin": "awscloudformation"
-		}
-	},
-	"api": {
-		"videoaudiotranscription": {
-			"service": "AppSync",
-			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authvidaudtranscription892584d7"
-						}
-					}
-				}
-			}
 		}
 	}
 }

@@ -1,24 +1,24 @@
 {
     "dev": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-vidaudtranscription-dev-170535-authRole",
-            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-dev-170535-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-dev-170535-authRole",
+            "AuthRoleName": "amplify-vidaudtranscription-dev-70417-authRole",
+            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-dev-70417-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-dev-70417-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-vidaudtranscription-dev-170535-deployment",
-            "UnauthRoleName": "amplify-vidaudtranscription-dev-170535-unauthRole",
-            "StackName": "amplify-vidaudtranscription-dev-170535",
-            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-vidaudtranscription-dev-170535/390c6ba0-8d8a-11ea-bcd4-0ac97ebd7097",
-            "AmplifyAppId": "d389gyv86mhaqx"
+            "DeploymentBucketName": "amplify-vidaudtranscription-dev-70417-deployment",
+            "UnauthRoleName": "amplify-vidaudtranscription-dev-70417-unauthRole",
+            "StackName": "amplify-vidaudtranscription-dev-70417",
+            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-vidaudtranscription-dev-70417/e3bad4b0-905a-11ea-95df-0e1b8dfea4f7",
+            "AmplifyAppId": "d2imx992r72i0h"
         },
         "categories": {
             "function": {
-                "vidaudtranscription892584d7PreSignup": {
+                "vidaudtranscription1ea69154PreSignup": {
                     "DOMAINBLACKLIST": ""
                 }
             },
             "auth": {
-                "vidaudtranscription892584d7": {}
+                "vidaudtranscription1ea69154": {}
             }
         }
     }
