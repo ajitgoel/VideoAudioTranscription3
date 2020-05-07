@@ -19,6 +19,7 @@ import 'vuesax/dist/vuesax.css'; // Vuesax
 Vue.use(Vuesax);
 
 // axios
+// @ts-ignore
 import axios from "./axios.js";
 Vue.prototype.$http = axios;
 
@@ -39,6 +40,7 @@ import '@/firebase/firebaseConfig';
 //Vue.use(AuthPlugin);
 
 // ACL
+// @ts-ignore
 import acl from './acl/acl';
 
 // Globally Registered Components
@@ -52,12 +54,15 @@ import './assets/scss/main.scss';
 import '@/assets/css/main.css';
 
 // Vue Router
+// @ts-ignore
 import router from './router';
 
 // Vuex Store
+// @ts-ignore
 import store from './store/store';
 
 // i18n
+// @ts-ignore
 import i18n from './i18n/i18n';
 
 // Vuexy Admin Filters
@@ -80,6 +85,7 @@ import Amplify from 'aws-amplify';
 //import Amplify, { Analytics} from 'aws-amplify';
 import '@aws-amplify/ui-vue';
 
+// @ts-ignore
 import aws_exports from './aws-exports';
 
 Amplify.configure(aws_exports);
