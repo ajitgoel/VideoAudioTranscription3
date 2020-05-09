@@ -22,6 +22,19 @@ Vue.mixin({
       localStorage.removeItem("userInfo");
       localStorage.setItem("userInfo", JSON.stringify(cognitoUser));
     },
-
+    arrayToSingleArrayObject(array, keyname) 
+    {
+      var objectResult = {};
+      for (var i = 0; i < array.length; ++i)
+      {
+        if (array[i] !== undefined) 
+        {
+          objectResult[keyname] = array[i];
+        }
+      }  
+      let arrayResult=[];
+      arrayResult[0]=objectResult;
+      return arrayResult;
+    }
   }
 })

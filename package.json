@@ -13,6 +13,7 @@
     "@chenfengyuan/vue-countdown": "^1.1.2",
     "@react-native-community/netinfo": "^5.5.0",
     "@syncfusion/ej2-vue-grids": "^18.1.46",
+    "@syncfusion/ej2-vue-inputs": "^18.1.45",
     "@types/chart.js": "^2.9.20",
     "@types/vue2-hammer": "^2.1.0",
     "ag-grid-community": "^21.0.1",

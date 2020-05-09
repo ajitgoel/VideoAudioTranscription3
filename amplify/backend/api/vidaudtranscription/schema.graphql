@@ -3,7 +3,7 @@ type Album @model
 {
     id: ID!
     name: String!
-    Videos: [Video] @connection(keyName: "byAlbum", fields: ["id"])
+    Videos: [Video] @connection(fields: ["id"], keyName: "byAlbum")
 }
 
 type Video @model 

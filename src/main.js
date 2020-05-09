@@ -2,8 +2,10 @@ import Vue from 'vue';
 import App from './App.vue';
 import '@/mixins/generalMixins.js';
 
-import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
-Vue.use(GridPlugin);
+//import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
+//Vue.use(GridPlugin);
+import { TextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
+Vue.use(TextBoxPlugin);
 
 //#region Globally register components
 import TermsConditions from '@/views/pages/TermsConditions.vue';
