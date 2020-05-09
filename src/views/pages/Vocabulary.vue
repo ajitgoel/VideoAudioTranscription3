@@ -15,11 +15,6 @@
             </code><br/><br/>
         </span>
         <div class="mt-100">
-            <!-- <ejs-grid :dataSource="vocabularies" :editSettings='editSettings' :toolbar='toolbar' height='273px'>
-                <e-columns>
-                    <e-column field='vocabulary' headerText='Vocabulary' width=120></e-column>
-                </e-columns>
-            </ejs-grid> -->
             <ejs-textbox id='default' :multiline="true" placeholder="Enter your vocabularies" floatLabelType="Auto" 
                 :input= "inputHandler" v-model="vocabularies" ref="vocabularies" /> 
             <vs-button class="float-right mt-6" @click="Save" :disabled="!validateForm">Save</vs-button>       
@@ -30,8 +25,6 @@
 import { createVocabulary, updateVocabulary} from '@/graphql/mutations';
 import {getVocabulary, listVocabularys} from '@/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api';
-//import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
-//import { TextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
 import '@syncfusion/ej2-base/styles/material.css';
 import '@syncfusion/ej2-vue-inputs/styles/material.css';
 
@@ -46,8 +39,6 @@ export default
                 args.event.currentTarget.style.height = "auto";
                 args.event.currentTarget.style.height = (args.event.currentTarget.scrollHeight)+"px";
             },
-            //editSettings: { allowEditing: true, allowAdding: true, allowDeleting: true, mode: 'Batch' },
-            //toolbar: ['Add', 'Edit', 'Delete', 'Update', 'Cancel']
         }
     },
     computed: 
@@ -71,14 +62,14 @@ export default
         if(items.length>0)
         {
             vocabulariesTemp=items[0].vocabularies;
+            this.vocabulariesLengthInDatabase =vocabulariesTemp.length;
         }
         else
         {
             vocabulariesTemp =[''];
+            this.vocabulariesLengthInDatabase =0;
         }
-        this.vocabulariesLengthInDatabase =vocabulariesTemp.length;
-        this.vocabularies=vocabulariesTemp.join('<br/>');
-        //this.vocabularies=this.arrayToSingleArrayObject(vocabulariesTemp, 'vocabulary');
+        this.vocabularies=vocabulariesTemp.join('\n');
         console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
     },
     methods: 
@@ -95,22 +86,21 @@ export default
                     return;   
                 }
                 console.log(`userId: ${userId}`);
+                
                 //#region save vocabularies in dynamodb
-                const vocabulariesArray=this.vocabularies.split('\n');
-                //const vocabulariesArray=Object.values(this.vocabularies);
-                        
+                const vocabulariesArray=this.vocabularies.split('\n');                        
                 if(this.vocabulariesLengthInDatabase==0)
                 {
                     const createVocabularyInput={userId:userId, vocabularies:vocabulariesArray};
-                    await API.graphql(graphqlOperation(createVocabulary, {input: createVocabularyInput}));
+                    await API.graphql(graphqlOperation(createVocabulary,{input: createVocabularyInput}));
                 }
                 else
                 {
                     const updateVocabularyInput={userId:userId, vocabularies:vocabulariesArray};
                     await API.graphql(graphqlOperation(updateVocabulary, {input: updateVocabularyInput}));
-                }
-                
+                }                
                 //#endregion save vocabularies in dynamodb
+
                 this.$vs.notify({title: 'Success', text: 'Your vocabularies have been saved successfully!', iconPack: 'feather',
                     icon: 'icon-check',color: 'success'}); 
             } 
@@ -122,10 +112,6 @@ export default
             };
         },
     },
-    /* provide: 
-    {
-        grid: [Page, Edit, Toolbar]
-    } */
 }
 </script>
 
@@ -149,5 +135,4 @@ export default
         margin: 10px auto;
         width: 30%;
     }
-
 </style>
