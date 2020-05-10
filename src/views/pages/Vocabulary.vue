@@ -15,15 +15,15 @@
             </code><br/><br/>
         </span>
         <div class="mt-100">
-            <ejs-textbox id='default' :multiline="true" placeholder="Enter your vocabularies" floatLabelType="Auto" 
-                :input= "inputHandler" v-model="vocabularies" ref="vocabularies" /> 
-            <vs-button class="float-right mt-6" @click="Save" :disabled="!validateForm">Save</vs-button>       
+            <ejs-textbox cssClass="height:500px;" id='default' :multiline="true" placeholder="Enter your vocabularies" 
+            floatLabelType="Auto" :input= "inputHandler" v-model="vocabularies" ref="vocabularies"/> 
+            <vs-button class="float-right mt-6" @click="Save" :disabled="!validateForm">Save Changes</vs-button>       
         </div>                
     </vx-card>    
 </template>
 <script>
-import { createVocabulary, updateVocabulary} from '@/graphql/mutations';
-import {getVocabulary, listVocabularys} from '@/graphql/queries';
+import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
+import {listUserProfiles} from '@/graphql/queries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import '@syncfusion/ej2-base/styles/material.css';
 import '@syncfusion/ej2-vue-inputs/styles/material.css';
@@ -32,8 +32,9 @@ export default
 {
     data() {
         return {
+            id: '',
             vocabularies: '',
-            vocabulariesLengthInDatabase: 0,
+            isUserProfileSavedInDatabase: false,
             inputHandler: (args) => 
             {
                 args.event.currentTarget.style.height = "auto";
@@ -49,28 +50,39 @@ export default
         }
     },
     mounted() 
-    {
-        this.$refs.vocabularies.$el.focus();
+    {       
+        /* this.$refs.vocabularies.$el.style.height = "auto";
+        this.$refs.vocabularies.$el.style.height = (this.$refs.vocabularies.$el.scrollHeight)+"px";
+        this.$refs.vocabularies.$el.focus(); */
     },
     async created() 
     {
         const userId=this.userIdFromLocalStorage();
-        const listVocabularysFilter={userId:{eq:userId}};
-        const result = await API.graphql(graphqlOperation(listVocabularys, {filter: listVocabularysFilter}));
-        const items=result.data.listVocabularys.items;
+        const listUserProfilesFilter={userId:{eq:userId}};
+        const result = await API.graphql(graphqlOperation(listUserProfiles, {filter: listUserProfilesFilter}));
+        console.log(`result: ${JSON.stringify(result)}`);
+        const items=result.data.listUserProfiles.items;
         let vocabulariesTemp;
         if(items.length>0)
         {
+            this.id=items[0].id;
             vocabulariesTemp=items[0].vocabularies;
-            this.vocabulariesLengthInDatabase =vocabulariesTemp.length;
+            this.isUserProfileSavedInDatabase =true;
         }
         else
         {
-            vocabulariesTemp =[''];
-            this.vocabulariesLengthInDatabase =0;
+            vocabulariesTemp=[''];
+            this.isUserProfileSavedInDatabase=false;
         }
         this.vocabularies=vocabulariesTemp.join('\n');
         console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
+        /* this.$nextTick(function()
+        {
+            this.$refs.vocabularies.$el.style.height = "auto";
+            this.$refs.vocabularies.$el.style.height = (this.$refs.vocabularies.$el.scrollHeight)+"px";
+            this.$refs.vocabularies.$el.focus();
+            console.log(`mounted run`);
+        }); */
     },
     methods: 
     {
@@ -89,15 +101,15 @@ export default
                 
                 //#region save vocabularies in dynamodb
                 const vocabulariesArray=this.vocabularies.split('\n');                        
-                if(this.vocabulariesLengthInDatabase==0)
+                if(this.isUserProfileSavedInDatabase==false)
                 {
-                    const createVocabularyInput={userId:userId, vocabularies:vocabulariesArray};
-                    await API.graphql(graphqlOperation(createVocabulary,{input: createVocabularyInput}));
+                    const createUserProfileInput={userId:userId, vocabularies:vocabulariesArray};
+                    await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
                 }
                 else
                 {
-                    const updateVocabularyInput={userId:userId, vocabularies:vocabulariesArray};
-                    await API.graphql(graphqlOperation(updateVocabulary, {input: updateVocabularyInput}));
+                    const updateUserProfileInput={id:this.id, userId:userId, vocabularies:vocabulariesArray};
+                    await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
                 }                
                 //#endregion save vocabularies in dynamodb
 
@@ -115,24 +127,27 @@ export default
 }
 </script>
 
-<style>
-    #container {
-        visibility: hidden;
-        padding-left: 5%;
-        width: 100%;
+<style lang="scss">
+@media print {
+  .invoice-page {
+    * {
+      visibility: hidden;
     }
-    #loader {
-        color: #008cff;
-        font-family: 'Helvetica Neue','calibiri';
-        font-size: 14px;
-        height: 40px;
-        left: 45%;
-        position: absolute;
-        top: 45%;
-        width: 30%;
+
+    #content-area {
+      margin: 0 !important;
     }
-    .multiline{
-        margin: 10px auto;
-        width: 30%;
+
+    #invoice-container,
+    #invoice-container * {
+      visibility: visible;
     }
+    #invoice-container {
+      position: absolute;
+      left: 0;
+      top: 0;
+      box-shadow: none;
+    }
+  }
+}
 </style>

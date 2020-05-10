@@ -151,40 +151,58 @@ export const deleteVideo = /* GraphQL */ `
     }
   }
 `;
-export const createVocabulary = /* GraphQL */ `
-  mutation CreateVocabulary(
-    $input: CreateVocabularyInput!
-    $condition: ModelVocabularyConditionInput
+export const createUserProfile = /* GraphQL */ `
+  mutation CreateUserProfile(
+    $input: CreateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    createVocabulary(input: $input, condition: $condition) {
+    createUserProfile(input: $input, condition: $condition) {
       id
       userId
+      fullName
+      billingAddress
+      country
+      vatNumber
+      notificationTranscriptsCompleted
+      notificationTranscriptsError
       vocabularies
       owner
     }
   }
 `;
-export const updateVocabulary = /* GraphQL */ `
-  mutation UpdateVocabulary(
-    $input: UpdateVocabularyInput!
-    $condition: ModelVocabularyConditionInput
+export const updateUserProfile = /* GraphQL */ `
+  mutation UpdateUserProfile(
+    $input: UpdateUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    updateVocabulary(input: $input, condition: $condition) {
+    updateUserProfile(input: $input, condition: $condition) {
       id
       userId
+      fullName
+      billingAddress
+      country
+      vatNumber
+      notificationTranscriptsCompleted
+      notificationTranscriptsError
       vocabularies
       owner
     }
   }
 `;
-export const deleteVocabulary = /* GraphQL */ `
-  mutation DeleteVocabulary(
-    $input: DeleteVocabularyInput!
-    $condition: ModelVocabularyConditionInput
+export const deleteUserProfile = /* GraphQL */ `
+  mutation DeleteUserProfile(
+    $input: DeleteUserProfileInput!
+    $condition: ModelUserProfileConditionInput
   ) {
-    deleteVocabulary(input: $input, condition: $condition) {
+    deleteUserProfile(input: $input, condition: $condition) {
       id
       userId
+      fullName
+      billingAddress
+      country
+      vatNumber
+      notificationTranscriptsCompleted
+      notificationTranscriptsError
       vocabularies
       owner
     }

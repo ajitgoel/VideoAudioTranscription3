@@ -124,5 +124,10 @@ require('./assets/css/iconfont.css');
 // Note: In latest version you have to add it separately
 // import 'vue-select/dist/vue-select.css';
 
+Vue.directive('focus', {
+    // When the bound element is inserted into the DOM...
+    inserted: function (el) {el.focus();}
+  })
+
 Vue.config.productionTip = false;
 new Vue({router, store, i18n, acl, render: h => h(App)}).$mount('#app');

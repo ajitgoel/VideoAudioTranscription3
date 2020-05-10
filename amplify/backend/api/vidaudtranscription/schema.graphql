@@ -19,12 +19,18 @@ type Video @model
     labels: [String]
 }
 
-type Vocabulary @model 
+type UserProfile @model 
 @auth(rules: [{allow: owner}])
 {
 	id: ID!
   userId: String!
-  vocabularies: [String!]!
+  fullName: String
+  billingAddress: String
+  country: String
+  vatNumber: String
+  notificationTranscriptsCompleted: Boolean,
+  notificationTranscriptsError: Boolean,
+  vocabularies: [String!]
 }
 
 type VideoS3Info {

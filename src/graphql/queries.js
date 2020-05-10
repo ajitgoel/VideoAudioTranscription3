@@ -94,26 +94,38 @@ export const listVideos = /* GraphQL */ `
     }
   }
 `;
-export const getVocabulary = /* GraphQL */ `
-  query GetVocabulary($id: ID!) {
-    getVocabulary(id: $id) {
+export const getUserProfile = /* GraphQL */ `
+  query GetUserProfile($id: ID!) {
+    getUserProfile(id: $id) {
       id
       userId
+      fullName
+      billingAddress
+      country
+      vatNumber
+      notificationTranscriptsCompleted
+      notificationTranscriptsError
       vocabularies
       owner
     }
   }
 `;
-export const listVocabularys = /* GraphQL */ `
-  query ListVocabularys(
-    $filter: ModelVocabularyFilterInput
+export const listUserProfiles = /* GraphQL */ `
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
     $limit: Int
     $nextToken: String
   ) {
-    listVocabularys(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
         userId
+        fullName
+        billingAddress
+        country
+        vatNumber
+        notificationTranscriptsCompleted
+        notificationTranscriptsError
         vocabularies
         owner
       }
