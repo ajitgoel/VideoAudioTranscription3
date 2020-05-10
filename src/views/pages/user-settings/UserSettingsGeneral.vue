@@ -73,12 +73,31 @@
       </div>
     </vx-card>
     <!--Notifications:End-->
+
+    <!--Notifications:Start-->
+    <vx-card no-shadow>
+      <div class="mb-base">
+        <h6 class="mb-4">Delete account</h6>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="notification.transcriptsCompleted" />
+          <span class="ml-4">Notify me when my transcripts are done processing</span>
+        </div>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="notification.transcriptsError" />
+          <span class="ml-4">Notify me when there is a problem with my transcripts</span>
+        </div>
+      </div>
+      <div class="flex flex-wrap items-center justify-end mt-base">
+        <vs-button class="ml-auto mt-2" @click="saveNotifications">Save notifications</vs-button>
+      </div>
+    </vx-card>
+    <!--Notifications:End-->
   </div>
 </template>
 <script>
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfiles} from '@/graphql/queries';
+import {listUserProfilesForGeneral} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 
 export default {
@@ -99,7 +118,7 @@ export default {
   {
       const userId=this.userIdFromLocalStorage();
       const listUserProfilesFilter={userId:{eq:userId}};
-      const result = await API.graphql(graphqlOperation(listUserProfiles, {filter: listUserProfilesFilter}));
+      const result = await API.graphql(graphqlOperation(listUserProfilesForGeneral, {filter: listUserProfilesFilter}));
       console.log(`result: ${JSON.stringify(result)}`);
       const items=result.data.listUserProfiles.items;
       if(items.length>0)

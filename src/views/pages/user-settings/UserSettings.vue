@@ -7,10 +7,9 @@
         <user-settings-general />
       </div>
     </vs-tab>
-    <vs-tab icon-pack="feather" icon="icon-lock" :label="!isSmallerScreen ? 'Change Password' : ''">
+    <vs-tab icon-pack="feather" icon="icon-lock" :label="!isSmallerScreen ? 'Payment Settings' : ''">
       <div class="tab-change-pwd md:ml-4 md:mt-0 mt-4 ml-0">
-       <!--  <user-settings-change-password /> -->
-       <user-settings-general />
+        <UserPaymentSettings/>
       </div>
     </vs-tab>
     <!-- <vs-tab icon-pack="feather" icon="icon-info" :label="!isSmallerScreen ? 'Info' : ''">
@@ -28,18 +27,17 @@
         <user-settings-connections />
       </div>
     </vs-tab> -->
-    <vs-tab icon-pack="feather" icon="icon-bell" :label="!isSmallerScreen ? 'Notifications' : ''">
+    <!-- <vs-tab icon-pack="feather" icon="icon-bell" :label="!isSmallerScreen ? 'Notifications' : ''">
       <div class="tab-text md:ml-4 md:mt-0 mt-4 ml-0">
-        <!-- <user-settings-notifications /> -->
-        <user-settings-general />
+        <user-settings-notifications />
       </div>
-    </vs-tab>
+    </vs-tab> -->
   </vs-tabs>
 </template>
 
 <script>
 import UserSettingsGeneral from "./UserSettingsGeneral.vue"
-//import UserSettingsChangePassword from "./UserSettingsChangePassword.vue"
+import UserPaymentSettings from "./UserPaymentSettings.vue"
 /* import UserSettingsInfo from "./UserSettingsInfo.vue"
 import UserSettingsSocialLinks from "./UserSettingsSocialLinks.vue"
 import UserSettingsConnections from "./UserSettingsConnections.vue" */
@@ -48,7 +46,7 @@ import UserSettingsConnections from "./UserSettingsConnections.vue" */
 export default {
   components: {
     UserSettingsGeneral,
-    //UserSettingsChangePassword,
+    UserPaymentSettings,
     /* UserSettingsInfo,
     UserSettingsSocialLinks,
     UserSettingsConnections, */

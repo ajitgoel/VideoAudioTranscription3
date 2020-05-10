@@ -102,13 +102,14 @@ https://amplify.aws/community/resources
     - [x] ~~check old password is valid.~~
     - [x] ~~changing the password a second time does not work.~~
     b. Profile screen:
-    - [x] ~email, full name(Individual or company), billing address, country, VAT number(if applicable)~
-    - [x] ~Notification Preferences=> Notify me when my transcripts are done processing, Notify me when there is a problem with my transcripts~
+    - [x] ~~email, full name(Individual or company), billing address, country, VAT number(if applicable)~~
+    - [x] ~~Notification Preferences=> Notify me when my transcripts are done processing, Notify me when there is a problem with my transcripts~~
+    - [ ] Show email when the profile screen first loads. 
     - [ ] Auto Recharge=> enabled disabled
     - [ ] Delete account=> Are you sure you want do delete your Happy Scribe account? After deleting it all your files will be removed from our service, as well as your personal details and credit cards.
 10. Vocabulary screen
     - [x] ~~Work with AWS appsync and syncfusion grid to save updated, deleted, inserted info to array.~~
-    - [ ] unable to focus on textarea.
+    - [x] ~~unable to focus on textarea.~~
     - [ ] Show number of lines in the textarea, below textarea.
 11. Home page screen
     - [ ]

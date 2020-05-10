@@ -28,11 +28,14 @@ type UserProfile @model
   billingAddress: String
   country: String
   vatNumber: String
-  notificationTranscriptsCompleted: Boolean,
-  notificationTranscriptsError: Boolean,
+  notificationTranscriptsCompleted: Boolean
+  notificationTranscriptsError: Boolean
   vocabularies: [String!]
+  paymentSettings: PaymentSettings!
 }
-
+type PaymentSettings {
+    autoRecharge: Boolean
+}
 type VideoS3Info {
     key: String!
     width: Int!

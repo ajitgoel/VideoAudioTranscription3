@@ -15,15 +15,16 @@
             </code><br/><br/>
         </span>
         <div class="mt-100">
-            <ejs-textbox cssClass="height:500px;" id='default' :multiline="true" placeholder="Enter your vocabularies" 
-            floatLabelType="Auto" :input= "inputHandler" v-model="vocabularies" ref="vocabularies"/> 
+            <ejs-textbox cssClass="height:500px;" id='vocabularies' :multiline="true" placeholder="Enter your vocabularies" 
+                floatLabelType="Auto" :input= "inputHandler" v-model="vocabularies" ref="vocabularies"/>
             <vs-button class="float-right mt-6" @click="Save" :disabled="!validateForm">Save Changes</vs-button>       
-        </div>                
+        </div> 
     </vx-card>    
+    
 </template>
 <script>
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfiles} from '@/graphql/queries';
+import {listUserProfilesForVocabularies} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import '@syncfusion/ej2-base/styles/material.css';
 import '@syncfusion/ej2-vue-inputs/styles/material.css';
@@ -51,15 +52,18 @@ export default
     },
     mounted() 
     {       
-        /* this.$refs.vocabularies.$el.style.height = "auto";
-        this.$refs.vocabularies.$el.style.height = (this.$refs.vocabularies.$el.scrollHeight)+"px";
-        this.$refs.vocabularies.$el.focus(); */
+        this.$nextTick(function()
+        {
+            this.$refs.vocabularies.$el.style.height = "auto";
+            this.$refs.vocabularies.$el.style.height = (this.$refs.vocabularies.$el.scrollHeight)+"px";
+            this.$refs.vocabularies.focusIn();
+        });        
     },
     async created() 
     {
         const userId=this.userIdFromLocalStorage();
         const listUserProfilesFilter={userId:{eq:userId}};
-        const result = await API.graphql(graphqlOperation(listUserProfiles, {filter: listUserProfilesFilter}));
+        const result = await API.graphql(graphqlOperation(listUserProfilesForVocabularies, {filter: listUserProfilesFilter}));
         console.log(`result: ${JSON.stringify(result)}`);
         const items=result.data.listUserProfiles.items;
         let vocabulariesTemp;
@@ -76,14 +80,7 @@ export default
         }
         this.vocabularies=vocabulariesTemp.join('\n');
         console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
-        /* this.$nextTick(function()
-        {
-            this.$refs.vocabularies.$el.style.height = "auto";
-            this.$refs.vocabularies.$el.style.height = (this.$refs.vocabularies.$el.scrollHeight)+"px";
-            this.$refs.vocabularies.$el.focus();
-            console.log(`mounted run`);
-        }); */
-    },
+    }, 
     methods: 
     {
         async Save() 
