@@ -31,7 +31,7 @@ type UserProfile @model
   notificationTranscriptsCompleted: Boolean
   notificationTranscriptsError: Boolean
   vocabularies: [String!]
-  paymentSettings: PaymentSettings!
+  paymentSettings: PaymentSettings
 }
 type PaymentSettings {
     autoRecharge: Boolean

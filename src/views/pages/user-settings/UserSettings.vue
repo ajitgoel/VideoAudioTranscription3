@@ -12,12 +12,12 @@
         <UserPaymentSettings/>
       </div>
     </vs-tab>
-    <!-- <vs-tab icon-pack="feather" icon="icon-info" :label="!isSmallerScreen ? 'Info' : ''">
+    <vs-tab icon-pack="feather" icon="icon-info" :label="!isSmallerScreen ? 'Delete account' : ''">
       <div class="tab-info md:ml-4 md:mt-0 mt-4 ml-0">
-        <user-settings-info />
+        <DeleteAccount/>
       </div>
     </vs-tab>
-    <vs-tab icon-pack="feather" icon="icon-github" :label="!isSmallerScreen ? 'Social Links' : ''">
+    <!-- <vs-tab icon-pack="feather" icon="icon-github" :label="!isSmallerScreen ? 'Social Links' : ''">
       <div class="tab-social-links md:ml-4 md:mt-0 mt-4 ml-0">
         <user-settings-social-links />
       </div>
@@ -36,21 +36,15 @@
 </template>
 
 <script>
-import UserSettingsGeneral from "./UserSettingsGeneral.vue"
-import UserPaymentSettings from "./UserPaymentSettings.vue"
-/* import UserSettingsInfo from "./UserSettingsInfo.vue"
-import UserSettingsSocialLinks from "./UserSettingsSocialLinks.vue"
-import UserSettingsConnections from "./UserSettingsConnections.vue" */
-//import UserSettingsNotifications from "./UserSettingsNotifications.vue"
+import UserSettingsGeneral from "./UserSettingsGeneral.vue";
+import UserPaymentSettings from "./UserPaymentSettings.vue";
+import DeleteAccount from "./DeleteAccount.vue";
 
 export default {
   components: {
     UserSettingsGeneral,
     UserPaymentSettings,
-    /* UserSettingsInfo,
-    UserSettingsSocialLinks,
-    UserSettingsConnections, */
-    //UserSettingsNotifications,
+    DeleteAccount,
   },
   data() {
     return {

@@ -1,83 +1,24 @@
 <template>
-  <div>
-    <!--General:Start-->
     <vx-card no-shadow>
-      <h6 class="mb-4">General settings</h6>
-      <!-- <div class="flex flex-wrap items-center mb-base">
-        <vs-avatar :src="activeUserInfo.photoURL" size="70px" class="mr-4 mb-4" />
-        <div>
-          <vs-button class="mr-4 sm:mb-0 mb-2">Upload photo</vs-button>
-          <vs-button type="border" color="danger">Remove</vs-button>
-          <p class="text-sm mt-2">Allowed JPG, GIF or PNG. Max size of 800kB</p>
+      <div class="demo-alignment">
+        <vs-button @click="activePrompt2 = true" color="primary" type="border">Delete account</vs-button>
+        <!-- <div class="op-block">
+          Name: {{ valMultipe.value1 }} | Last Name: {{ valMultipe.value2 }}
+        </div> -->
+      </div>
+      <vs-prompt title="Are you sure?" @cancel="clearValMultiple" @accept="acceptAlert" @close="close" :is-valid="validName" 
+        :active.sync="activePrompt2">
+        <div class="con-exemple-prompt">
+          Type <b>DELETE</b> to confirm.
+        <vs-input placeholder="" v-model="valMultipe.value1" class="mt-4 mb-2 w-full" />
+        <!-- <vs-alert :vs-active="!validName" color="danger" vs-icon="new_releases" >
+          Fields can not be empty please enter the data
+        </vs-alert> -->
         </div>
-      </div> -->
-      <vs-input class="w-full mb-base" name="email" ref="email" icon-no-border icon="icon icon-mail" icon-pack="feather" 
-        label-placeholder="Email" v-model="general.email" disabled="true" ></vs-input>
-      <span class="text-danger text-sm">{{ errors.first('email') }}</span>  
-      <vs-input class="w-full mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
-        icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
-      <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
-      <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
-        icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
-      <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
-      <vs-input class="w-full my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
-        icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-      <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-      <vs-input class="w-full my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
-        icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
-      <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
-      <!-- <vs-alert icon-pack="feather" icon="icon-info" class="h-full my-4" color="warning">
-        <span>Your account is not verified. <a href="#" class="hover:underline">Resend Confirmation</a></span>
-      </vs-alert> -->
-      <div class="flex flex-wrap items-center justify-end">
-        <vs-button class="ml-auto mt-2" @click="saveProfile">Save profile</vs-button>
-      </div>
+      </vs-prompt>
     </vx-card>
-    <!--General:End-->
-    
-    <!--Change Password:Start-->
-    <vx-card no-shadow>
-      <h6 class="mb-4">Change password</h6>
-      <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" 
-        v-model="userProfileChangePassword.oldPassword" name="oldPassword" ref="oldPassword" 
-        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Old password" class="w-full mb-base" />
-      <span class="text-danger text-sm">{{ errors.first('oldPassword') }}</span>
-      <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" 
-        v-model="userProfileChangePassword.newPassword" name="newPassword" ref="newPassword" 
-        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="New password" class="w-full mb-base" />
-      <span class="text-danger text-sm">{{ errors.first('newPassword') }}</span>
-      <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10|confirmed:newPassword'" type="password" 
-        v-model="userProfileChangePassword.confirmPassword" name="confirmPassword" 
-        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Confirm password" 
-        class="w-full mb-base" />
-      <span class="text-danger text-sm">{{ errors.first('confirmPassword') }}</span>
-      <div class="flex flex-wrap items-center justify-end">
-        <vs-button class="ml-auto mt-2" @click="changePassword">Change password</vs-button>
-      </div>
-    </vx-card>
-    <!--Change Password:End-->
-
-    <!--Notifications:Start-->
-    <vx-card no-shadow>
-      <div class="mb-base">
-        <h6 class="mb-4">Notifications</h6>
-        <div class="flex items-center mb-4">
-          <vs-switch v-model="notification.transcriptsCompleted" />
-          <span class="ml-4">Notify me when my transcripts are done processing</span>
-        </div>
-        <div class="flex items-center mb-4">
-          <vs-switch v-model="notification.transcriptsError" />
-          <span class="ml-4">Notify me when there is a problem with my transcripts</span>
-        </div>
-      </div>
-      <div class="flex flex-wrap items-center justify-end mt-base">
-        <vs-button class="ml-auto mt-2" @click="saveNotifications">Save notifications</vs-button>
-      </div>
-    </vx-card>
-    <!--Notifications:End-->
-  </div>
 </template>
-<script>
+/* <script>
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import {listUserProfilesForGeneral} from '@/graphql/customQueries';
@@ -89,7 +30,11 @@ export default {
       isUserProfileSavedInDatabase: false,
       userProfileChangePassword:{oldPassword: "", newPassword: "", confirmPassword: ""},      
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
-      notification:{transcriptsCompleted: false, transcriptsError: false,}
+      notification:{transcriptsCompleted: false, transcriptsError: false,},
+      deleteText: '',
+      value2: '',
+      popupActive2: false,
+      popupActive3: false
     }
   },
   computed: { 
@@ -136,8 +81,6 @@ export default {
                 return;   
             }
             console.log(`userId: ${userId}`);
-            
-            //#region save user profile in dynamodb
             if(this.isUserProfileSavedInDatabase==false)
             {
                 const createUserProfileInput={userId:userId, fullName: this.general.fullName, 
@@ -150,8 +93,6 @@ export default {
                   billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
                 await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
             }                
-            //#endregion save user profile in dynamodb
-
             this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
                 icon: 'icon-check',color: 'success'}); 
         } 
@@ -175,8 +116,6 @@ export default {
                 return;   
             }
             console.log(`userId: ${userId}`);
-            
-            //#region save user profile in dynamodb
             if(this.isUserProfileSavedInDatabase==false)
             {
               const createUserProfileInput={userId:userId, 
@@ -191,8 +130,6 @@ export default {
                   notificationTranscriptsError: this.notification.transcriptsError, };
                 await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
             }                
-            //#endregion save user profile in dynamodb
-
             this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
                 icon: 'icon-check',color: 'success'}); 
         } 
@@ -230,6 +167,51 @@ export default {
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
           color: 'danger'});
       };
+    }
+  }
+}
+</script> */
+<script>
+import { Auth } from 'aws-amplify';
+import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
+import {listUserProfilesForGeneral} from '@/graphql/customQueries';
+import API, {graphqlOperation} from '@aws-amplify/api';
+
+export default {
+  data(){
+    return {
+      activePrompt:false,
+      activePrompt2:false,
+      val:'',
+      valMultipe:{
+        value1:'',
+        value2:''
+      },
+    }
+  },
+  computed:{
+    validName(){
+      return (this.valMultipe.value1.length > 0 && this.valMultipe.value2.length > 0)
+    }
+  },
+  methods:{
+    acceptAlert(){
+      this.$vs.notify({
+        color:'success',
+        title:'Accept Selected',
+        text:'Lorem ipsum dolor sit amet, consectetur'
+      })
+    },
+    close(){
+      this.$vs.notify({
+        color:'danger',
+        title:'Closed',
+        text:'You close a dialog!'
+      })
+    },
+    clearValMultiple() {
+      this.valMultipe.value1 = "";
+      this.valMultipe.value2 = "";
     }
   }
 }

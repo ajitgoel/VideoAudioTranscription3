@@ -36,3 +36,22 @@ export const listUserProfilesForVocabularies = /* GraphQL */ `
     }
   }
 `;
+
+export const listUserProfilesForPaymentSettings = /* GraphQL */ `
+  query ListUserProfiles(
+    $filter: ModelUserProfileFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        userId
+        paymentSettings {
+          autoRecharge
+        }
+      }
+      nextToken
+    }
+  }
+`;

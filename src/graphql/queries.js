@@ -106,6 +106,9 @@ export const getUserProfile = /* GraphQL */ `
       notificationTranscriptsCompleted
       notificationTranscriptsError
       vocabularies
+      paymentSettings {
+        autoRecharge
+      }
       owner
     }
   }
@@ -127,6 +130,9 @@ export const listUserProfiles = /* GraphQL */ `
         notificationTranscriptsCompleted
         notificationTranscriptsError
         vocabularies
+        paymentSettings {
+          autoRecharge
+        }
         owner
       }
       nextToken
