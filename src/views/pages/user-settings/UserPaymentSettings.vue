@@ -1,7 +1,7 @@
 <template>
   <vx-card no-shadow>
     <div class="mb-base">
-      <h6 class="mb-4">Payments</h6>
+      <h6 class="mb-4">Payment settings</h6>
       <div class="flex items-center mb-4">
         <vs-switch v-model="paymentSettings.autoRecharge" />
         <span class="ml-4">Auto Recharge</span>

@@ -1,50 +1,48 @@
 <template>
     <vx-card no-shadow>
-      <div class="demo-alignment">
-        <vs-button @click="activePrompt2 = true" color="primary" type="border">Delete account</vs-button>
-        <!-- <div class="op-block">
-          Name: {{ valMultipe.value1 }} | Last Name: {{ valMultipe.value2 }}
-        </div> -->
-      </div>
-      <vs-prompt title="Are you sure?" @cancel="clearValMultiple" @accept="acceptAlert" @close="close" :is-valid="validName" 
-        :active.sync="activePrompt2">
+      <h6 class="mb-4">Delete account</h6>
+      <p>Are you sure you want do delete your Video Audio Transcription account? <br/>
+        After deleting your account,your personal details, credit card details and all your files will be removed from our service.</p>
+      <div class="flex flex-wrap items-center justify-end mt-base">
+        <vs-button @click="activePrompt=true" class="ml-auto mt-2">Delete account</vs-button>
+      </div>            
+      <vs-prompt title="Are you sure?" @cancel="clearValue" @accept="deleteAccount" @close="close" 
+        :is-valid="isAlertValid" :active.sync="activePrompt">
         <div class="con-exemple-prompt">
           Type <b>DELETE</b> to confirm.
-        <vs-input placeholder="" v-model="valMultipe.value1" class="mt-4 mb-2 w-full" />
-        <!-- <vs-alert :vs-active="!validName" color="danger" vs-icon="new_releases" >
-          Fields can not be empty please enter the data
-        </vs-alert> -->
+          <vs-input placeholder="" v-model="deleteText" class="mt-4 mb-2 w-full" />
         </div>
       </vs-prompt>
     </vx-card>
 </template>
-/* <script>
+<script>
 import { Auth } from 'aws-amplify';
-import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfilesForGeneral} from '@/graphql/customQueries';
+import { deleteUserProfile} from '@/graphql/mutations';
+//import {listUserProfilesForGeneral} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 
 export default {
   data() {
     return {
-      isUserProfileSavedInDatabase: false,
+      /* isUserProfileSavedInDatabase: false,
       userProfileChangePassword:{oldPassword: "", newPassword: "", confirmPassword: ""},      
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
-      notification:{transcriptsCompleted: false, transcriptsError: false,},
-      deleteText: '',
-      value2: '',
-      popupActive2: false,
-      popupActive3: false
+      notification:{transcriptsCompleted: false, transcriptsError: false,}, */
+      activePrompt:false,
+      deleteText:'',
     }
   },
   computed: { 
     activeUserInfo() {
       return this.$store.state.AppActiveUser
-    },   
+    },
+    isAlertValid(){
+      return (this.deleteText.length > 0 && this.deleteText.toUpperCase() === 'DELETE');
+    }   
   },
   async created() 
   {
-      const userId=this.userIdFromLocalStorage();
+      /* const userId=this.userIdFromLocalStorage();
       const listUserProfilesFilter={userId:{eq:userId}};
       const result = await API.graphql(graphqlOperation(listUserProfilesForGeneral, {filter: listUserProfilesFilter}));
       console.log(`result: ${JSON.stringify(result)}`);
@@ -65,46 +63,48 @@ export default {
       else
       {
           this.isUserProfileSavedInDatabase=false;
-      }
+      } */
   },
   methods: 
   {
-    async saveProfile() 
+    close(){      
+    },
+    clearValue() {
+      this.deleteText = "";
+    },
+    async deleteAccount() 
     {
-        try 
+      try 
+      {
+        const userId=this.userIdFromLocalStorage();
+        if(userId == null)
         {
-            const userId=this.userIdFromLocalStorage();
-            if(userId == null)
-            {
-                this.$vs.notify({title: 'Error',text: 'There was an error saving your profile', iconPack: 'feather', 
-                    icon: 'icon-alert-circle', color: 'danger'});
-                return;   
-            }
-            console.log(`userId: ${userId}`);
-            if(this.isUserProfileSavedInDatabase==false)
-            {
-                const createUserProfileInput={userId:userId, fullName: this.general.fullName, 
-                  billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
-                await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
-            }
-            else
-            {
-                const updateUserProfileInput={id:this.id, userId:userId, fullName: this.general.fullName,
-                  billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
-                await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
-            }                
-            this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
-                icon: 'icon-check',color: 'success'}); 
-        } 
-        catch (error) 
-        {
-            console.log(error);
-            this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
-                color: 'danger'});
-        };
+          this.$vs.notify({title: 'Error',text: 'There was an error deleting your profile', iconPack: 'feather', 
+            icon: 'icon-alert-circle', color: 'danger'});
+          return;   
+        }
+        console.log(`userId: ${userId}`);
+        const deleteUserProfileInput={userId:userId};
+        console.log(`deleteUserProfileInput: ${JSON.stringify(deleteUserProfileInput)}`);
+        await API.graphql(graphqlOperation(deleteUserProfile,{input: deleteUserProfileInput}));
+        //ToDo: trigger user deletion from aws cognito through a lambda function, when a user is deleted in 
+        //user profiles table.
+        
+        const result=await Auth.signOut();
+        this.$router.push('/login').catch(() => {});  
+        this.$vs.notify({title: 'User profile deleted', 
+          text: 'User profile has been deleted and you are successfully logged out!', iconPack: 'feather', icon: 'icon-check',
+          color: 'success'});  
+      } 
+      catch (error) 
+      {
+        console.log(`error: ${JSON.stringify(error)}`);
+        this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
+            color: 'danger'});
+      };
     },
 
-    async saveNotifications() 
+    /* async saveNotifications() 
     {
         try 
         {
@@ -167,52 +167,7 @@ export default {
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
           color: 'danger'});
       };
-    }
-  }
-}
-</script> */
-<script>
-import { Auth } from 'aws-amplify';
-import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfilesForGeneral} from '@/graphql/customQueries';
-import API, {graphqlOperation} from '@aws-amplify/api';
-
-export default {
-  data(){
-    return {
-      activePrompt:false,
-      activePrompt2:false,
-      val:'',
-      valMultipe:{
-        value1:'',
-        value2:''
-      },
-    }
-  },
-  computed:{
-    validName(){
-      return (this.valMultipe.value1.length > 0 && this.valMultipe.value2.length > 0)
-    }
-  },
-  methods:{
-    acceptAlert(){
-      this.$vs.notify({
-        color:'success',
-        title:'Accept Selected',
-        text:'Lorem ipsum dolor sit amet, consectetur'
-      })
-    },
-    close(){
-      this.$vs.notify({
-        color:'danger',
-        title:'Closed',
-        text:'You close a dialog!'
-      })
-    },
-    clearValMultiple() {
-      this.valMultipe.value1 = "";
-      this.valMultipe.value2 = "";
-    }
+    } */
   }
 }
 </script>

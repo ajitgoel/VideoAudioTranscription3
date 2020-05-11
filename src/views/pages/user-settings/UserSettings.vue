@@ -7,7 +7,7 @@
         <user-settings-general />
       </div>
     </vs-tab>
-    <vs-tab icon-pack="feather" icon="icon-lock" :label="!isSmallerScreen ? 'Payment Settings' : ''">
+    <vs-tab icon-pack="feather" icon="icon-lock" :label="!isSmallerScreen ? 'Payment settings' : ''">
       <div class="tab-change-pwd md:ml-4 md:mt-0 mt-4 ml-0">
         <UserPaymentSettings/>
       </div>
