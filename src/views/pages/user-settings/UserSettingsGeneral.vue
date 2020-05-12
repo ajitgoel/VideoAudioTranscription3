@@ -3,14 +3,14 @@
     <!--General:Start-->
     <vx-card no-shadow>
       <h6 class="mb-4">General settings</h6>
-      <!-- <div class="flex flex-wrap items-center mb-base">
+      <div class="flex flex-wrap items-center mb-base">
         <vs-avatar :src="activeUserInfo.photoURL" size="70px" class="mr-4 mb-4" />
         <div>
           <vs-button class="mr-4 sm:mb-0 mb-2">Upload photo</vs-button>
           <vs-button type="border" color="danger">Remove</vs-button>
           <p class="text-sm mt-2">Allowed JPG, GIF or PNG. Max size of 800kB</p>
         </div>
-      </div> -->
+      </div>
       <vs-input class="w-full mb-base" name="email" ref="email" icon-no-border icon="icon icon-mail" icon-pack="feather" 
         label-placeholder="Email" v-model="general.email" disabled="true" ></vs-input>
       <span class="text-danger text-sm">{{ errors.first('email') }}</span>  
