@@ -79,20 +79,22 @@ https://amplify.aws/community/resources
     - [ ] privacy policy needs to be proof read.
     - [ ] terms and conditions needs to be proof read.
     - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~
-    - [ ] Save profile information(Full name, email) in user profile table. 
+    - [x] ~~not required=>Save profile information(Full name, email) in user profile table.~~
+    - [ ] Focus should be set on the first email field in forgot password-confirmation screen.
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
     - [ ] Add users to register using Facebook, Google.
     - [ ] Show loading message when the login button is clicked.
 4. Logout screen
-	- [ ] Show user profile information(Full name, email) from user profile table. 
+	- [ ] 
 5. Forget password screen
     - [x] ~~send email to user to confirm email.~~
     - [x] ~~Add confirm email screen~~
     - [ ] Error messages do not show correctly below input element.
+    - [ ] Focus should be set on the first email field in forgot password-confirmation screen.
 6. Dashboard screen
-    - [ ] the application should show the logged in user and his name.
     - [x] ~~Dashboard screens should be secured.~~
+    - [ ] Show user profile information(Full name, email) from user profile table. 
 7. FAQ screen
     - [ ] Add FAQ's.
 8. General Tasks
@@ -105,7 +107,8 @@ https://amplify.aws/community/resources
 	b. Profile screen:
     - [x] ~~email, full name(Individual or company), billing address, country, VAT number(if applicable)~~
     - [x] ~~Notification Preferences=> Notify me when my transcripts are done processing, Notify me when there is a problem with my transcripts~~
-    - [ ] Show email when the profile screen first loads. 
+    - [ ] Show email when the profile screen first loads.
+    - [ ] Allow user to save his profile picture into AWS S3
     c. Payment settings screen:
     - [x] ~~Basic functionality~~
     d. Profile delete screen:
@@ -117,4 +120,4 @@ https://amplify.aws/community/resources
     - [x] ~~unable to focus on textarea.~~
     - [ ] Show number of lines in the textarea, below textarea.
 11. Home page screen
-    - [ ]
+    - [ ] Show pricing

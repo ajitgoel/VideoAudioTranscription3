@@ -1088,7 +1088,7 @@ const router = new Router({
                 // =============================================================================
                 // EXTENSIONS
                 // =============================================================================
-                {
+                /*{
                     path: '/extensions/select',
                     name: 'extra-component-select',
                     component: () => import('@/views/components/extra-components/select/Select.vue'),
@@ -1314,7 +1314,7 @@ const router = new Router({
                         pageTitle: 'Export Excel',
                         rule: 'editor',requiresAuth: true,
                     },
-                },
+                },*/
                 //#endregion EXTENSIONS
             ],
         },
