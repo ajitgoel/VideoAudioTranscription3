@@ -7,7 +7,6 @@ export const listUserProfilesForGeneral = /* GraphQL */ `
     listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userId
         fullName
         billingAddress
         country
@@ -29,7 +28,6 @@ export const listUserProfilesForVocabularies = /* GraphQL */ `
     listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userId
         vocabularies
       }
       nextToken
@@ -46,7 +44,6 @@ export const listUserProfilesForPaymentSettings = /* GraphQL */ `
     listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        userId
         paymentSettings {
           autoRecharge
         }

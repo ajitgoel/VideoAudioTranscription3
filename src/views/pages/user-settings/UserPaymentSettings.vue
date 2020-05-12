@@ -33,7 +33,7 @@ export default {
   async created() 
   {
       const userId=this.userIdFromLocalStorage();
-      const listUserProfilesFilter={userId:{eq:userId}};
+      const listUserProfilesFilter={id:{eq:userId}};
       const result = await API.graphql(graphqlOperation(listUserProfilesForPaymentSettings, {filter: listUserProfilesFilter}));
       console.log(`result: ${JSON.stringify(result)}`);
       const items=result.data.listUserProfiles.items;
@@ -67,13 +67,13 @@ export default {
             //#region save user profile in dynamodb
             if(this.isUserProfileSavedInDatabase==false)
             {
-              const createUserProfileInput={userId:userId, 
+              const createUserProfileInput={id:userId, 
                 paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
               await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
             }
             else
             {
-                const updateUserProfileInput={id:this.id, userId:userId,                 
+                const updateUserProfileInput={id:userId,                 
                   paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
                 await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
             }                

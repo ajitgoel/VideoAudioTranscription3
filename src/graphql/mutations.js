@@ -158,7 +158,6 @@ export const createUserProfile = /* GraphQL */ `
   ) {
     createUserProfile(input: $input, condition: $condition) {
       id
-      userId
       fullName
       billingAddress
       country
@@ -180,7 +179,6 @@ export const updateUserProfile = /* GraphQL */ `
   ) {
     updateUserProfile(input: $input, condition: $condition) {
       id
-      userId
       fullName
       billingAddress
       country
@@ -202,7 +200,6 @@ export const deleteUserProfile = /* GraphQL */ `
   ) {
     deleteUserProfile(input: $input, condition: $condition) {
       id
-      userId
       fullName
       billingAddress
       country

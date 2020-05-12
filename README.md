@@ -83,11 +83,11 @@ https://amplify.aws/community/resources
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
     - [ ] Add users to register using Facebook, Google.
-    - [ ] Show loading message when the user says register.
+    - [ ] Show loading message when the login button is clicked.
 4. Logout screen
 	- [ ] Show user profile information(Full name, email) from user profile table. 
 5. Forget password screen
-    - [x] ~~send email to user to confirm email. ~~
+    - [x] ~~send email to user to confirm email.~~
     - [x] ~~Add confirm email screen~~
     - [ ] Error messages do not show correctly below input element.
 6. Dashboard screen
@@ -96,7 +96,8 @@ https://amplify.aws/community/resources
 7. FAQ screen
     - [ ] Add FAQ's.
 8. General Tasks
-	- [x] ~~Add AWS analytics~~
+	- [ ] Add AWS analytics
+	- [ ] Add a key on userprofile.userid
 9. Settings
 	a. Change Password screen:
     - [x] ~~check old password is valid.~~
@@ -109,6 +110,7 @@ https://amplify.aws/community/resources
     - [x] ~~Basic functionality~~
     d. Profile delete screen:
     - [ ] trigger user deletion from aws cognito through a lambda function, when a user is deleted in user profiles table, https://github.com/aws-amplify/amplify-cli/issues/2569
+    - [x] ~~Delete user from user profile table.~~
     - [x] ~~basic functionality~~
 10. Vocabulary screen
     - [x] ~~Work with AWS appsync and syncfusion grid to save updated, deleted, inserted info to array.~~

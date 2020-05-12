@@ -100,13 +100,12 @@ export default {
   async created() 
   {
       const userId=this.userIdFromLocalStorage();
-      const listUserProfilesFilter={userId:{eq:userId}};
+      const listUserProfilesFilter={id:{eq:userId}};
       const result = await API.graphql(graphqlOperation(listUserProfilesForGeneral, {filter: listUserProfilesFilter}));
       console.log(`result: ${JSON.stringify(result)}`);
       const items=result.data.listUserProfiles.items;
       if(items.length>0)
       {
-          this.id=items[0].id;
           this.general.fullName=items[0].fullName;
           this.general.billingAddress=items[0].billingAddress;
           this.general.country=items[0].country;
@@ -140,13 +139,13 @@ export default {
             //#region save user profile in dynamodb
             if(this.isUserProfileSavedInDatabase==false)
             {
-                const createUserProfileInput={userId:userId, fullName: this.general.fullName, 
+                const createUserProfileInput={id:userId, fullName: this.general.fullName, 
                   billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
                 await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
             }
             else
             {
-                const updateUserProfileInput={id:this.id, userId:userId, fullName: this.general.fullName,
+                const updateUserProfileInput={id:userId, fullName: this.general.fullName,
                   billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
                 await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
             }                
@@ -179,14 +178,14 @@ export default {
             //#region save user profile in dynamodb
             if(this.isUserProfileSavedInDatabase==false)
             {
-              const createUserProfileInput={userId:userId, 
+              const createUserProfileInput={id:userId, 
                 notificationTranscriptsCompleted: this.notification.transcriptsCompleted, 
                 notificationTranscriptsError: this.notification.transcriptsError, };
               await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
             }
             else
             {
-                const updateUserProfileInput={id:this.id, userId:userId,                 
+                const updateUserProfileInput={id:userId,                 
                   notificationTranscriptsCompleted: this.notification.transcriptsCompleted, 
                   notificationTranscriptsError: this.notification.transcriptsError, };
                 await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));

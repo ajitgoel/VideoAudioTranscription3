@@ -1,7 +1,3 @@
-<!-- =========================================================================================
-    File Name: Vocabulary.vue
-    Description: Vocabulary Page    
-========================================================================================== -->
 <template>
     <vx-card title="Your vocabulary" code-toggler>
         <span>
@@ -33,7 +29,6 @@ export default
 {
     data() {
         return {
-            id: '',
             vocabularies: '',
             isUserProfileSavedInDatabase: false,
             inputHandler: (args) => 
@@ -62,14 +57,13 @@ export default
     async created() 
     {
         const userId=this.userIdFromLocalStorage();
-        const listUserProfilesFilter={userId:{eq:userId}};
+        const listUserProfilesFilter={id:{eq:userId}};
         const result = await API.graphql(graphqlOperation(listUserProfilesForVocabularies, {filter: listUserProfilesFilter}));
         console.log(`result: ${JSON.stringify(result)}`);
         const items=result.data.listUserProfiles.items;
         let vocabulariesTemp;
         if(items.length>0)
         {
-            this.id=items[0].id;
             vocabulariesTemp=items[0].vocabularies;
             this.isUserProfileSavedInDatabase =true;
         }
@@ -100,12 +94,12 @@ export default
                 const vocabulariesArray=this.vocabularies.split('\n');                        
                 if(this.isUserProfileSavedInDatabase==false)
                 {
-                    const createUserProfileInput={userId:userId, vocabularies:vocabulariesArray};
+                    const createUserProfileInput={id:userId, vocabularies:vocabulariesArray};
                     await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
                 }
                 else
                 {
-                    const updateUserProfileInput={id:this.id, userId:userId, vocabularies:vocabulariesArray};
+                    const updateUserProfileInput={id:userId, vocabularies:vocabulariesArray};
                     await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
                 }                
                 //#endregion save vocabularies in dynamodb

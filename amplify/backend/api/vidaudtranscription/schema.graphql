@@ -22,8 +22,7 @@ type Video @model
 type UserProfile @model 
 @auth(rules: [{allow: owner}])
 {
-	id: ID!
-  userId: String!
+	id: String!
   fullName: String
   billingAddress: String
   country: String
