@@ -1,7 +1,7 @@
 <template>
   <div>
     <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border 
-      icon="icon icon-user" icon-pack="feather" label-placeholder="Email" v-model="email" class="w-full"/>
+      icon="icon icon-user" icon-pack="feather" label-placeholder="Email" v-model="email" ref="email" class="w-full"/>
     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
     <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" name="password" 
       icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Password" v-model="password" 
@@ -44,6 +44,13 @@ export default
     {
       return !this.errors.any() && this.email != '' && this.password != '';
     }
+  },
+  mounted() 
+  {       
+    this.$nextTick(function()
+    {
+      this.$refs.email.$el.querySelector('input').focus();
+    });        
   },
   methods: 
   {

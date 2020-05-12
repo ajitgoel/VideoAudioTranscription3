@@ -97,6 +97,13 @@ export default {
       return this.$store.state.AppActiveUser
     },   
   },
+  mounted() 
+  {       
+    this.$nextTick(function()
+    {
+      this.$refs.fullname.$el.querySelector('input').focus();
+    });        
+  },
   async created() 
   {
       const userId=this.userIdFromLocalStorage();
@@ -118,89 +125,87 @@ export default {
       }
       else
       {
-          this.isUserProfileSavedInDatabase=false;
+        this.isUserProfileSavedInDatabase=false;
       }
   },
   methods: 
   {
     async saveProfile() 
     {
-        try 
+      try 
+      {
+        const userId=this.userIdFromLocalStorage();
+        if(userId == null)
         {
-            const userId=this.userIdFromLocalStorage();
-            if(userId == null)
-            {
-                this.$vs.notify({title: 'Error',text: 'There was an error saving your profile', iconPack: 'feather', 
-                    icon: 'icon-alert-circle', color: 'danger'});
-                return;   
-            }
-            console.log(`userId: ${userId}`);
-            
-            //#region save user profile in dynamodb
-            if(this.isUserProfileSavedInDatabase==false)
-            {
-                const createUserProfileInput={id:userId, fullName: this.general.fullName, 
-                  billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
-                await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
-            }
-            else
-            {
-                const updateUserProfileInput={id:userId, fullName: this.general.fullName,
-                  billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
-                await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
-            }                
-            //#endregion save user profile in dynamodb
-
-            this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
-                icon: 'icon-check',color: 'success'}); 
-        } 
-        catch (error) 
+            this.$vs.notify({title: 'Error',text: 'There was an error saving your profile', iconPack: 'feather', 
+                icon: 'icon-alert-circle', color: 'danger'});
+            return;   
+        }
+        console.log(`userId: ${userId}`);          
+        //#region save user profile in dynamodb
+        if(this.isUserProfileSavedInDatabase==false)
         {
-            console.log(error);
-            this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
-                color: 'danger'});
-        };
+            const createUserProfileInput={id:userId, fullName: this.general.fullName, 
+              billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
+            await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
+        }
+        else
+        {
+            const updateUserProfileInput={id:userId, fullName: this.general.fullName,
+              billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
+            await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
+        }                
+        //#endregion save user profile in dynamodb
+        this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
+            icon: 'icon-check',color: 'success'}); 
+      } 
+      catch (error) 
+      {
+        console.log(error);
+        this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
+            color: 'danger'});
+      };
     },
 
     async saveNotifications() 
     {
-        try 
-        {
-            const userId=this.userIdFromLocalStorage();
-            if(userId == null)
-            {
-                this.$vs.notify({title: 'Error',text: 'There was an error saving your profile', iconPack: 'feather', 
-                    icon: 'icon-alert-circle', color: 'danger'});
-                return;   
-            }
-            console.log(`userId: ${userId}`);
-            
-            //#region save user profile in dynamodb
-            if(this.isUserProfileSavedInDatabase==false)
-            {
-              const createUserProfileInput={id:userId, 
+      try 
+      {
+          const userId=this.userIdFromLocalStorage();
+          if(userId == null)
+          {
+              this.$vs.notify({title: 'Error',text: 'There was an error saving your profile', iconPack: 'feather', 
+                  icon: 'icon-alert-circle', color: 'danger'});
+              return;   
+          }
+          console.log(`userId: ${userId}`);
+          
+          //#region save user profile in dynamodb
+          if(this.isUserProfileSavedInDatabase==false)
+          {
+            const createUserProfileInput={id:userId, 
+              notificationTranscriptsCompleted: this.notification.transcriptsCompleted, 
+              notificationTranscriptsError: this.notification.transcriptsError, };
+            await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
+          }
+          else
+          {
+              const updateUserProfileInput={id:userId,                 
                 notificationTranscriptsCompleted: this.notification.transcriptsCompleted, 
                 notificationTranscriptsError: this.notification.transcriptsError, };
-              await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
-            }
-            else
-            {
-                const updateUserProfileInput={id:userId,                 
-                  notificationTranscriptsCompleted: this.notification.transcriptsCompleted, 
-                  notificationTranscriptsError: this.notification.transcriptsError, };
-                await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
-            }                
-            //#endregion save user profile in dynamodb
+              await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
+          }                
+          //#endregion save user profile in dynamodb
 
-            this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
-                icon: 'icon-check',color: 'success'}); 
-        } 
-        catch (error) 
-        {
-            console.log(error);
-            this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
-                color: 'danger'});
-        };
+          this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',
+              icon: 'icon-check',color: 'success'}); 
+      } 
+      catch (error) 
+      {
+        console.log(error);
+        this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
+            color: 'danger'});
+      };
     },
     async changePassword() 
     {

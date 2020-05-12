@@ -9,13 +9,13 @@
                 </div>
                 <div class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center  d-theme-dark-bg">
 
-                  <div class="px-8 pt-8 register-tabs-container" v-if="isSignUpConfirmed">
+                  <div class="px-8 pt-8 register-tabs-container" v-if="showConfirmSignupScreen">
                     <div class="vx-card__title mb-4">
                         <h4 class="mb-4">Confirm Signup</h4>
                         <p>Enter the confirmation code to confirm signup.</p>
                     </div>
                     <!--Confirm Signup: Start-->
-                    <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" 
+                    <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" ref="email2" type="email" 
                       label-placeholder="Email" placeholder="Email" v-model="email" scope="ConfirmSignup" class="w-full mt-6" 
                       icon-no-border icon="icon icon-user" icon-pack="feather" />
                     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
@@ -40,7 +40,7 @@
                       <!-- <vs-input v-validate="'required|alpha_dash|min:3'" data-vv-validate-on="blur" label-placeholder="Name" 
                       name="displayName" placeholder="Name" v-model="displayName" scope="CreateAccount" class="w-full" />
                       <span class="text-danger text-sm">{{ errors.first('displayName') }}</span> -->
-                      <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" 
+                      <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" ref="email" 
                         label-placeholder="Email" placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" 
                         icon-no-border icon="icon icon-user" icon-pack="feather" />
                       <span class="text-danger text-sm">{{ errors.first('email') }}</span>
@@ -65,7 +65,7 @@
                       These documents are designed to inform you of your rights and obligations when using the VideoAudioTranscription service. <br/>-->
 
                       <div class="flex flex-wrap justify-between my-5">
-                        <a href='#' @click='isSignUpConfirmed=true'>Enter Verification Code</a>
+                        <a href='#' @click='showConfirmSignupScreen=true'>Enter Verification Code</a>
                       </div>                    
                       <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
                       <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
@@ -87,19 +87,33 @@ export default
   data() 
   {
     return {email: '', password: '', confirm_password: '', isTermsConditionAcceptedPrivacyPolicy: false, 
-      isSignUpConfirmed:false, confirmationCode:''};
+      showConfirmSignupScreen:false, confirmationCode:''};
   },
   computed: 
   {
     validateConfirmationCode() 
     {
-        return !this.errors.any('ConfirmSignup') && this.confirmationCode != '';
+      return !this.errors.any('ConfirmSignup') && this.confirmationCode != '';
     },
     validateForm() 
     {
-        return !this.errors.any('CreateAccount') && this.email != '' && this.password != '' && this.confirm_password != '' && 
-          this.isTermsConditionAcceptedPrivacyPolicy === true;
+      return !this.errors.any('CreateAccount') && this.email != '' && this.password != '' && this.confirm_password != '' && 
+        this.isTermsConditionAcceptedPrivacyPolicy === true;
     }
+  },
+  mounted() 
+  {       
+    this.$nextTick(function()
+    {
+      if(this.showConfirmSignupScreen===true)
+      {
+        this.$refs.email2.$el.querySelector('input').focus();
+      }
+      else
+      {
+        this.$refs.email.$el.querySelector('input').focus();
+      }
+    });        
   },
   methods: 
   {
@@ -153,13 +167,13 @@ export default
         const params = {username: this.email, password: this.password, attributes: {email: this.email}};
         const iSignUpResult=await Auth.signUp(params);
         console.log(`signUp iSignUpResult: ${JSON.stringify(this.iSignUpResult)}`);
-        this.isSignUpConfirmed=true;
+        this.showConfirmSignupScreen=true;
         this.$vs.notify({title: 'Register user', text: 'Please check your email to confirm your account!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
       }
       catch(error)
       {
-        this.isSignUpConfirmed=false;
+        this.showConfirmSignupScreen=false;
         console.log(`signUp error: ${JSON.stringify(error)}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
       };

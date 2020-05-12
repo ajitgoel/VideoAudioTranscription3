@@ -15,7 +15,7 @@
                     </div>
                     <!--Confirm Signup: Start-->
                     <vs-input v-validate="'required|digits:6'" data-vv-validate-on="blur" label-placeholder="Confirmation code" 
-                        name="confirmationCode" v-model="confirmationCode" scope="ConfirmSignup" 
+                        name="confirmationCode" ref="confirmationCode" v-model="confirmationCode" scope="ConfirmSignup"
                         placeholder="Confirmation code" class="w-full mb-8" icon="icon icon-code" 
 			            icon-pack="feather" icon-no-border/>
                     <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
@@ -35,7 +35,7 @@
                     <h4 class="mb-4">Recover your password</h4>
                     <p>Please enter your email address and we'll send you confirmation code to reset your password.</p>
                     </div>
-                    <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" 
+                    <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" ref="email" type="email" 
                         label-placeholder="Email" placeholder="Email" v-model="email" scope="RecoverPassword" class="w-full mb-8" 
 		                icon-no-border icon="icon icon-user" icon-pack="feather" />
                     <span class="text-danger text-sm">{{ errors.first('email') }}</span> 
@@ -58,60 +58,67 @@
   {
     data() 
     {
-        return {email: '', password: '', isSignUpConfirmed:false, confirmationCode:''};
+      return {email: '', password: '', isSignUpConfirmed:false, confirmationCode:''};
     },
     computed: 
     {
-        validateConfirmationCode() 
-        {
-            return !this.errors.any('ConfirmSignup') && this.confirmationCode != '' && this.password != '';
-        },
-        validateForm() 
-        {
-            return !this.errors.any('RecoverPassword') && this.email != '';
-        }
+      validateConfirmationCode() 
+      {
+        return !this.errors.any('ConfirmSignup') && this.confirmationCode != '' && this.password != '';
+      },
+      validateForm() 
+      {
+        return !this.errors.any('RecoverPassword') && this.email != '';
+      }
+    },
+    mounted() 
+    {       
+      this.$nextTick(function()
+      {
+        this.$refs.email.$el.querySelector('input').focus();
+      });        
     },
     methods: 
     {
-        async confirmSignUp() 
+      async confirmSignUp() 
+      {
+        if (!this.validateConfirmationCode) // If form is not validated          
         {
-            if (!this.validateConfirmationCode) // If form is not validated          
-            {
-                return;
-            }
-            try
-            {
-                await Auth.forgotPasswordSubmit(this.email, this.confirmationCode, this.password);
-                this.$router.push('/').catch(() => {});
-                this.$vs.notify({title: 'Reset password', text: 'Reset password was successfully!', iconPack: 'feather',
-                icon: 'icon-check',color: 'success'}); 
-            }
-            catch(error)
-            {
-                console.log(error);
-                this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
-            };
-        },
-        async forgotPassword() 
+          return;
+        }
+        try
         {
-            if (!this.validateForm) // If form is not validated or user is already login return            
-            {
-                return;
-            }
-            try
-            {
-                var result=await Auth.forgotPassword(this.email);       
-                this.isSignUpConfirmed=true; 
-                this.$vs.notify({title: 'Forgot password', text: 'Please check your email to confirm your account!', 
-                    iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
-            }
-            catch(error)
-            {
-                console.log(error);
-                this.isSignUpConfirmed=false; 
-                this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
-            };
-        },
+          await Auth.forgotPasswordSubmit(this.email, this.confirmationCode, this.password);
+          this.$router.push('/').catch(() => {});
+          this.$vs.notify({title: 'Reset password', text: 'Reset password was successfully!', iconPack: 'feather',
+            icon: 'icon-check',color: 'success'}); 
+        }
+        catch(error)
+        {
+          console.log(error);
+          this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+        };
+      },
+      async forgotPassword() 
+      {
+        if (!this.validateForm) // If form is not validated or user is already login return            
+        {
+          return;
+        }
+        try
+        {
+          var result=await Auth.forgotPassword(this.email);       
+          this.isSignUpConfirmed=true; 
+          this.$vs.notify({title: 'Forgot password', text: 'Please check your email to confirm your account!', 
+              iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+        }
+        catch(error)
+        {
+          console.log(error);
+          this.isSignUpConfirmed=false; 
+          this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+        };
+      },
     }
   }
 </script>
