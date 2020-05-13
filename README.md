@@ -99,7 +99,7 @@ https://amplify.aws/community/resources
     - [ ] Add FAQ's.
 8. General Tasks
 	- [ ] Add AWS analytics
-	- [ ] Add a key on userprofile.userid
+	- [x] ~~Add a key on userprofile.userid~~
 9. Settings
 	a. Change Password screen:
     - [x] ~~check old password is valid.~~

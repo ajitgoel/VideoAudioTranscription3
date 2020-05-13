@@ -1,7 +1,7 @@
 <template>
     <vx-card title="Your vocabulary" code-toggler>
         <span>
-            Create a custom vocabulary to help Happy Scribe when transcribing technical terms, proper nouns 
+            Create a custom vocabulary to help Video Audio Transcription when transcribing technical terms, proper nouns 
             such as a company name or your cat’s nickname.<br/>
             To use it simply add words, and select <code>Use my vocabulary</code> when uploading a file.<br/><br/>
             <code>

@@ -1,224 +1,200 @@
-<!-- =========================================================================================
-    File Name: Invoice.vue
-    Description: Invoice Page
-    
-========================================================================================== -->
-
-
 <template>
-    <div id="invoice-page">
+  <form-wizard color="rgba(var(--vs-primary), 1)" errorColor="rgba(var(--vs-danger), 1)" :title="null" :subtitle="null" 
+    finishButtonText="Submit">
+    <tab-content title="Choose a plan" class="mb-5" icon="feather icon-home" :before-change="validateChoosePlan">
 
-        <div class="flex flex-wrap items-center justify-between">
-          <vx-input-group class="mb-base mr-3">
-            <vs-input v-model="mailTo" placeholder="Email" />
+      <!-- tab 1 content -->
+      <form data-vv-scope="choosePlan">
+      <div class="vx-row">
+        <div class="vx-col md:w-1/2 w-full mt-5">
+          <vs-input label="First Name" v-model="firstName" class="w-full" name="first_name" v-validate="'required|alpha'" />
+          <span class="text-danger"></span>
+        </div>
+        <div class="vx-col md:w-1/2 w-full mt-5">
+          <vs-input label="Last Name"  v-model="lastName" class="w-full" name="last_name" v-validate="'required|alpha'" />
+          <span class="text-danger"></span>
+        </div>
+        <div class="vx-col md:w-1/2 w-full mt-5">
+          <vs-input type="email" label="Email"  v-model="email" class="w-full" name="email" v-validate="'required|email'" />
+          <span class="text-danger"></span>
+        </div>
+        <div class="vx-col md:w-1/2 w-full mt-5">
+          <vs-select v-model="city" class="w-full select-large" label="City">
+            <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in cityOptions" class="w-full" />
+          </vs-select>
+        </div>
+      </div>
+      </form>
+    </tab-content>
 
-            <template slot="append">
-              <div class="append-text btn-addon">
-                <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button>
-              </div>
-            </template>
-          </vx-input-group>
-          <div class="flex items-center">
-            <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download">Download</vs-button>
-            <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" @click="printInvoice">Print</vs-button>
+    <!-- tab 2 content -->
+    <tab-content title="Billing Information" class="mb-5" icon="feather icon-credit-card" :before-change="validateBillingInformation">
+      <form data-vv-scope="billingInformation">
+      <div class="vx-row">
+        <div class="vx-col md:w-1/2 w-full">
+            <vs-input class="w-full mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
+                icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
+            <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
+            
+            <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
+                icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
+            <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
+            
+            <vs-input class="w-full my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
+                icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+            <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+            
+            <vs-input class="w-full my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
+                icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
+            <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
+        </div>    
+      </div>
+      </form>
+    </tab-content>
+
+    <!-- tab 3 content -->
+    <tab-content title="Payment Confirmation" class="mb-5" icon="feather icon-image" :before-change="validatePaymentConfirmation">
+      <form data-vv-scope="paymentConfirmation">
+      <div class="vx-row">
+        <div class="vx-col md:w-1/2 w-full">
+          <vs-input label="Event Name" v-model="eventName" class="w-full mt-5" name="event_name" v-validate="'required|alpha_spaces'" />
+          <span class="text-danger"></span>
+        </div>
+        <div class="vx-col md:w-1/2 w-full">
+          <vs-select v-model="city" class="w-full select-large mt-5" label="Event Location">
+            <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in cityOptions" class="w-full" />
+          </vs-select>
+        </div>
+        <div class="vx-col md:w-1/2 w-full mt-5">
+          <vs-select v-model="status" class="w-full select-large" label="Event Status">
+            <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in statusOptions" class="w-full" />
+          </vs-select>
+        </div>
+        <div class="vx-col md:w-1/2 w-full md:mt-8">
+          <div class="demo-alignment">
+            <span>Requirements:</span>
+            <div class="flex">
+              <vs-checkbox>Staffing</vs-checkbox>
+              <vs-checkbox>Catering</vs-checkbox>
+            </div>
           </div>
         </div>
-
-        <vx-card id="invoice-container">
-
-            <!-- INVOICE METADATA -->
-            <div class="vx-row leading-loose p-base">
-                <div class="vx-col w-full md:w-1/2 mt-base">
-                    <img src="@/assets/images/logo/logo.png" alt="vuexy-logo">
-                </div>
-                <div class="vx-col w-full md:w-1/2 text-right">
-                    <h1>Invoice</h1>
-                    <div class="invoice__invoice-detail mt-6">
-                        <h6>INVOICE NO.</h6>
-                        <p>{{ invoiceDetails.invoiceNo }}</p>
-
-                        <h6 class="mt-4">INVOICE DATE</h6>
-                        <p>{{ invoiceDetails.invoiceDate | date(true) }}</p>
-                    </div>
-                </div>
-                <div class="vx-col w-full md:w-1/2 mt-12">
-                    <h5>Recipient</h5>
-                    <div class="invoice__recipient-info my-4">
-                        <p>{{ recipientDetails.fullName }}</p>
-                        <p>{{ recipientDetails.addressLine1 }}</p>
-                        <p>{{ recipientDetails.addressLine2 }}</p>
-                        <p>{{ recipientDetails.zipcode }}</p>
-                    </div>
-                    <div class="invoice__recipient-contact ">
-                        <p class="flex items-center">
-                            <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ recipientDetails.mailId }}</span>
-                        </p>
-                        <p class="flex items-center">
-                            <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ recipientDetails.mobile }}</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
-                    <h5>{{ companyDetails.name }}</h5>
-                    <div class="invoice__company-info my-4">
-                        <p>{{ companyDetails.addressLine1 }}</p>
-                        <p>{{ companyDetails.addressLine2 }}</p>
-                        <p>{{ companyDetails.zipcode }}</p>
-                    </div>
-                    <div class="invoice__company-contact">
-                        <p class="flex items-center justify-end">
-                            <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ companyDetails.mailId }}</span>
-                        </p>
-                        <p class="flex items-center justify-end">
-                            <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ companyDetails.mobile }}</span>
-                        </p>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- INVOICE CONTENT -->
-            <div class="p-base">
-                <!-- INVOICE TASKS TABLE -->
-                <vs-table hoverFlat :data="invoiceData.tasks">
-                    <!-- HEADER -->
-                    <template slot="thead">
-                        <vs-th>TASK DESCRIPTION</vs-th>
-                        <vs-th>HOURS</vs-th>
-                        <vs-th>RATE</vs-th>
-                        <vs-th>AMOUNT</vs-th>
-                    </template>
-
-                    <!-- DATA -->
-                    <template slot-scope="{data}">
-                        <vs-tr v-for="(tr, index) in data" :key="index">
-                            <vs-td :data="data[index].task">{{ data[index].task }}</vs-td>
-                            <vs-td :data="data[index].hours">{{ data[index].hours }}</vs-td>
-                            <vs-td :data="data[index].rate">{{ data[index].rate }} USD</vs-td>
-                            <vs-td :data="data[index].amount">{{ data[index].amount }} USD</vs-td>
-                        </vs-tr>
-                    </template>
-                </vs-table>
-
-                <!-- INVOICE SUMMARY TABLE -->
-                <vs-table hoverFlat class="w-1/2 ml-auto mt-4" :data="invoiceData">
-                    <vs-tr>
-                        <vs-th>SUBTOTAL</vs-th>
-                        <vs-td>{{ invoiceData.subtotal }} USD</vs-td>
-                    </vs-tr>
-                    <vs-tr>
-                        <vs-th>DISCOUNT ({{ invoiceData.discountPercentage }}%)</vs-th>
-                        <vs-td>{{ invoiceData.discountedAmount }} USD</vs-td>
-                    </vs-tr>
-                    <vs-tr>
-                        <th>TOTAL</th>
-                        <td>{{ invoiceData.total }} USD</td>
-                    </vs-tr>
-                </vs-table>
-            </div>
-
-            <!-- INVOICE FOOTER -->
-            <div class="invoice__footer text-right p-base">
-                <p class="mb-4">Transfer the amounts to the business amount below. Please include invoice number on your check.</p>
-                <p>
-                    <span class="mr-8">BANK: <span class="font-semibold">FTSBUS33</span></span>
-                    <span>IBAN: <span class="font-semibold"> G882-1111-2222-3333 </span></span>
-                </p>
-            </div>
-        </vx-card>
-    </div>
+      </div>
+      </form>
+    </tab-content>
+  </form-wizard>
 </template>
 
 <script>
+import { FormWizard, TabContent } from 'vue-form-wizard'
+import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 
-export default{
-    data() {
-        return {
-            mailTo: "",
-            companyDetails: {
-                name: 'Microsion Technologies Pvt. Ltd.',
-                addressLine1: '9 N. Sherwood Court',
-                addressLine2: 'Elyria, OH',
-                zipcode: '94203',
-                mailId: 'hello@pixinvent.net',
-                mobile: '+91 999 999 9999',
-            },
-            recipientDetails: {
-                fullName: 'Peter Stark',
-                addressLine1: '8577 West West Drive ',
-                addressLine2: 'Holbrook, NY',
-                zipcode: '90001',
-                mailId: 'peter@mail.com',
-                mobile: '+91 988 888 8888',
-            },
-            invoiceDetails: {
-                invoiceNo: '001/2019',
-                invoiceDate: 'Mon Dec 10 2018 07:46:00 GMT+0000 (GMT)',
-            },
-            invoiceData: {
-                tasks: [
-                    {
-                        id: 1,
-                        task: 'Website Redesign',
-                        hours: 60,
-                        rate: 15,
-                        amount: 90000,
-                    },
-                    {
-                        id: 2,
-                        task: 'Newsletter template design',
-                        hours: 20,
-                        rate: 12,
-                        amount: 24000,
-                    },
-                ],
-                subtotal: 114000,
-                discountPercentage: 5,
-                discountedAmount: 5700,
-                total: 108300,
-            }
-        }
+// For custom error message
+import { Validator } from 'vee-validate';
+const dict = {
+  custom: {
+    first_name: {
+      required: 'First name is required',
+      alpha: "First name may only contain alphabetic characters"
     },
-    computed: {
-
+    last_name: {
+      required: 'Last name is required',
+      alpha: "Last name may only contain alphabetic characters"
     },
-    methods: {
-      printInvoice() {
-        window.print()
-      }
+    email: {
+      required: 'Email is required',
+      email: "Please enter valid email"
     },
-    components: {},
-    mounted() {
-      this.$emit("setAppClasses", "invoice-page")
-    }
-}
-</script>
+    job_title: {
+      required: 'Job title name is required',
+      alpha: "Job title may only contain alphabetic characters"
+    },
+    proposal_title: {
+      required: 'Proposal title name is required',
+      alpha: "Proposal title may only contain alphabetic characters"
+    },
+    event_name: {
+      required: 'Event name is required',
+      alpha: "Event name may only contain alphabetic characters"
+    },
+  }
+};
 
-<style lang="scss">
-@media print {
-  .invoice-page {
-    * {
-      visibility: hidden;
-    }
+// register custom messages
+Validator.localize('en', dict);
 
-    #content-area {
-      margin: 0 !important;
+export default {
+  data() {
+    return {
+        general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},      
+        firstName: "",
+        lastName: "",
+        email: "",
+        city: "new-york",
+        proposalTitle: "",
+        jobTitle: "",
+        textarea: "",
+        eventName: "",
+        eventLocation: "san-francisco",
+        status: "plannning",
+        cityOptions: [
+            { text: "New York", value: "new-york" },
+            { text: "Chicago", value: "chicago" },
+            { text: "San Francisco", value: "san-francisco" },
+            { text: "Boston", value: "boston" },
+        ],
+        statusOptions: [
+            { text: "Plannning", value: "plannning" },
+            { text: "In Progress", value: "in progress" },
+            { text: "Finished", value: "finished" },
+        ],
+        LocationOptions: [
+            { text: "New York", value: "new-york" },
+            { text: "Chicago", value: "chicago" },
+            { text: "San Francisco", value: "san-francisco" },
+            { text: "Boston", value: "boston" },
+        ],
     }
-
-    #invoice-container,
-    #invoice-container * {
-      visibility: visible;
+  },
+  methods: {
+    validateChoosePlan() {
+      return new Promise((resolve, reject) => {
+        this.$validator.validateAll('choosePlan').then(result => {
+          if (result) {
+            resolve(true)
+          } else {
+            reject("correct all values");
+          }
+        })
+      })
+    },
+    validateBillingInformation() {
+      return new Promise((resolve, reject) => {
+        this.$validator.validateAll("billingInformation").then(result => {
+          if (result) {
+            resolve(true)
+          } else {
+            reject("correct all values");
+          }
+        })
+      })
+    },
+    validatePaymentConfirmation() {
+      return new Promise((resolve, reject) => {
+        this.$validator.validateAll("paymentConfirmation").then(result => {
+          if (result) {
+            alert("Form submitted!");
+            resolve(true)
+          } else {
+            reject("correct all values");
+          }
+        })
+      })
     }
-    #invoice-container {
-      position: absolute;
-      left: 0;
-      top: 0;
-      box-shadow: none;
-    }
+  },
+  components: {
+    FormWizard,
+    TabContent
   }
 }
-</style>
+</script>

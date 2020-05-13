@@ -1,19 +1,19 @@
 <template>
     <div class="container text-pages privacy">
       <h1 id="boxTitle"> Privacy Policy </h1>       
-       <p>This privacy policy applies between you, the User of this Website and Happy Scribe Ltd., the owner and provider of this Website. Happy Scribe Ltd. takes the privacy of your information very seriously. This privacy policy applies to our use of any and all Data collected by us or provided by you in relation to your use of the Website.</p>
+       <p>This privacy policy applies between you, the User of this Website and Video Audio Transcription Ltd., the owner and provider of this Website. Video Audio Transcription Ltd. takes the privacy of your information very seriously. This privacy policy applies to our use of any and all Data collected by us or provided by you in relation to your use of the Website.</p>
         <p>This privacy policy should be read alongside, and in addition to, our Terms and Conditions, which can be found at: <a href="https://www.happyscribe.co/terms" rel="nofollow" target="_blank">https://www.happyscribe.co/terms</a>.</p>
         <p><strong>Please read this privacy policy carefully</strong>.</p>
         <h2>Definitions and interpretation</h2>
         <p>In this privacy policy, the following definitions are used:</p>
         <ol>
-        <li><strong>Data</strong> - collectively all information that you submit to Happy Scribe Ltd. via the Website. This definition incorporates, where applicable, the definitions provided in the Data Protection Laws;</li>
+        <li><strong>Data</strong> - collectively all information that you submit to Video Audio Transcription Ltd. via the Website. This definition incorporates, where applicable, the definitions provided in the Data Protection Laws;</li>
         <li><strong>Cookies</strong> - a small text file placed on your computer by this Website when you visit certain parts of the Website and/or when you use certain features of the Website. Details of the cookies used by this Website are set out in the clause below (<strong>Cookies</strong>);</li>
         <li><strong>Data Protection Laws</strong> - any applicable law relating to the processing of personal Data, including but not limited to the Directive 96/46/EC (Data Protection Directive) or the GDPR, and any national implementing laws, regulations and secondary legislation, for as long as the GDPR is effective in the Republic of Ireland;</li>
         <li><strong>GDPR</strong> - the General Data Protection Regulation (EU) 2016/679;</li>
-        <li><strong>Happy Scribe Ltd., we</strong> or <strong>us</strong> - Happy Scribe Ltd., a company incorporated in the Republic of Ireland with registered number 604917 whose registered office is at DCU Alpha, Old Finglas Road, Dublin 11, Ireland;</li>
+        <li><strong>Video Audio Transcription Ltd., we</strong> or <strong>us</strong> - Video Audio Transcription Ltd., a company incorporated in the Republic of Ireland with registered number 604917 whose registered office is at DCU Alpha, Old Finglas Road, Dublin 11, Ireland;</li>
         <li><strong>Ireland and EU Cookie Law</strong> - the Privacy and Electronic Communications (EC Directive) Regulations 2003 as amended by the Privacy and Electronic Communications (EC Directive) (Amendment) Regulations 2011;</li>
-        <li><strong>User</strong> or <strong>you</strong> - any third party that accesses the Website and is not either (i) employed by Happy Scribe Ltd. and acting in the course of their employment or (ii) engaged as a consultant or otherwise providing services to Happy Scribe Ltd. and accessing the Website in connection with the provision of such services; and</li>
+        <li><strong>User</strong> or <strong>you</strong> - any third party that accesses the Website and is not either (i) employed by Video Audio Transcription Ltd. and acting in the course of their employment or (ii) engaged as a consultant or otherwise providing services to Video Audio Transcription Ltd. and accessing the Website in connection with the provision of such services; and</li>
         <li><strong>Website</strong> - the website that you are currently using, <a href="https://www.happyscribe.co/" rel="nofollow" target="_blank">https://www.happyscribe.co/</a>, and any sub-domains of this site unless expressly excluded by their own terms and conditions.</li>
         </ol>
         <p>In this privacy policy, unless the context requires a different interpretation:</p>
@@ -26,8 +26,8 @@
         <li>the headings and sub-headings do not form part of this privacy policy.</li>
         </ol>
         <h2>Scope of this privacy policy</h2>
-        <p>This privacy policy applies only to the actions of Happy Scribe Ltd. and Users with respect to this Website. It does not extend to any websites that can be accessed from this Website including, but not limited to, any links we may provide to social media websites.</p>
-        <p>For purposes of the applicable Data Protection Laws, Happy Scribe Ltd. is the "data controller". This means that Happy Scribe Ltd. determines the purposes for which, and the manner in which, your Data is processed.</p>
+        <p>This privacy policy applies only to the actions of Video Audio Transcription Ltd. and Users with respect to this Website. It does not extend to any websites that can be accessed from this Website including, but not limited to, any links we may provide to social media websites.</p>
+        <p>For purposes of the applicable Data Protection Laws, Video Audio Transcription Ltd. is the "data controller". This means that Video Audio Transcription Ltd. determines the purposes for which, and the manner in which, your Data is processed.</p>
         <h2>Data collected</h2>
         <p>We may collect the following Data, which includes personal Data, from you:</p>
         <ol>
@@ -52,7 +52,7 @@
         <li>data is collected automatically.</li>
         </ol>
         <h2>Data that is given to us by you</h2>
-        <p>Happy Scribe Ltd. will collect your Data in a number of ways, for example:</p>
+        <p>Video Audio Transcription Ltd. will collect your Data in a number of ways, for example:</p>
         <ol>
         <li> when you contact us through the Website, by telephone, post, e-mail or through any other means;</li>
         <li> when you register with us and set up an account to receive our products/services;</li>
@@ -61,7 +61,7 @@
         </ol>
         <p>in each case, in accordance with this privacy policy.</p>
         <h2>Data that is received from third parties</h2>
-        <p>Happy Scribe Ltd. will receive Data about you from the following third parties:</p>
+        <p>Video Audio Transcription Ltd. will receive Data about you from the following third parties:</p>
         <ol>
         <li> Hotjar;</li>
         <li> Google Analytics;</li>
@@ -135,15 +135,15 @@
         <p>This Website may, from time to time, provide links to other websites. We have no control over such websites and are not responsible for the content of these websites. This privacy policy does not extend to your use of such websites. You are advised to read the privacy policy or statement of other websites prior to using them.</p>
         <h2>Changes of business ownership and control</h2>
         <ol>
-        <li> Happy Scribe Ltd. may, from time to time, expand or reduce our business and this may involve the sale and/or the transfer of control of all or part of Happy Scribe Ltd.. Data provided by Users will, where it is relevant to any part of our business so transferred, be transferred along with that part and the new owner or newly controlling party will, under the terms of this privacy policy, be permitted to use the Data for the purposes for which it was originally supplied to us.</li>
+        <li> Video Audio Transcription Ltd. may, from time to time, expand or reduce our business and this may involve the sale and/or the transfer of control of all or part of Video Audio Transcription Ltd.. Data provided by Users will, where it is relevant to any part of our business so transferred, be transferred along with that part and the new owner or newly controlling party will, under the terms of this privacy policy, be permitted to use the Data for the purposes for which it was originally supplied to us.</li>
         <li> We may also disclose Data to a prospective purchaser of our business or any part of it.</li>
         <li> In the above instances, we will take steps with the aim of ensuring your privacy is protected.</li>
         </ol>
         <h2>Cookies</h2>
         <ol>
-        <li> This Website may place and access certain Cookies on your computer. Happy Scribe Ltd. uses Cookies to improve your experience of using the Website and to improve our range of services. Happy Scribe Ltd. has carefully chosen these Cookies and has taken steps to ensure that your privacy is protected and respected at all times.</li>
+        <li> This Website may place and access certain Cookies on your computer. Video Audio Transcription Ltd. uses Cookies to improve your experience of using the Website and to improve our range of services. Video Audio Transcription Ltd. has carefully chosen these Cookies and has taken steps to ensure that your privacy is protected and respected at all times.</li>
         <li> All Cookies used by this Website are used in accordance with current Irish and EU Cookie Law.</li>
-        <li> Before the Website places Cookies on your computer, you will be presented with a message bar requesting your consent to set those Cookies. By giving your consent to the placing of Cookies, you are enabling Happy Scribe Ltd. to provide a better experience and service to you. You may, if you wish, deny consent to the placing of Cookies; however certain features of the Website may not function fully or as intended.</li>
+        <li> Before the Website places Cookies on your computer, you will be presented with a message bar requesting your consent to set those Cookies. By giving your consent to the placing of Cookies, you are enabling Video Audio Transcription Ltd. to provide a better experience and service to you. You may, if you wish, deny consent to the placing of Cookies; however certain features of the Website may not function fully or as intended.</li>
         <li><p>This Website may place the following Cookies: Below is a list of the cookies that we use. We have tried to ensure this is complete and up to date, but if you think that we have missed a cookie or there is any discrepancy, please let us know.</p>
         <ol>
         <li>Strictly necessary cookies - These are cookies that are required for the operation of our website. They include, for example, cookies that enable you to log into secure areas of our website, use a shopping cart or make use of e-billing services.</li>
@@ -169,8 +169,8 @@
         </ol>
         <h2>Changes to this privacy policy</h2>
         <ol>
-        <li><p>Happy Scribe Ltd. reserves the right to change this privacy policy as we may deem necessary from time to time or as may be required by law. Any changes will be immediately posted on the Website and you are deemed to have accepted the terms of the privacy policy on your first use of the Website following the alterations.  </p>
-        <p>You may contact Happy Scribe Ltd. by email at <a href="mailto:hi@happyscribe.co" rel="nofollow" target="_blank">hi@happyscribe.co</a>.</p></li>
+        <li><p>Video Audio Transcription Ltd. reserves the right to change this privacy policy as we may deem necessary from time to time or as may be required by law. Any changes will be immediately posted on the Website and you are deemed to have accepted the terms of the privacy policy on your first use of the Website following the alterations.  </p>
+        <p>You may contact Video Audio Transcription Ltd. by email at <a href="mailto:hi@happyscribe.co" rel="nofollow" target="_blank">hi@happyscribe.co</a>.</p></li>
         </ol>
         <p><strong>Update: 27.09.2018</strong></p>      
     </div>

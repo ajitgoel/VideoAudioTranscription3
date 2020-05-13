@@ -3,29 +3,34 @@
     <!--General:Start-->
     <vx-card no-shadow>
       <h6 class="mb-4">General settings</h6>
-      <div class="flex flex-wrap items-center mb-base">
+     <!--  <div class="flex flex-wrap items-center mb-base">
         <vs-avatar :src="activeUserInfo.photoURL" size="70px" class="mr-4 mb-4" />
         <div>
           <vs-button class="mr-4 sm:mb-0 mb-2">Upload photo</vs-button>
           <vs-button type="border" color="danger">Remove</vs-button>
           <p class="text-sm mt-2">Allowed JPG, GIF or PNG. Max size of 800kB</p>
         </div>
-      </div>
+      </div> -->
       <vs-input class="w-full mb-base" name="email" ref="email" icon-no-border icon="icon icon-mail" icon-pack="feather" 
         label-placeholder="Email" v-model="general.email" disabled="true" ></vs-input>
       <span class="text-danger text-sm">{{ errors.first('email') }}</span>  
+      
       <vs-input class="w-full mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
         icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
+      
       <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
         icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
+      
       <vs-input class="w-full my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
         icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+      
       <vs-input class="w-full my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
         icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
+
       <!-- <vs-alert icon-pack="feather" icon="icon-info" class="h-full my-4" color="warning">
         <span>Your account is not verified. <a href="#" class="hover:underline">Resend Confirmation</a></span>
       </vs-alert> -->
@@ -87,8 +92,8 @@ export default {
   data() {
     return {
       isUserProfileSavedInDatabase: false,
-      userProfileChangePassword:{oldPassword: "", newPassword: "", confirmPassword: ""},      
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
+      userProfileChangePassword:{oldPassword: "", newPassword: "", confirmPassword: ""},      
       notification:{transcriptsCompleted: false, transcriptsError: false,}
     }
   },
