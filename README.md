@@ -119,5 +119,6 @@ https://amplify.aws/community/resources
     - [x] ~~Work with AWS appsync and syncfusion grid to save updated, deleted, inserted info to array.~~
     - [x] ~~unable to focus on textarea.~~
     - [ ] Show number of lines in the textarea, below textarea.
+    - [x] ~~set focus to last line in the textarea~~
 11. Home page screen
     - [ ] Show pricing

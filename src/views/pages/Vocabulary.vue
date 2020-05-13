@@ -49,8 +49,6 @@ export default
     {       
         this.$nextTick(function()
         {
-            this.$refs.vocabularies.$el.style.height = "auto";
-            this.$refs.vocabularies.$el.style.height = (this.$refs.vocabularies.$el.scrollHeight)+"px";
             this.$refs.vocabularies.focusIn();
         });        
     },
@@ -73,6 +71,7 @@ export default
             this.isUserProfileSavedInDatabase=false;
         }
         this.vocabularies=vocabulariesTemp.join('\n');
+        this.$refs.vocabularies.ej2Instances.addAttributes({ rows: vocabulariesTemp.length+1 }); 
         console.log(`this.vocabularies: ${JSON.stringify(this.vocabularies)}`);
     }, 
     methods: 
