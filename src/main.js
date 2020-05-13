@@ -4,8 +4,11 @@ import '@/mixins/generalMixins.js';
 
 //import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
 //Vue.use(GridPlugin);
-import { TextBoxPlugin } from '@syncfusion/ej2-vue-inputs';
+import { TextBoxPlugin ,UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
+import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
+Vue.use(ButtonPlugin);
 Vue.use(TextBoxPlugin);
+Vue.use(UploaderPlugin); 
 
 //#region Globally register components
 import TermsConditions from '@/views/pages/TermsConditions.vue';

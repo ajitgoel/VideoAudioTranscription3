@@ -95,7 +95,7 @@ export const listVideos = /* GraphQL */ `
   }
 `;
 export const getUserProfile = /* GraphQL */ `
-  query GetUserProfile($id: ID!) {
+  query GetUserProfile($id: String!) {
     getUserProfile(id: $id) {
       id
       fullName
@@ -114,11 +114,19 @@ export const getUserProfile = /* GraphQL */ `
 `;
 export const listUserProfiles = /* GraphQL */ `
   query ListUserProfiles(
+    $id: String
     $filter: ModelUserProfileFilterInput
     $limit: Int
     $nextToken: String
+    $sortDirection: ModelSortDirection
   ) {
-    listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    listUserProfiles(
+      id: $id
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      sortDirection: $sortDirection
+    ) {
       items {
         id
         fullName
