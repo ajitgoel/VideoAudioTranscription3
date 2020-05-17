@@ -75,7 +75,14 @@
     {       
       this.$nextTick(function()
       {
-        this.$refs.email.$el.querySelector('input').focus();
+        if(this.isSignUpConfirmed===true)
+        {
+          this.$refs.confirmationCode.$el.querySelector('input').focus();
+        }
+        else
+        {
+          this.$refs.email.$el.querySelector('input').focus();
+        }
       });        
     },
     methods: 

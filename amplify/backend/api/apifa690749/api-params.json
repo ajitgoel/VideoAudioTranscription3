@@ -1,0 +1,41 @@
+{
+    "paths": [
+        {
+            "name": "/payments",
+            "lambdaFunction": "vidaudtranscriptionc628ef06",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "apifa690749",
+    "apiName": "apifa690749",
+    "functionArns": [
+        {
+            "lambdaFunction": "vidaudtranscriptionc628ef06"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-vidaudtranscription-dev-70417-authRole",
+        "unAuthRoleName": "amplify-vidaudtranscription-dev-70417-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "vidaudtranscriptionc628ef06",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}
