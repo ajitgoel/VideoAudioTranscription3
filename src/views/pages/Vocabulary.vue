@@ -15,8 +15,7 @@
                 floatLabelType="Auto" :input= "inputHandler" v-model="vocabularies" ref="vocabularies"/>
             <vs-button class="float-right mt-6" @click="Save" :disabled="!validateForm">Save Changes</vs-button>       
         </div> 
-    </vx-card>    
-    
+    </vx-card> 
 </template>
 <script>
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
