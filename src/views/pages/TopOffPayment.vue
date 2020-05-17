@@ -1,7 +1,7 @@
 <template>
   <form-wizard color="rgba(var(--vs-primary), 1)" errorColor="rgba(var(--vs-danger), 1)" :title="null" :subtitle="null" 
     finishButtonText="Submit">
-    <tab-content title="Choose a plan" class="mb-5" icon="feather icon-home" :before-change="validateChoosePlan">
+    <tab-content title="Choose a plan" class="mb-5" step-size="xs" icon="feather icon-home" :before-change="validateChoosePlan">
 
       <!-- tab 1 content -->
       <form data-vv-scope="choosePlan">
@@ -28,7 +28,7 @@
     </tab-content>
 
     <!-- tab 2 content -->
-    <tab-content title="Billing Information" class="mb-5" icon="feather icon-credit-card" :before-change="validateBillingInformation">
+    <tab-content title="Billing Information" class="mb-5" step-size="xs" icon="feather icon-credit-card" :before-change="validateBillingInformation">
       <form data-vv-scope="billingInformation">
       <div class="vx-row">
         <div class="vx-col md:w-1/2 w-full">
@@ -53,7 +53,7 @@
     </tab-content>
 
     <!-- tab 3 content -->
-    <tab-content title="Payment Confirmation" class="mb-5" icon="feather icon-image" :before-change="validatePaymentConfirmation">
+    <tab-content title="Payment Confirmation" class="mb-5" step-size="xs" icon="feather icon-image" :before-change="validatePaymentConfirmation">
       <form data-vv-scope="paymentConfirmation">
       <div class="vx-row">
         <div class="vx-col md:w-1/2 w-full">
