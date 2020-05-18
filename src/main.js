@@ -4,11 +4,16 @@ import '@/mixins/generalMixins.js';
 
 //import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
 //Vue.use(GridPlugin);
-import { TextBoxPlugin ,UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
-import { ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
+import {TextBoxPlugin, NumericTextBoxPlugin, SliderPlugin, UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
+import {ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
+import { enableRipple } from '@syncfusion/ej2-base';
+
+enableRipple(true);
 Vue.use(ButtonPlugin);
 Vue.use(TextBoxPlugin);
 Vue.use(UploaderPlugin); 
+Vue.use(SliderPlugin);
+Vue.use(NumericTextBoxPlugin);
 
 //#region Globally register components
 import TermsConditions from '@/views/pages/TermsConditions.vue';

@@ -21,8 +21,8 @@
                     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
                     
                     <vs-input v-validate="'required|length:6|numeric'" data-vv-validate-on="blur" name="confirmationCode" 
-                    placeholder="Confirmation code" class="w-full mt-6" label-placeholder="Confirmation code" v-model="confirmationCode" 
-                    scope="ConfirmSignup" icon-no-border icon="icon icon-code" icon-pack="feather" />
+                      placeholder="Confirmation code" class="w-full mt-6" label-placeholder="Confirmation code" v-model="confirmationCode" 
+                      scope="ConfirmSignup" icon-no-border icon="icon icon-code" icon-pack="feather" />
                     <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
                     <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">
                       Confirm email

@@ -45,11 +45,13 @@
       <h6 class="mb-4">Change password</h6>
       <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" 
         v-model="userProfileChangePassword.oldPassword" name="oldPassword" ref="oldPassword" 
-        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Old password" class="w-full mb-base" />
+        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Old password" 
+        class="w-full mb-base" />
       <span class="text-danger text-sm">{{ errors.first('oldPassword') }}</span>
       <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" 
         v-model="userProfileChangePassword.newPassword" name="newPassword" ref="newPassword" 
-        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="New password" class="w-full mb-base" />
+        icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="New password" 
+        class="w-full mb-base" />
       <span class="text-danger text-sm">{{ errors.first('newPassword') }}</span>
       <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10|confirmed:newPassword'" type="password" 
         v-model="userProfileChangePassword.confirmPassword" name="confirmPassword" 
