@@ -9,36 +9,53 @@
             <ejs-slider id="noOfHoursSlider" name="noOfHoursSlider" ref="noOfHoursSlider" value=1 min=0 max=100 :ticks='ticks' 
               v-model="noOfHours"/>
           </div>
-          <div class="vx-col sm:w-1/4 w-full mb-2">
+          <div class="vx-col sm:w-1/2 w-full mb-2">
             <ejs-numerictextbox id="noOfHours" name="noOfHours" ref="noOfHours" v-model="noOfHours" format='n' value="1" min="1" max="100" 
-              strictMode="true" placeholder="Number of hours" floatLabelType="Always"/>   
-            <span class="text-danger text-sm">{{ errors.first('noOfHours') }}</span>
+              strictMode="true" placeholder="Number of hours" floatLabelType="Always" width="25%"/> 
           </div>
         </div>       
              
       </form>
     </tab-content>
 
-    <tab-content title="Billing Information" class="mb-5" step-size="xs" icon="feather icon-credit-card" 
+    <tab-content title="Billing/Payment Information" class="mb-5" step-size="xs" icon="feather icon-credit-card" 
       :before-change="validateBillingInformation">
       <form data-vv-scope="billingInformation">
       <div class="vx-row">
-        <div class="vx-col md:w-1/2 w-full">
-            <vs-input class="w-full mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
-                icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
-            
-            <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
-                icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
-            
-            <vs-input class="w-full my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
-                icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-            
-            <vs-input class="w-full my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
-                icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
+        <div class="vx-col lg:w-2/3 w-full">
+          <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
+              icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
+          
+          <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
+              icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
+          
+          <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
+              icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+          
+          <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
+              icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
+        </div>
+
+        <div class="vx-col lg:w-1/3 w-full">
+          <vx-card title="Price Details">
+            <div class="flex justify-between mb-2">
+                <span>Price 3 Items</span>
+                <span class="font-semibold">$699.30</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span>Delivery Charges</span>
+                <span class="text-success">Free</span>
+            </div>
+            <vs-divider />
+            <div class="flex justify-between">
+                <span>Amount Payable</span>
+                <span class="font-semibold">$699.30</span>
+            </div>
+          </vx-card>
         </div>    
       </div>
       </form>
@@ -141,7 +158,7 @@ export default {
   data() {
     return {
         value1:55,widthx:55,heightx:55,
-        ticks: { placement: 'Before',smallStep: 10, largeStep: 20, showSmallTicks: true },
+        ticks: { placement: 'After',smallStep: 10, largeStep: 20, showSmallTicks: true },
         noOfHours:1,
         general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},      
         firstName: "",

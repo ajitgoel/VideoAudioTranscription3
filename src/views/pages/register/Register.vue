@@ -3,77 +3,75 @@
     <div class="vx-col sm:w-1/2 md:w-1/2 lg:w-3/4 xl:w-3/5 sm:m-0 m-4">
       <vx-card>
         <div slot="no-body" class="full-page-bg-color">
-            <div class="vx-row no-gutter">
-                <div class="vx-col hidden sm:hidden md:hidden lg:block lg:w-1/2 mx-auto self-center">
-                    <img src="@/assets/images/pages/register.jpg" alt="register" class="mx-auto">
-                </div>
-                <div class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center  d-theme-dark-bg">
-
-                  <div class="px-8 pt-8 register-tabs-container" v-if="showConfirmSignupScreen">
-                    <div class="vx-card__title mb-4">
-                        <h4 class="mb-4">Confirm Signup</h4>
-                        <p>Enter the confirmation code to confirm signup.</p>
-                    </div>
-                    <!--Confirm Signup: Start-->
-                    <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" ref="email2" type="email" 
-                      label-placeholder="Email" placeholder="Email" v-model="email" scope="ConfirmSignup" class="w-full mt-6" 
-                      icon-no-border icon="icon icon-user" icon-pack="feather" />
-                    <span class="text-danger text-sm">{{ errors.first('email') }}</span>
-                    
-                    <vs-input v-validate="'required|length:6|numeric'" data-vv-validate-on="blur" name="confirmationCode" 
-                      placeholder="Confirmation code" class="w-full mt-6" label-placeholder="Confirmation code" v-model="confirmationCode" 
-                      scope="ConfirmSignup" icon-no-border icon="icon icon-code" icon-pack="feather" />
-                    <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
-                    <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">
-                      Confirm email
-                    </vs-button>
-                    <!--Confirm Signup: End-->
-                  </div>
-
-                  <div class="px-8 pt-8 register-tabs-container" v-else>
-                    <div class="vx-card__title mb-4">
-                        <h4 class="mb-4">Create Account</h4>
-                        <p>Fill the below form to create a new account.</p>
-                    </div>
-                    <!--Register: Start-->
-                    <div class="clearfix">
-                      <!-- <vs-input v-validate="'required|alpha_dash|min:3'" data-vv-validate-on="blur" label-placeholder="Name" 
-                      name="displayName" placeholder="Name" v-model="displayName" scope="CreateAccount" class="w-full" />
-                      <span class="text-danger text-sm">{{ errors.first('displayName') }}</span> -->
-                      <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" ref="email" 
-                        label-placeholder="Email" placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" 
-                        icon-no-border icon="icon icon-user" icon-pack="feather" />
-                      <span class="text-danger text-sm">{{ errors.first('email') }}</span>
-                      <vs-input ref="password" type="password" data-vv-validate-on="blur" v-validate="'required|min:6|max:10'"
-                        name="password" label-placeholder="Password" placeholder="Password" v-model="password" scope="CreateAccount" 
-                        class="w-full mt-6" icon="icon icon-lock" icon-pack="feather" icon-no-border/>
-                      <span class="text-danger text-sm">{{ errors.first('password') }}</span>
-                      <vs-input type="password" v-validate="'min:6|max:10|confirmed:password'" data-vv-validate-on="blur"
-                        data-vv-as="password" name="confirm_password" label-placeholder="Confirm Password" placeholder="Confirm Password"
-                        v-model="confirm_password" scope="CreateAccount" class="w-full mt-6"  icon="icon icon-lock" icon-pack="feather" 
-                        icon-no-border/>
-                      <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
-
-                      <vs-checkbox id="termsAndConditionsPrivacyPolicy" v-model="isTermsConditionAcceptedPrivacyPolicy" class="mt-6">                        
-                        <label for="termsAndConditionsPrivacyPolicy">By clicking <strong>Register</strong>, I</label>
-                      </vs-checkbox><br/>
-                      1. Agree and consent to the <span><a href='/terms-conditions' target='_blank' rel="nofollow">User Agreement</a></span>, its policies, and the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
-                      2. Expressly instruct VideoAudioTranscription service to communicate specific information about me and my account to third parties in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
-                      3. Specifically and expressly consent to the use of website tracking methods, including cookies, and to the safe and secure transmission of your personal information outside the European Economic Area in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>.
-
-                      <!-- <br/><strong>User Agreement and Privacy Policy</strong><br/>
-                      These documents are designed to inform you of your rights and obligations when using the VideoAudioTranscription service. <br/>-->
-
-                      <div class="flex flex-wrap justify-between my-5">
-                        <a href='#' @click='showConfirmSignupScreen=true'>Enter Verification Code</a>
-                      </div>                    
-                      <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
-                      <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
-                    </div>
-                    <!--Register: End-->
-                  </div>
-                </div>
+          <div class="vx-row no-gutter">
+            <div class="vx-col hidden sm:hidden md:hidden lg:block lg:w-1/2 mx-auto self-center">
+                <img src="@/assets/images/pages/register.jpg" alt="register" class="mx-auto">
             </div>
+            <div class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center  d-theme-dark-bg">
+              <div class="px-8 pt-8 register-tabs-container" v-if="showConfirmSignupScreen">
+                <div class="vx-card__title mb-4">
+                    <h4 class="mb-4">Confirm Signup</h4>
+                    <p>Enter the confirmation code to confirm signup.</p>
+                </div>
+                <!--Confirm Signup: Start-->
+                <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" ref="email2" type="email" 
+                  label-placeholder="Email" placeholder="Email" v-model="email" scope="ConfirmSignup" class="w-full mt-6" 
+                  icon-no-border icon="icon icon-user" icon-pack="feather" />
+                <span class="text-danger text-sm">{{ errors.first('email') }}</span>
+                
+                <vs-input v-validate="'required|length:6|numeric'" data-vv-validate-on="blur" name="confirmationCode" 
+                  placeholder="Confirmation code" class="w-full mt-6" label-placeholder="Confirmation code" v-model="confirmationCode" 
+                  scope="ConfirmSignup" icon-no-border icon="icon icon-code" icon-pack="feather" />
+                <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
+                <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">
+                  Confirm email
+                </vs-button>
+                <!--Confirm Signup: End-->
+              </div>
+              <div class="px-8 pt-8 register-tabs-container" v-else>
+                <div class="vx-card__title mb-4">
+                    <h4 class="mb-4">Create Account</h4>
+                    <p>Fill the below form to create a new account.</p>
+                </div>
+                <!--Register: Start-->
+                <div class="clearfix">
+                  <!-- <vs-input v-validate="'required|alpha_dash|min:3'" data-vv-validate-on="blur" label-placeholder="Name" 
+                  name="displayName" placeholder="Name" v-model="displayName" scope="CreateAccount" class="w-full" />
+                  <span class="text-danger text-sm">{{ errors.first('displayName') }}</span> -->
+                  <vs-input v-validate="'required|email'" data-vv-validate-on="blur" name="email" type="email" ref="email" 
+                    label-placeholder="Email" placeholder="Email" v-model="email" scope="CreateAccount" class="w-full mt-6" 
+                    icon-no-border icon="icon icon-user" icon-pack="feather" />
+                  <span class="text-danger text-sm">{{ errors.first('email') }}</span>
+                  <vs-input ref="password" type="password" data-vv-validate-on="blur" v-validate="'required|min:6|max:10'"
+                    name="password" label-placeholder="Password" placeholder="Password" v-model="password" scope="CreateAccount" 
+                    class="w-full mt-6" icon="icon icon-lock" icon-pack="feather" icon-no-border/>
+                  <span class="text-danger text-sm">{{ errors.first('password') }}</span>
+                  <vs-input type="password" v-validate="'min:6|max:10|confirmed:password'" data-vv-validate-on="blur"
+                    data-vv-as="password" name="confirm_password" label-placeholder="Confirm Password" placeholder="Confirm Password"
+                    v-model="confirm_password" scope="CreateAccount" class="w-full mt-6"  icon="icon icon-lock" icon-pack="feather" 
+                    icon-no-border/>
+                  <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
+
+                  <vs-checkbox id="termsAndConditionsPrivacyPolicy" v-model="isTermsConditionAcceptedPrivacyPolicy" class="mt-6">                        
+                    <label for="termsAndConditionsPrivacyPolicy">By clicking <strong>Register</strong>, I</label>
+                  </vs-checkbox><br/>
+                  1. Agree and consent to the <span><a href='/terms-conditions' target='_blank' rel="nofollow">User Agreement</a></span>, its policies, and the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
+                  2. Expressly instruct VideoAudioTranscription service to communicate specific information about me and my account to third parties in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
+                  3. Specifically and expressly consent to the use of website tracking methods, including cookies, and to the safe and secure transmission of your personal information outside the European Economic Area in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>.
+
+                  <!-- <br/><strong>User Agreement and Privacy Policy</strong><br/>
+                  These documents are designed to inform you of your rights and obligations when using the VideoAudioTranscription service. <br/>-->
+
+                  <div class="flex flex-wrap justify-between my-5">
+                    <a href='#' @click='showConfirmSignupScreen=true'>Enter Verification Code</a>
+                  </div>                    
+                  <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
+                  <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
+                </div>
+                <!--Register: End-->
+              </div>
+            </div>
+          </div>
         </div>
       </vx-card>
     </div>
