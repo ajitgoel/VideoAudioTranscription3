@@ -38,22 +38,46 @@
           <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
               icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
           <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
+
+          <vs-divider />
+          <h5 class="#e0e0e0 grey lighten-4">Payment Method<span class="right">${{amount}}</span>
+          </h5>
+          <div class="error red center-align white-text">{{stripeValidationError}}</div>
+          <div class="col s12 card-element">
+              <label>Card Number</label>
+              <div id="card-number-element" class="input-value"></div>
+          </div>
+          <div class="col s6 card-element">
+              <label>Expiry Date</label>
+              <div id="card-expiry-element"></div>
+          </div>
+          <div class="col s6 card-element">
+              <label>CVC</label>
+              <div id="card-cvc-element"></div>
+          </div>
+          <div class="col s12 place-order-button-block">
+              <button class="btn col s12 #e91e63 pink" @click="placeOrder">Place Order</button>
+          </div>
         </div>
 
         <div class="vx-col lg:w-1/3 w-full">
-          <vx-card title="Price Details">
+          <vx-card title="Order summary">
             <div class="flex justify-between mb-2">
-                <span>Price 3 Items</span>
-                <span class="font-semibold">$699.30</span>
+                <span>No of hours</span>
+                <span class="font-semibold">1</span>
             </div>
             <div class="flex justify-between mb-2">
-                <span>Delivery Charges</span>
-                <span class="text-success">Free</span>
+                <span>Price per hour</span>
+                <span class="text-success">$10</span>
+            </div>
+            <div class="flex justify-between mb-2">
+                <span>Auto recharge</span>
+                <span class="text-success">Yes</span>
             </div>
             <vs-divider />
             <div class="flex justify-between">
-                <span>Amount Payable</span>
-                <span class="font-semibold">$699.30</span>
+                <span>Total</span>
+                <span class="font-semibold">$10</span>
             </div>
           </vx-card>
         </div>    
@@ -94,6 +118,35 @@
   </form-wizard>
 </template>
 <style>
+  .payment-form 
+  {
+    max-width: 400px;
+    margin: 20px auto;
+    border: 1px solid #ececec;
+  }
+  .payment-form h5 
+  {
+    margin: 0;
+    padding: 10px;
+    font-size: 1.2rem;
+  }
+  .card-element 
+  {
+    margin-top: 5px;
+  }
+  #card-number-element,
+  #card-expiry-element,
+  #card-cvc-element 
+  {
+    background: white;
+    padding: 5px;
+    border: 1px solid #ececec;
+    height: 30px;
+  }
+  .place-order-button-block 
+  {
+    margin: 10px 0;
+  }
 #noOfHoursSlider .e-handle 
 {
   height: 25px;
@@ -157,6 +210,13 @@ Validator.localize('en', dict);
 export default {
   data() {
     return {
+        stripe: null,
+        cardNumberElement: null,
+        cardExpiryElement: null,
+        cardCVCElement: null,
+        stripeValidationError: "",
+        amount:25,
+        
         value1:55,widthx:55,heightx:55,
         ticks: { placement: 'After',smallStep: 10, largeStep: 20, showSmallTicks: true },
         noOfHours:1,
@@ -190,7 +250,61 @@ export default {
         ],
     }
   },
-  methods: {
+  mounted() 
+  {
+    this.stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
+    //#region createAndMountFormElements;
+    var elements = this.stripe.elements();
+    this.cardNumberElement = elements.create("cardNumber");
+    this.cardNumberElement.mount("#card-number-element");
+    this.cardExpiryElement = elements.create("cardExpiry");
+    this.cardExpiryElement.mount("#card-expiry-element");
+    this.cardCvcElement = elements.create("cardCvc");
+    this.cardCvcElement.mount("#card-cvc-element");
+    this.cardNumberElement.on("change", this.setValidationError);
+    this.cardExpiryElement.on("change", this.setValidationError);
+    this.cardCvcElement.on("change", this.setValidationError);
+    //#endregion
+  },
+  methods: 
+  {  
+    setValidationError(event) 
+    {
+      this.stripeValidationError = event.error ? event.error.message : "";
+    },
+    async placeOrder() 
+    {
+      try
+      {
+        let result= await this.stripe.createToken(this.cardNumberElement);
+        var stripeObject = {amount: this.amount,source: result.token};
+        console.log('stripeObject:', JSON.stringify(stripeObject));
+        //#region saveDataToFireStore(stripeObject)
+        /* const db = firebase.firestore();
+        const chargesRef = db.collection("charges");
+        const pushId = chargesRef.doc().id;
+        db.collection("charges").doc(pushId).set(stripeObject);
+        chargesRef.doc(pushId).onSnapshot(snapShot => 
+        {
+          const charge = snapShot.data();
+          if (charge.error) 
+          {
+              alert(charge.error);
+              chargesRef.doc(pushId).delete();
+              return;
+          }
+          if (charge.status && charge.status == "succeeded") 
+          {
+              alert(charge.status);
+          }
+        }); */
+        //#endregion
+      }
+      catch(error)
+      {
+        this.stripeValidationError = result.error.message;
+      }
+    },
     cambio(value){
       this.widthx = value
       this.heightx = value

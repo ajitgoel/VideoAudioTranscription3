@@ -1,8 +1,6 @@
 <template>
     <section class="row payment-form">
-        <h5 class="#e0e0e0 grey lighten-4">
-            Payment Method
-            <span class="right">${{amount}}</span>
+        <h5 class="#e0e0e0 grey lighten-4">Payment Method<span class="right">${{amount}}</span>
         </h5>
         <div class="error red center-align white-text">{{stripeValidationError}}</div>
         <div class="col s12 card-element">
