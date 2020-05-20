@@ -9,11 +9,6 @@
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true
-		},
-		"vidaudtranscriptionc628ef06": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
 		}
 	},
 	"auth": {
@@ -48,20 +43,6 @@
 					}
 				}
 			}
-		},
-		"apifa690749": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "vidaudtranscriptionc628ef06",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
 		}
 	},
 	"storage": {

@@ -33,6 +33,8 @@ https://docs.aws.amazon.com/cli/latest/reference/cognito-idp/delete-user-pool.ht
 http://vee-validate.logaretm.com/v2/guide/rules.html#digits-params
 ###### Feather Icons: 
 https://feathericons.com/?query=code
+###### Font Awesome Icons: 
+https://fontawesome.com/icons?d=gallery&q=address
 
 ### Articles:
 https://medium.com/@dabit3/how-to-build-serverless-vue-applications-with-aws-amplify-67d16c79e9d6
