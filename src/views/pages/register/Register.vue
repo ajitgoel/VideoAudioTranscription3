@@ -103,14 +103,7 @@ export default
   {       
     this.$nextTick(function()
     {
-      if(this.showConfirmSignupScreen===true)
-      {
-        this.$refs.email2.$el.querySelector('input').focus();
-      }
-      else
-      {
-        this.$refs.email.$el.querySelector('input').focus();
-      }
+      this.$refs.email.$el.querySelector('input').focus();
     });        
   },
   methods: 
@@ -166,6 +159,10 @@ export default
         const iSignUpResult=await Auth.signUp(params);
         console.log(`signUp iSignUpResult: ${JSON.stringify(this.iSignUpResult)}`);
         this.showConfirmSignupScreen=true;
+        this.$nextTick(function()
+        {
+          this.$refs.email2.$el.querySelector("input").focus();
+        });        
         this.$vs.notify({title: 'Register user', text: 'Please check your email to confirm your account!', iconPack: 'feather',
           icon: 'icon-check',color: 'success'}); 
       }

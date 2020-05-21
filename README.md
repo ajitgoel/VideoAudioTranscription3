@@ -82,7 +82,7 @@ https://amplify.aws/community/resources
     - [ ] terms and conditions needs to be proof read.
     - [x] ~~Clicking on privacy policy, terms and conditions should open those pages in a new tab.~~
     - [x] ~~not required=>Save profile information(Full name, email) in user profile table.~~
-    - [ ] Focus should be set on the first email field in forgot password-confirmation screen.
+    - [x] ~~Focus should be set on the first email field in forgot password-confirmation screen.~~
 3. Login screen
 	- [ ] Add users to register using Twitter, Github.
     - [ ] Add users to register using Facebook, Google.
@@ -93,7 +93,7 @@ https://amplify.aws/community/resources
     - [x] ~~send email to user to confirm email.~~
     - [x] ~~Add confirm email screen~~
     - [ ] Error messages do not show correctly below input element.
-    - [ ] Focus should be set on the first email field in forgot password-confirmation screen.
+    - [x] ~~Focus should be set on the first email field in forgot password-confirmation screen.~~
 6. Dashboard screen
     - [x] ~~Dashboard screens should be secured.~~
     - [ ] Show user profile information(Full name, email) from user profile table. 

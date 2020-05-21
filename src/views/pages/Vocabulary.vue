@@ -1,5 +1,5 @@
 <template>
-    <vx-card title="Your vocabulary" code-toggler>
+    <vx-card title="Your vocabulary">
         <span>
             Create a custom vocabulary to help Video Audio Transcription when transcribing technical terms, proper nouns 
             such as a company name or your cat’s nickname.<br/>
@@ -10,7 +10,7 @@
                 ✔︎ You can enter acronyms (HS, CEO).
             </code><br/><br/>
         </span>
-        <div class="mt-100">
+        <div>
             <ejs-textbox cssClass="height:500px;" id='vocabularies' :multiline="true" placeholder="Enter your vocabularies" 
                 floatLabelType="Auto" :input= "inputHandler" v-model="vocabularies" ref="vocabularies"/>
             <vs-button class="float-right mt-6" @click="Save" :disabled="!validateForm">Save Changes</vs-button>       
@@ -21,9 +21,6 @@
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import {listUserProfilesForVocabularies} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
-import '@syncfusion/ej2-base/styles/material.css';
-import '@syncfusion/ej2-vue-inputs/styles/material.css';
-
 export default
 {
     data() {
@@ -117,6 +114,7 @@ export default
 </script>
 
 <style lang="scss">
+
 @media print {
   .invoice-page {
     * {

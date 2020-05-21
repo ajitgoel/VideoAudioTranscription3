@@ -1,4 +1,5 @@
 import Vue from 'vue';
+import { Auth } from 'aws-amplify';
 
 Vue.mixin({
   methods: 

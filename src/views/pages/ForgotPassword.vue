@@ -75,14 +75,7 @@
     {       
       this.$nextTick(function()
       {
-        if(this.isSignUpConfirmed===true)
-        {
-          this.$refs.confirmationCode.$el.querySelector('input').focus();
-        }
-        else
-        {
-          this.$refs.email.$el.querySelector('input').focus();
-        }
+        this.$refs.email.$el.querySelector('input').focus();
       });        
     },
     methods: 
@@ -115,7 +108,11 @@
         try
         {
           var result=await Auth.forgotPassword(this.email);       
-          this.isSignUpConfirmed=true; 
+          this.isSignUpConfirmed=true;           
+          this.$nextTick(function()
+          {
+            this.$refs.confirmationCode.$el.querySelector('input').focus();
+          });  
           this.$vs.notify({title: 'Forgot password', text: 'Please check your email to confirm your account!', 
               iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
         }
