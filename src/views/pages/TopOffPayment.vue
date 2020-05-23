@@ -23,28 +23,57 @@
           <div class="vx-col lg:w-2/3 w-full">
             <!-- <ejs-slider id="noOfHoursSlider" name="noOfHoursSlider" ref="noOfHoursSlider" value=1 min=0 max=100 :ticks='ticks' 
               v-model="noOfHours"/> -->
-            <ejs-numerictextbox id="noOfHours" name="noOfHours" ref="noOfHours" v-model="noOfHours" format='n' value="1" min="1" 
-            max="100" strictMode="true" placeholder="Number of hours" floatLabelType="Always" width="25%"/> 
-          
+              <vx-card title="Select no of hours to prepay">
+                  <vs-slider :min="50" @change="noOfHoursSelectedChanged" v-model="value1"/>
+                  <div :style="{'width':widthx+'px','height':heightx+'px'}" class="cuadrox">
+                    {{value1}}
+                  </div>                              
+                  <vs-input-number id="noOfHours" name="noOfHours" ref="noOfHours" v-model="noOfHours" min="1" max="100"/>
+                  <!--  <ejs-numerictextbox id="noOfHours" name="noOfHours" ref="noOfHours" v-model="noOfHours" format='n' value="1" min="1" 
+                  max="100" strictMode="true" placeholder="Number of hours" floatLabelType="Always" width="25%"/>  -->                           
+                  <vs-table :data="pricing">
+                    <template slot="thead">                    
+                      <vs-th>Pricing per hour</vs-th>
+                      <vs-th>No of hours</vs-th>
+                    </template>
+                    <template slot-scope="{data}">
+                      <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                        <vs-td :data="data[indextr].priceperhour">
+                          {{ data[indextr].priceperhour }}
+                        </vs-td>
+                        <vs-td :data="data[indextr].hourrange">
+                          {{ data[indextr].hourrange }}
+                        </vs-td>
+                      </vs-tr>
+                    </template>
+                  </vs-table>               
+              </vx-card>
+              
             <vs-divider />
-            <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
-                icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
-            
-            <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
-                icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
-            
-            <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
-                icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-            
-            <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
-                icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
+
+            <vx-card title="Billing details">
+              <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
+                  icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
+              <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
+              
+              <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
+                  icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
+              <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
+              
+              <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
+                  icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+              <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+              
+              <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
+                  icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
+              <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span> -->
+            </vx-card>
 
             <vs-divider />
-            <div ref="card"></div>
+            <vx-card title="Payment details">
+              <div ref="card"></div>
+            </vx-card>
+
             <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
           </div>
 
@@ -205,6 +234,23 @@ Validator.localize('en', dict);
 export default {
   data() {
     return {
+      pricing: [
+        {
+          "id": 1,
+          "priceperhour": "10$/hour",
+          "hourrange": "0 to 24",
+        },
+        {
+          "id": 2,
+          "priceperhour": "9$/hour",
+          "hourrange": "25 to 49 hours",
+        },
+        {
+          "id": 3,
+          "priceperhour": "8$/hour",
+          "hourrange": "50 to 100 hours",
+        },
+      ],
         stripe: null,
         cardNumberElement: null,
         cardExpiryElement: null,
@@ -249,7 +295,7 @@ export default {
   {
       validateForm() 
       {            
-          return false;//this.vocabularies != '';
+          return false;
       }
   },
   mounted() 

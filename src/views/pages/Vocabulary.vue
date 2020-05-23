@@ -50,7 +50,9 @@ export default
     },
     async created() 
     {
-        const userId=this.userIdFromLocalStorage();
+        const currentUserInfo=await this.currentUserInfo();
+        const userId=currentUserInfo.id;
+        
         const listUserProfilesFilter={id:{eq:userId}};
         const result = await API.graphql(graphqlOperation(listUserProfilesForVocabularies, {filter: listUserProfilesFilter}));
         console.log(`result: ${JSON.stringify(result)}`);
@@ -76,7 +78,8 @@ export default
         {
             try 
             {
-                const userId=this.userIdFromLocalStorage();
+                const currentUserInfo=await this.currentUserInfo();
+                const userId=currentUserInfo.id;
                 if(userId == null)
                 {
                     this.$vs.notify({title: 'Error',text: 'There was an error saving your vocabulary', iconPack: 'feather', 

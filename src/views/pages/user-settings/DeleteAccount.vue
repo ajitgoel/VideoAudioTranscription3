@@ -49,7 +49,8 @@ export default {
     {
       try 
       {
-        const userId=this.userIdFromLocalStorage();
+        const currentUserInfo=await this.currentUserInfo();
+        const userId=currentUserInfo.id;
         if(userId == null)
         {
           this.$vs.notify({title: 'Error',text: 'There was an error deleting your profile', iconPack: 'feather', 
