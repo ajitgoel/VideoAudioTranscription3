@@ -15,7 +15,7 @@
         label-placeholder="Email" v-model="general.email" disabled="true" ></vs-input>
       <span class="text-danger text-sm">{{ errors.first('email') }}</span>  
       
-      <vs-input class="w-full mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
+      <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
         icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
       
@@ -23,11 +23,11 @@
         icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
       
-      <vs-input class="w-full my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
+      <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
         icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('country') }}</span>
       
-      <vs-input class="w-full my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
+      <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
         icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
 
@@ -99,11 +99,11 @@ export default {
       notification:{transcriptsCompleted: false, transcriptsError: false,}
     }
   },
-  computed: { 
+  /* computed: { 
     activeUserInfo() {
       return this.$store.state.AppActiveUser
     },   
-  },
+  }, */
   mounted() 
   {       
     this.$nextTick(function()
@@ -114,11 +114,8 @@ export default {
   async created() 
   {
       const currentUserInfo=await this.currentUserInfo();
-      const userId=currentUserInfo.id;
-      const listUserProfilesFilter={id:{eq:userId}};
-      const result = await API.graphql(graphqlOperation(listUserProfilesForGeneral, {filter: listUserProfilesFilter}));
-      console.log(`result: ${JSON.stringify(result)}`);
-      const items=result.data.listUserProfiles.items;
+      this.general.email=currentUserInfo.email;
+      const items=await this.getuserprofile();
       if(items.length>0)
       {
           this.general.fullName=items[0].fullName;

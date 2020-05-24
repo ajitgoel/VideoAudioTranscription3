@@ -109,7 +109,7 @@ https://amplify.aws/community/resources
 	b. Profile screen:
     - [x] ~~email, full name(Individual or company), billing address, country, VAT number(if applicable)~~
     - [x] ~~Notification Preferences=> Notify me when my transcripts are done processing, Notify me when there is a problem with my transcripts~~
-    - [ ] Show email when the profile screen first loads.
+    - [x] ~~Show email when the profile screen first loads.~~
     - [ ] Allow user to save his profile picture into AWS S3
     c. Payment settings screen:
     - [x] ~~Basic functionality~~

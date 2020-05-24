@@ -1,5 +1,9 @@
 import Vue from 'vue';
 import { Auth } from 'aws-amplify';
+import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
+import {listUserProfilesForGeneral} from '@/graphql/customQueries';
+import API, {graphqlOperation} from '@aws-amplify/api';
+
 
 Vue.mixin({
   methods: 
@@ -13,6 +17,17 @@ Vue.mixin({
       const result=await Auth.currentUserInfo();
       console.log(`currentUserInfo result: ${JSON.stringify(result)}`);
       return {id:result.username, email:result.attributes.email};
+    },
+    async getuserprofile()
+    {
+      const currentUserInfo=await this.currentUserInfo();
+      const userId=currentUserInfo.id;
+      
+      const listUserProfilesFilter={id:{eq:userId}};
+      const result = await API.graphql(graphqlOperation(listUserProfilesForGeneral, {filter: listUserProfilesFilter}));
+      console.log(`result: ${JSON.stringify(result)}`);
+      const items=result.data.listUserProfiles.items;
+      return items;
     },
     arrayToSingleArrayObject(array, keyname) 
     {
