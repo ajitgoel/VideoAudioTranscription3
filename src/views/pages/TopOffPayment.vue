@@ -79,7 +79,7 @@
 
             <vs-divider />
             <vx-card title="Payment details">
-              <div ref="card"></div>
+              <div ref="cardElement"></div>
               <div class="flex items-center mb-4">
                 <vs-switch v-model="paymentSettings.autoRecharge" />
                 <span class="ml-4">Auto Recharge</span>
@@ -205,16 +205,6 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 // For custom error message
 import { Validator } from 'vee-validate';
 
-let stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
-let elements = stripe.elements();
-let card = undefined;
-let style = {
-  base: {border: '1px solid #D8D8D8', borderRadius: '4px',color: "#000",},
-  invalid: {
-    // All of the error styles go inside of here.
-  }
-};
-
 const dict = {
   custom: {
     first_name: {
@@ -261,13 +251,14 @@ export default {
       cardCVCElement: null,
       stripeValidationError: "",
       amount:25,
+      
+      noOfHours:1,
       isUserProfileSavedInDatabase: false,
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
       paymentSettings:{autoRecharge: false},
 
       value1:55,widthx:55,heightx:55,
       ticks: { placement: 'After',smallStep: 10, largeStep: 20, showSmallTicks: true },
-      noOfHours:1,
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},      
       firstName: "",
       lastName: "",
@@ -321,8 +312,12 @@ export default {
       return 0;
     },
     validateForm() 
-    {            
-        return false;
+    {         
+      if(this.noOfHours > 0  && general.fullName!="" && general.billingAddress != "" && general.country!="")
+      {
+        return true;
+      }
+      return false;
     }
   },
   async created() 
@@ -351,8 +346,16 @@ export default {
   },
   mounted() 
   {
-    card = elements.create('card', style);
-    card.mount(this.$refs.card);
+    let style = {
+      base: {border: '1px solid #D8D8D8', borderRadius: '4px',color: "#000",},
+      invalid: {
+        // All of the error styles go inside of here.
+      }
+    };
+    const stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
+    const elements = stripe.elements();
+    const card = elements.create('card', style);
+    card.mount(this.$refs.cardElement);
 
     /* this.stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
     //#region createAndMountFormElements;
