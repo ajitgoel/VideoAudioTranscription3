@@ -34,20 +34,6 @@
 		}
 	},
 	"api": {
-		"payment": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "payment",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		},
 		"vidaudtranscription": {
 			"service": "AppSync",
 			"providerPlugin": "awscloudformation",
