@@ -12,9 +12,13 @@ export const onCreateAlbum = /* GraphQL */ `
           albumId
           bucket
           labels
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -29,9 +33,13 @@ export const onUpdateAlbum = /* GraphQL */ `
           albumId
           bucket
           labels
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -46,9 +54,13 @@ export const onDeleteAlbum = /* GraphQL */ `
           albumId
           bucket
           labels
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -63,6 +75,8 @@ export const onCreateVideo = /* GraphQL */ `
         Videos {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       bucket
       fullsize {
@@ -76,6 +90,8 @@ export const onCreateVideo = /* GraphQL */ `
         height
       }
       labels
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -90,6 +106,8 @@ export const onUpdateVideo = /* GraphQL */ `
         Videos {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       bucket
       fullsize {
@@ -103,6 +121,8 @@ export const onUpdateVideo = /* GraphQL */ `
         height
       }
       labels
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -117,6 +137,8 @@ export const onDeleteVideo = /* GraphQL */ `
         Videos {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       bucket
       fullsize {
@@ -130,6 +152,8 @@ export const onDeleteVideo = /* GraphQL */ `
         height
       }
       labels
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -147,6 +171,8 @@ export const onCreateUserProfile = /* GraphQL */ `
       paymentSettings {
         autoRecharge
       }
+      createdAt
+      updatedAt
       owner
     }
   }
@@ -165,6 +191,8 @@ export const onUpdateUserProfile = /* GraphQL */ `
       paymentSettings {
         autoRecharge
       }
+      createdAt
+      updatedAt
       owner
     }
   }
@@ -183,6 +211,8 @@ export const onDeleteUserProfile = /* GraphQL */ `
       paymentSettings {
         autoRecharge
       }
+      createdAt
+      updatedAt
       owner
     }
   }

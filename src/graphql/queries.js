@@ -12,9 +12,13 @@ export const getAlbum = /* GraphQL */ `
           albumId
           bucket
           labels
+          createdAt
+          updatedAt
         }
         nextToken
       }
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -31,6 +35,8 @@ export const listAlbums = /* GraphQL */ `
         Videos {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -47,6 +53,8 @@ export const getVideo = /* GraphQL */ `
         Videos {
           nextToken
         }
+        createdAt
+        updatedAt
       }
       bucket
       fullsize {
@@ -60,6 +68,8 @@ export const getVideo = /* GraphQL */ `
         height
       }
       labels
+      createdAt
+      updatedAt
     }
   }
 `;
@@ -76,6 +86,8 @@ export const listVideos = /* GraphQL */ `
         album {
           id
           name
+          createdAt
+          updatedAt
         }
         bucket
         fullsize {
@@ -89,6 +101,8 @@ export const listVideos = /* GraphQL */ `
           height
         }
         labels
+        createdAt
+        updatedAt
       }
       nextToken
     }
@@ -108,6 +122,8 @@ export const getUserProfile = /* GraphQL */ `
       paymentSettings {
         autoRecharge
       }
+      createdAt
+      updatedAt
       owner
     }
   }
@@ -139,6 +155,8 @@ export const listUserProfiles = /* GraphQL */ `
         paymentSettings {
           autoRecharge
         }
+        createdAt
+        updatedAt
         owner
       }
       nextToken
@@ -166,6 +184,8 @@ export const listVideosByAlbum = /* GraphQL */ `
         album {
           id
           name
+          createdAt
+          updatedAt
         }
         bucket
         fullsize {
@@ -179,6 +199,8 @@ export const listVideosByAlbum = /* GraphQL */ `
           height
         }
         labels
+        createdAt
+        updatedAt
       }
       nextToken
     }
