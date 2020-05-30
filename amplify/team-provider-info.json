@@ -15,7 +15,8 @@
             "function": {
                 "vidaudtranscription1ea69154PreSignup": {
                     "DOMAINBLACKLIST": ""
-                }
+                },
+                "S3Triggere1eb1907": {}
             },
             "auth": {
                 "vidaudtranscription1ea69154": {}

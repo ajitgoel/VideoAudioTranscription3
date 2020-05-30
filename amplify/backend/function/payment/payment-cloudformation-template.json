@@ -2,42 +2,10 @@
 	"AWSTemplateFormatVersion": "2010-09-09",
 	"Description": "Lambda resource stack creation using Amplify CLI",
 	"Parameters": {
-		"DOMAINBLACKLIST": {
+		"CloudWatchRule": {
 			"Type": "String",
-			"Default": ""
-		},
-		"DOMAINWHITELIST": {
-			"Type": "String",
-			"Default": ""
-		},
-		"modules": {
-			"Type": "String",
-			"Default": "",
-			"Description": "Comma-delimmited list of modules to be executed by a lambda trigger. Sent to resource as an env variable."
-		},
-		"resourceName": {
-			"Type": "String",
-			"Default": ""
-		},
-		"trigger": {
-			"Type": "String",
-			"Default": "true"
-		},
-		"functionName": {
-			"Type": "String",
-			"Default": ""
-		},
-		"roleName": {
-			"Type": "String",
-			"Default": ""
-		},
-		"parentResource": {
-			"Type": "String",
-			"Default": ""
-		},
-		"parentStack": {
-			"Type": "String",
-			"Default": ""
+			"Default": "NONE",
+			"Description": " Schedule Expression"
 		},
 		"env": {
 			"Type": "String"
@@ -65,12 +33,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"vidaudtranscription1ea69154PreSignup",
+						"payment",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"vidaudtranscription1ea69154PreSignup",
+									"payment",
 									"-",
 									{
 										"Ref": "env"
@@ -85,17 +53,8 @@
 						"ENV": {
 							"Ref": "env"
 						},
-						"MODULES": {
-							"Ref": "modules"
-						},
 						"REGION": {
 							"Ref": "AWS::Region"
-						},
-						"DOMAINWHITELIST": {
-							"Ref": "DOMAINWHITELIST"
-						},
-						"DOMAINBLACKLIST": {
-							"Ref": "DOMAINBLACKLIST"
 						}
 					}
 				},
@@ -105,11 +64,11 @@
 						"Arn"
 					]
 				},
-				"Runtime": "nodejs10.x",
+				"Runtime": "nodejs12.x",
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/vidaudtranscription1ea69154PreSignup-6a636849784d72347653-build.zip"
+					"S3Key": "amplify-builds/payment-55794a684b392b42416a-build.zip"
 				}
 			}
 		},
@@ -119,12 +78,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"vidaudtranscription1ea69154PreSignup",
+						"vidaudtranscriptionLambdaRoleccf4a9ef",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"vidaudtranscription1ea69154PreSignup",
+									"vidaudtranscriptionLambdaRoleccf4a9ef",
 									"-",
 									{
 										"Ref": "env"
@@ -210,14 +169,14 @@
 				]
 			}
 		},
-		"LambdaExecutionRole": {
-			"Value": {
-				"Ref": "LambdaExecutionRole"
-			}
-		},
 		"Region": {
 			"Value": {
 				"Ref": "AWS::Region"
+			}
+		},
+		"LambdaExecutionRole": {
+			"Value": {
+				"Ref": "LambdaExecutionRole"
 			}
 		}
 	}

@@ -9,6 +9,11 @@
 			"service": "Lambda",
 			"providerPlugin": "awscloudformation",
 			"build": true
+		},
+		"payment": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda"
 		}
 	},
 	"auth": {
@@ -29,20 +34,19 @@
 		}
 	},
 	"api": {
-		"vidaudtranscription": {
-			"service": "AppSync",
+		"payment": {
+			"service": "API Gateway",
 			"providerPlugin": "awscloudformation",
-			"output": {
-				"authConfig": {
-					"additionalAuthenticationProviders": [],
-					"defaultAuthentication": {
-						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
-						"userPoolConfig": {
-							"userPoolId": "authvidaudtranscription1ea69154"
-						}
-					}
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "payment",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
 				}
-			}
+			]
 		}
 	},
 	"storage": {
