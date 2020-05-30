@@ -10,10 +10,20 @@
 			"providerPlugin": "awscloudformation",
 			"build": true
 		},
-		"payment": {
+		"payments": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "api",
+					"resourceName": "vidaudtranscription",
+					"attributes": [
+						"GraphQLAPIIdOutput",
+						"GraphQLAPIEndpointOutput"
+					]
+				}
+			]
 		}
 	},
 	"auth": {
@@ -48,6 +58,20 @@
 					}
 				}
 			}
+		},
+		"payments": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "payments",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
 		}
 	},
 	"storage": {
