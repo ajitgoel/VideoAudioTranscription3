@@ -167,7 +167,7 @@
                 "s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/api/payments-cloudformation-template.json",
                 "logicalId": "apipayments"
             },
-            "lastPushTimeStamp": "2020-05-31T14:59:53.545Z",
+            "lastPushTimeStamp": "2020-05-31T15:42:55.989Z",
             "output": {
                 "ApiName": "payments",
                 "RootUrl": "https://ke0viq9a5h.execute-api.us-east-1.amazonaws.com/dev",

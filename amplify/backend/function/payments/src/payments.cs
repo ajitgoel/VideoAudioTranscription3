@@ -90,11 +90,8 @@ namespace payments
             };
             var paymentIntentService = new PaymentIntentService();
             var paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
-            apiGatewayProxyResponse = new APIGatewayProxyResponse
-            {
-              StatusCode = (int)HttpStatusCode.OK,
-              Body = JsonConvert.SerializeObject(new CreatePaymentIntentOutput { ClientSecret=paymentIntent.ClientSecret }, jsonSerializerSettings)
-            };
+            apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
+            apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(new CreatePaymentIntentOutput { ClientSecret=paymentIntent.ClientSecret }, jsonSerializerSettings);
           }
           return apiGatewayProxyResponse;
         }
