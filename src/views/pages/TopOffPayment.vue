@@ -403,19 +403,19 @@ export default {
     {
       try
       {
-        /* var result=await stripe.createToken(card);
-        if (result.error) 
-        {
-          self.hasCardErrors = true;
-          self.$forceUpdate(); // Forcing the DOM to update so the Stripe Element can update.
-          return;
-        } */
+        const apiName = 'payments';
+        const path = '/payments';
+        const initParameter = { 
+            body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge}, 
+            headers: {},
+        };
+
+        let paymentIntent=await API.post(apiName, path, initParameter);        
+        console.log('paymentIntent:', JSON.stringify(paymentIntent));
         await savePaymentSettings();
       }
       catch(error)
       {
-       /*  self.hasCardErrors = true;
-        self.$forceUpdate(); // Forcing the DOM to update so the Stripe Element can update. */
         console.log(error);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
         return;
@@ -425,77 +425,6 @@ export default {
     {
       this.stripeValidationError = event.error ? event.error.message : "";
     },
-    async placeOrder() 
-    {
-      try
-      {
-        let result= await this.stripe.createToken(this.cardNumberElement);
-        var stripeObject = {amount: this.amount,source: result.token};
-        console.log('stripeObject:', JSON.stringify(stripeObject));
-        //#region saveDataToFireStore(stripeObject)
-        /* const db = firebase.firestore();
-        const chargesRef = db.collection("charges");
-        const pushId = chargesRef.doc().id;
-        db.collection("charges").doc(pushId).set(stripeObject);
-        chargesRef.doc(pushId).onSnapshot(snapShot => 
-        {
-          const charge = snapShot.data();
-          if (charge.error) 
-          {
-              alert(charge.error);
-              chargesRef.doc(pushId).delete();
-              return;
-          }
-          if (charge.status && charge.status == "succeeded") 
-          {
-              alert(charge.status);
-          }
-        });  */
-        //#endregion
-      }
-      catch(error)
-      {
-        this.stripeValidationError = result.error.message;
-      }
-    },
-    /* cambio(value){
-      this.widthx = value
-      this.heightx = value
-    }, */
-    /* validateChoosePlan() {
-      return new Promise((resolve, reject) => {
-        this.$validator.validateAll('choosePlan').then(result => {
-          if (result) {
-            resolve(true)
-          } else {
-            reject("correct all values");
-          }
-        })
-      })
-    },
-    validateBillingInformation() {
-      return new Promise((resolve, reject) => {
-        this.$validator.validateAll("billingInformation").then(result => {
-          if (result) {
-            resolve(true)
-          } else {
-            reject("correct all values");
-          }
-        })
-      })
-    },
-    validatePaymentConfirmation() {
-      return new Promise((resolve, reject) => {
-        this.$validator.validateAll("paymentConfirmation").then(result => {
-          if (result) {
-            alert("Form submitted!");
-            resolve(true)
-          } else {
-            reject("correct all values");
-          }
-        })
-      })
-    } */
   },
   components: {
     FormWizard,

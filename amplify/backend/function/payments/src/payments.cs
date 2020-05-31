@@ -154,11 +154,8 @@ namespace payments
               var requestBody = apiGatewayProxyRequest.Body;
               var noOfHours = JsonConvert.DeserializeObject<int>(requestBody, jsonSerializerSettings);
               int priceperhour = GetPricePerHour(noOfHours, context);
-              apiGatewayProxyResponse = new APIGatewayProxyResponse
-              {
-                StatusCode = (int)HttpStatusCode.OK,
-                Body = JsonConvert.SerializeObject(new { priceperhour}, jsonSerializerSettings)
-              };
+              apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
+              apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(new { priceperhour}, jsonSerializerSettings);
             }
             return apiGatewayProxyResponse;
           }
