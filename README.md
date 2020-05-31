@@ -71,6 +71,9 @@ https://webcache.googleusercontent.com/search?q=cache:TOxCI3d96jEJ:https://dev.t
 ###### Amplify aws Community Resources:
 https://amplify.aws/community/resources
 
+Accepting a payment:
+https://stripe.com/docs/payments/accept-a-payment
+
 #### Tasks:
 
 1. 	Full Page layout

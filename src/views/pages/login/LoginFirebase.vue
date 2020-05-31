@@ -1,10 +1,8 @@
 <template>
   <div>
-    <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border 
-      icon="icon icon-user" icon-pack="feather" label-placeholder="Email" v-model="email" ref="email" class="w-full"/>
+    <vs-input v-validate="'required|email|min:3'" data-vv-validate-on="blur" name="email" icon-no-border icon="icon icon-user" icon-pack="feather" label-placeholder="Email" v-model="email" ref="email" class="w-full"/>
     <span class="text-danger text-sm">{{ errors.first('email') }}</span>
-    <vs-input data-vv-validate-on="blur" v-validate="'required|min:6|max:10'" type="password" name="password" 
-      icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Password" v-model="password" 
+    <vs-input v-validate="'required|min:6|max:10'" data-vv-validate-on="blur" type="password" name="password" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Password" v-model="password" 
       class="w-full mt-6" />
     <span class="text-danger text-sm">{{ errors.first('password') }}</span>
     <div class="flex flex-wrap justify-between my-5">

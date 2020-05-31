@@ -21,8 +21,7 @@ Vue.mixin({
     async getuserprofile()
     {
       const currentUserInfo=await this.currentUserInfo();
-      const userId=currentUserInfo.id;
-      
+      const userId=currentUserInfo.id;      
       const listUserProfilesFilter={id:{eq:userId}};
       const result = await API.graphql(graphqlOperation(listUserProfilesForGeneral, {filter: listUserProfilesFilter}));
       console.log(`result: ${JSON.stringify(result)}`);

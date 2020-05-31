@@ -15,5 +15,5 @@
   "function-runtime":"props.runtime.value",
   "function-memory-size" : 256,
   "function-timeout" : 30,
-  "function-handler" : "payments::payments.payments::LambdaHandler"
+  "function-handler" : "payments::payments.payments::CreatePaymentIntent"
 }

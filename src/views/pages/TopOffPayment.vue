@@ -60,16 +60,13 @@
             <vs-divider />
 
             <vx-card title="Billing details">
-              <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" 
-                  icon-pack="feather" label-placeholder="Full name(Individual or company)" v-model="general.fullName"></vs-input>
-              <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>  
-              
-              <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
-                  icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
-              <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
-              
-              <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
-                  icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+              <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full name(Individual or company)" 
+                v-model="general.fullName"></vs-input>
+              <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>                
+              <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
+                v-model="general.billingAddress"></vs-input>
+              <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
+              <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
               <span class="text-danger text-sm">{{ errors.first('country') }}</span>
               
               <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
@@ -79,7 +76,22 @@
 
             <vs-divider />
             <vx-card title="Payment details">
-              <div ref="cardElement"></div>
+              <div class="flex justify-around">
+                <div class="w-1/2">
+                  <label>Card Number</label>
+                  <div id="card-number-element"></div>
+                </div>
+                <div class="w-1/4">
+                    <label>Expiry Date</label>
+                    <div id="card-expiry-element"></div>
+                </div>
+                <div class="w-1/4">
+                    <label>CVC</label>
+                    <div id="card-cvc-element"></div>
+                </div>                
+                <span class="text-danger text-sm">{{stripeValidationError}}</span>
+              </div>
+
               <div class="flex items-center mb-4">
                 <vs-switch v-model="paymentSettings.autoRecharge" />
                 <span class="ml-4">Auto Recharge</span>
@@ -205,7 +217,7 @@ import 'vue-form-wizard/dist/vue-form-wizard.min.css';
 // For custom error message
 import { Validator } from 'vee-validate';
 
-const dict = {
+/* const dict = {
   custom: {
     first_name: {
       required: 'First name is required',
@@ -233,9 +245,8 @@ const dict = {
     },
   }
 };
-
 // register custom messages
-Validator.localize('en', dict);
+Validator.localize('en', dict); */
 
 export default {
   data() {
@@ -258,8 +269,7 @@ export default {
       paymentSettings:{autoRecharge: false},
 
       value1:55,widthx:55,heightx:55,
-      ticks: { placement: 'After',smallStep: 10, largeStep: 20, showSmallTicks: true },
-      general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},      
+      ticks: { placement: 'After',smallStep: 10, largeStep: 20, showSmallTicks: true }, 
       firstName: "",
       lastName: "",
       email: "",
@@ -291,10 +301,6 @@ export default {
   },
   computed: 
   {
-    /* noOfHoursSelectedChanged()
-    {
-
-    }, */
     autorechargetext()
     {
       return (this.paymentSettings.autoRecharge===true?"Yes":"No");
@@ -313,7 +319,7 @@ export default {
     },
     validateForm() 
     {         
-      if(this.noOfHours > 0  && general.fullName!="" && general.billingAddress != "" && general.country!="")
+      if(this.noOfHours > 0  && this.general.fullName!="" && this.general.billingAddress != "" && this.general.country!="")
       {
         return true;
       }
@@ -324,10 +330,6 @@ export default {
   {
       const currentUserInfo=await this.currentUserInfo();
       const userId=currentUserInfo.id;
-      /* const listUserProfilesFilter={id:{eq:userId}};
-      const result = await API.graphql(graphqlOperation(listUserProfilesForPaymentSettings, {filter: listUserProfilesFilter}));
-      console.log(`result: ${JSON.stringify(result)}`);
-      const items=result.data.listUserProfiles.items; */
       const items=await this.getuserprofile();
       if(items.length>0)
       {
@@ -346,18 +348,7 @@ export default {
   },
   mounted() 
   {
-    let style = {
-      base: {border: '1px solid #D8D8D8', borderRadius: '4px',color: "#000",},
-      invalid: {
-        // All of the error styles go inside of here.
-      }
-    };
-    const stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
-    const elements = stripe.elements();
-    const card = elements.create('card', style);
-    card.mount(this.$refs.cardElement);
-
-    /* this.stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
+    this.stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
     //#region createAndMountFormElements;
     var elements = this.stripe.elements();
     this.cardNumberElement = elements.create("cardNumber");
@@ -369,52 +360,44 @@ export default {
     this.cardNumberElement.on("change", this.setValidationError);
     this.cardExpiryElement.on("change", this.setValidationError);
     this.cardCvcElement.on("change", this.setValidationError);
-    //#endregion */
+    //#endregion
   },
   methods: 
   { 
-    /* onChange(prevIndex, nextIndex)
-    {
-      console.log(`${prevIndex} : ${nextIndex}`);
-      if(prevIndex===0 && nextIndex===1 || prevIndex===1 && nextIndex===2)
-      {        
-        this.$refs.wizard.NextButtonText="Confirm payment";
-      }
-    }, */
     async savePaymentSettings() 
     {
-        try 
-        {
-            const currentUserInfo=await this.currentUserInfo();
-            const userId=currentUserInfo.id;
-            if(userId == null)
-            {
-                this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
-                return;   
-            }
-            console.log(`userId: ${userId}`);
-            
-            //#region save user profile in dynamodb
-            if(this.isUserProfileSavedInDatabase==false)
-            {
-              const createUserProfileInput={id:userId, 
+      try 
+      {
+          const currentUserInfo=await this.currentUserInfo();
+          const userId=currentUserInfo.id;
+          if(userId == null)
+          {
+              this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+              return;   
+          }
+          console.log(`userId: ${userId}`);
+          
+          //#region save user profile in dynamodb
+          if(this.isUserProfileSavedInDatabase==false)
+          {
+            const createUserProfileInput={id:userId, 
+              paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
+            await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
+          }
+          else
+          {
+              const updateUserProfileInput={id:userId,                 
                 paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
-              await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
-            }
-            else
-            {
-                const updateUserProfileInput={id:userId,                 
-                  paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
-                await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
-            }                
-            //#endregion save user profile in dynamodb
-            this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
-        } 
-        catch (error) 
-        {
-            console.log(error);
-            this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
-        };
+              await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
+          }                
+          //#endregion save user profile in dynamodb
+          this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+      } 
+      catch (error) 
+      {
+          console.log(error);
+          this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+      };
     },
     async PlaceOrder() 
     {
@@ -431,14 +414,14 @@ export default {
       }
       catch(error)
       {
-        self.hasCardErrors = true;
-        self.$forceUpdate(); // Forcing the DOM to update so the Stripe Element can update.
+       /*  self.hasCardErrors = true;
+        self.$forceUpdate(); // Forcing the DOM to update so the Stripe Element can update. */
         console.log(error);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
         return;
       };
     },
-    /* setValidationError(event) 
+    setValidationError(event) 
     {
       this.stripeValidationError = event.error ? event.error.message : "";
     },
@@ -450,7 +433,7 @@ export default {
         var stripeObject = {amount: this.amount,source: result.token};
         console.log('stripeObject:', JSON.stringify(stripeObject));
         //#region saveDataToFireStore(stripeObject)
-        const db = firebase.firestore();
+        /* const db = firebase.firestore();
         const chargesRef = db.collection("charges");
         const pushId = chargesRef.doc().id;
         db.collection("charges").doc(pushId).set(stripeObject);
@@ -467,19 +450,19 @@ export default {
           {
               alert(charge.status);
           }
-        }); 
+        });  */
         //#endregion
       }
       catch(error)
       {
         this.stripeValidationError = result.error.message;
       }
-    }, */
-    cambio(value){
+    },
+    /* cambio(value){
       this.widthx = value
       this.heightx = value
-    },
-    validateChoosePlan() {
+    }, */
+    /* validateChoosePlan() {
       return new Promise((resolve, reject) => {
         this.$validator.validateAll('choosePlan').then(result => {
           if (result) {
@@ -512,7 +495,7 @@ export default {
           }
         })
       })
-    }
+    } */
   },
   components: {
     FormWizard,

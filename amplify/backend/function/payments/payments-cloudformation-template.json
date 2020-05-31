@@ -37,7 +37,7 @@
 				"aws:asset:property": "Code"
 			},
 			"Properties": {
-				"Handler": "payments::payments.payments::LambdaHandler",
+				"Handler": "payments::payments.payments::CreatePaymentIntent",
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
