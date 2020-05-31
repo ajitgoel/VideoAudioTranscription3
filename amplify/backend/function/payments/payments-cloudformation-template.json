@@ -69,7 +69,9 @@
 						},
 						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT": {
 							"Ref": "apividaudtranscriptionGraphQLAPIEndpointOutput"
-						}
+						},
+						"VUE_APP_STRIPE_PUBLISHABLE_KEY": "pk_test_kcWzN6fwBHhdYKyLP9qBrPgZ00PGq7Ou6g",
+						"VUE_APP_STRIPE_SECRET_KEY": "sk_test_8GAASYcYGl4zvXfXTkfNH3i200HuyvP6fm"
 					}
 				},
 				"Role": {
@@ -82,7 +84,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/payments-446e3730344154596d30-build.zip"
+					"S3Key": "amplify-builds/payments-7233564d5a49456b4647-build.zip"
 				}
 			}
 		},

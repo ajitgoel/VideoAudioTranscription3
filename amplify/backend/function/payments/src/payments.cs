@@ -76,8 +76,9 @@ namespace payments
             var requestBody=apiGatewayProxyRequest.Body;
             var singlePaymentInput = JsonConvert.DeserializeObject<CreatePaymentIntentInput>(requestBody, jsonSerializerSettings);
             
-            StripeConfiguration.ApiKey = "sk_test_4eC39HqLyjWDarjtT1zdp7dc";//get from environment file.
+            StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");//get from environment file.
             var pricePerHour=GetPricePerHour(singlePaymentInput.NoOFHours, context);
+            context.Logger.LogLine($"Amount Charged: { pricePerHour * singlePaymentInput.NoOFHours * 100}");
             var paymentIntentCreateOptions = new PaymentIntentCreateOptions
             {
               Amount = pricePerHour * singlePaymentInput.NoOFHours * 100,
@@ -87,8 +88,8 @@ namespace payments
                 { "integration_check", "accept_a_payment" },
               },
             };
-            var service = new PaymentIntentService();
-            var paymentIntent = service.Create(paymentIntentCreateOptions);
+            var paymentIntentService = new PaymentIntentService();
+            var paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
             apiGatewayProxyResponse = new APIGatewayProxyResponse
             {
               StatusCode = (int)HttpStatusCode.OK,
