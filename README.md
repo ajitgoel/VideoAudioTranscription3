@@ -74,6 +74,8 @@ https://amplify.aws/community/resources
 Accepting a payment:
 https://stripe.com/docs/payments/accept-a-payment
 
+https://www.npmjs.com/package/vue-stripe-elements-plus
+
 #### Tasks:
 
 1. 	Full Page layout

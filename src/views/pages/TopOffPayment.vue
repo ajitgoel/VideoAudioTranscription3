@@ -76,22 +76,7 @@
 
             <vs-divider />
             <vx-card title="Payment details">
-              <div class="flex justify-around">
-                <div class="w-1/2">
-                  <label>Card Number</label>
-                  <div id="card-number-element"></div>
-                </div>
-                <div class="w-1/4">
-                    <label>Expiry Date</label>
-                    <div id="card-expiry-element"></div>
-                </div>
-                <div class="w-1/4">
-                    <label>CVC</label>
-                    <div id="card-cvc-element"></div>
-                </div>                
-                <span class="text-danger text-sm">{{stripeValidationError}}</span>
-              </div>
-
+              <div ref="stripe"/>
               <div class="flex items-center mb-4">
                 <vs-switch v-model="paymentSettings.autoRecharge" />
                 <span class="ml-4">Auto Recharge</span>
@@ -159,7 +144,7 @@
   </form-wizard> -->
 </template>
 <style>
-  .payment-form 
+  /* .payment-form 
   {
     max-width: 400px;
     margin: 20px auto;
@@ -204,49 +189,15 @@
 #noOfHoursSlider .e-tab-handle::after 
 {
   background-color: transparent;
-}
+} */
 </style>
 <script>
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
-
-import { FormWizard, TabContent } from 'vue-form-wizard';
-import 'vue-form-wizard/dist/vue-form-wizard.min.css';
-// For custom error message
 import { Validator } from 'vee-validate';
-
-/* const dict = {
-  custom: {
-    first_name: {
-      required: 'First name is required',
-      alpha: "First name may only contain alphabetic characters"
-    },
-    last_name: {
-      required: 'Last name is required',
-      alpha: "Last name may only contain alphabetic characters"
-    },
-    email: {
-      required: 'Email is required',
-      email: "Please enter valid email"
-    },
-    job_title: {
-      required: 'Job title name is required',
-      alpha: "Job title may only contain alphabetic characters"
-    },
-    proposal_title: {
-      required: 'Proposal title name is required',
-      alpha: "Proposal title may only contain alphabetic characters"
-    },
-    event_name: {
-      required: 'Event name is required',
-      alpha: "Event name may only contain alphabetic characters"
-    },
-  }
-};
-// register custom messages
-Validator.localize('en', dict); */
+import { loadStripe } from '@stripe/stripe-js';
 
 export default {
   data() {
@@ -257,46 +208,12 @@ export default {
         {"id": 3,"priceperhour": 8,"hourmin": 50,"hourmax": 100,},
       ],
       stripe: null,
-      cardNumberElement: null,
-      cardExpiryElement: null,
-      cardCVCElement: null,
-      stripeValidationError: "",
-      amount:25,
+      card: null,
       
       noOfHours:1,
       isUserProfileSavedInDatabase: false,
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
       paymentSettings:{autoRecharge: false},
-
-      value1:55,widthx:55,heightx:55,
-      ticks: { placement: 'After',smallStep: 10, largeStep: 20, showSmallTicks: true }, 
-      firstName: "",
-      lastName: "",
-      email: "",
-      city: "new-york",
-      proposalTitle: "",
-      jobTitle: "",
-      textarea: "",
-      eventName: "",
-      eventLocation: "san-francisco",
-      status: "plannning",
-      cityOptions: [
-          { text: "New York", value: "new-york" },
-          { text: "Chicago", value: "chicago" },
-          { text: "San Francisco", value: "san-francisco" },
-          { text: "Boston", value: "boston" },
-      ],
-      statusOptions: [
-          { text: "Plannning", value: "plannning" },
-          { text: "In Progress", value: "in progress" },
-          { text: "Finished", value: "finished" },
-      ],
-      LocationOptions: [
-          { text: "New York", value: "new-york" },
-          { text: "Chicago", value: "chicago" },
-          { text: "San Francisco", value: "san-francisco" },
-          { text: "Boston", value: "boston" },
-      ],
     }
   },
   computed: 
@@ -327,43 +244,86 @@ export default {
     }
   },
   async created() 
-  {
-      const currentUserInfo=await this.currentUserInfo();
-      const userId=currentUserInfo.id;
-      const items=await this.getuserprofile();
-      if(items.length>0)
-      {
-          this.id=items[0].id;
-          this.general.fullName=items[0].fullName;
-          this.general.billingAddress=items[0].billingAddress;
-          this.general.country=items[0].country;
-          this.general.vatNumber=items[0].vatNumber;
-          this.paymentSettings.autoRecharge=(items[0].paymentSettings==null || items[0].paymentSettings.autoRecharge==null) ? false:items[0].paymentSettings.autoRecharge;
-          this.isUserProfileSavedInDatabase=true;
+  {    
+    const currentUserInfo=await this.currentUserInfo();
+    const userId=currentUserInfo.id;
+    const listUserProfilesFilter={id:{eq:userId}};      
+    const listUserProfilesForTopOffPayment = /* GraphQL */ `
+      query ListUserProfiles(
+        $filter: ModelUserProfileFilterInput
+        $limit: Int
+        $nextToken: String
+      ) {
+        listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          items {
+            id
+            fullName
+            billingAddress
+            country
+            vatNumber
+            paymentSettings {
+              autoRecharge
+            }
+          }
+          nextToken
+        }
       }
-      else
-      {
-          this.isUserProfileSavedInDatabase=false;
-      }
+    `;
+    const result = await API.graphql(graphqlOperation(listUserProfilesForTopOffPayment, {filter: listUserProfilesFilter}));
+    console.log(`result: ${JSON.stringify(result)}`);
+    const items=result.data.listUserProfiles.items;
+    console.log('items:', JSON.stringify(items));
+    if(items.length>0)
+    {
+        this.id=items[0].id;
+        this.general.fullName=items[0].fullName;
+        this.general.billingAddress=items[0].billingAddress;
+        this.general.country=items[0].country;
+        this.general.vatNumber=items[0].vatNumber;
+        this.paymentSettings.autoRecharge=(items[0].paymentSettings==null || items[0].paymentSettings.autoRecharge==null) ? false:items[0].paymentSettings.autoRecharge;
+        this.isUserProfileSavedInDatabase=true;
+    }
+    else
+    {
+        this.isUserProfileSavedInDatabase=false;
+    }
   },
-  mounted() 
-  {
-    this.stripe = Stripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
-    //#region createAndMountFormElements;
-    var elements = this.stripe.elements();
-    this.cardNumberElement = elements.create("cardNumber");
-    this.cardNumberElement.mount("#card-number-element");
-    this.cardExpiryElement = elements.create("cardExpiry");
-    this.cardExpiryElement.mount("#card-expiry-element");
-    this.cardCvcElement = elements.create("cardCvc");
-    this.cardCvcElement.mount("#card-cvc-element");
-    this.cardNumberElement.on("change", this.setValidationError);
-    this.cardExpiryElement.on("change", this.setValidationError);
-    this.cardCvcElement.on("change", this.setValidationError);
-    //#endregion
+  async mounted() 
+  {    
+    this.stripe = await loadStripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
+    let elements = this.stripe.elements();
+    const style = {
+      base: {
+        color: '#32325d',
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: 'antialiased',
+        fontSize: '16px',
+        '::placeholder': {
+          color: '#aab7c4',
+        },
+      },
+      invalid: {
+        color: '#fa755a',
+        iconColor: '#fa755a',
+      },
+    };
+    this.card = elements.create('card', { style: style });
+    this.card.mount(this.$refs.stripe);
   },
   methods: 
   { 
+    async SavePaymentMethod()
+    {
+      try 
+      {
+        this.stripe.createPaymentMethod({type: 'card',card: this.card});
+      } 
+      catch (error) 
+      {
+          console.log(error);
+          this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+      };
+    },
     async savePaymentSettings() 
     {
       try 
@@ -380,14 +340,12 @@ export default {
           //#region save user profile in dynamodb
           if(this.isUserProfileSavedInDatabase==false)
           {
-            const createUserProfileInput={id:userId, 
-              paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
+            const createUserProfileInput={id:userId, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
             await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
           }
           else
           {
-              const updateUserProfileInput={id:userId,                 
-                paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
+              const updateUserProfileInput={id:userId, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
               await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
           }                
           //#endregion save user profile in dynamodb
@@ -405,11 +363,7 @@ export default {
       {
         const apiName = 'payments';
         const path = '/payments';
-        const initParameter = { 
-            body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge}, 
-            headers: {},
-        };
-
+        const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge}, headers: {},};
         let paymentIntent=await API.post(apiName, path, initParameter);        
         console.log('paymentIntent:', JSON.stringify(paymentIntent));
         await savePaymentSettings();
@@ -421,14 +375,8 @@ export default {
         return;
       };
     },
-    setValidationError(event) 
-    {
-      this.stripeValidationError = event.error ? event.error.message : "";
-    },
   },
   components: {
-    FormWizard,
-    TabContent
   }
 }
 </script>

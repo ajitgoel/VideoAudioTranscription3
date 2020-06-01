@@ -1,9 +1,5 @@
-/*=========================================================================================
-  File Name: moduleAuthState.js
-  Description: Auth Module State  
-==========================================================================================*/
-import firebase from 'firebase/app';
-import 'firebase/auth';
+//import firebase from 'firebase/app';
+//import 'firebase/auth';
 export default {
     /* isUserLoggedIn: () => {
         let isAuthenticated = false
@@ -13,5 +9,9 @@ export default {
         else isAuthenticated = false
         return (localStorage.getItem('userInfo') && isAuthenticated)
     }, */
-    isUserLoggedIn: () => (localStorage.getItem('userInfo') && firebase.auth().currentUser),
+    //isUserLoggedIn: () => (localStorage.getItem('userInfo') && firebase.auth().currentUser),
+    isUserLoggedIn: () => 
+    {
+      return false;
+    }
 }
