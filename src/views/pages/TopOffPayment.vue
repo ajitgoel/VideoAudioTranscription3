@@ -1,147 +1,79 @@
-<template>
-  <!-- <form-wizard ref="wizard" color="rgba(var(--vs-primary), 1)" errorColor="rgba(var(--vs-danger), 1)" :title="null" :subtitle="null" 
-     finishButtonText="Submit" @on-change='onChange'>
-    <tab-content title="Choose a plan" class="mb-5" step-size="xs" icon="feather icon-home" :before-change="validateChoosePlan">  
-      <form data-vv-scope="choosePlan">
-        <div class="vx-row">
-          <div class="vx-col sm:w-1/2 w-full mb-2">
-            <ejs-slider id="noOfHoursSlider" name="noOfHoursSlider" ref="noOfHoursSlider" value=1 min=0 max=100 :ticks='ticks' 
-              v-model="noOfHours"/>
-          </div>
-          <div class="vx-col sm:w-1/2 w-full mb-2">
-            <ejs-numerictextbox id="noOfHours" name="noOfHours" ref="noOfHours" v-model="noOfHours" format='n' value="1" min="1" max="100" 
-              strictMode="true" placeholder="Number of hours" floatLabelType="Always" width="25%"/> 
-          </div>
+<template>  
+  <div class="vx-row">
+    <div class="vx-col lg:w-2/3 w-full">
+      
+        <vx-card title="Select no of hours to prepay">
+          <vs-input-number id="userNoOfHours" name="userNoOfHours" ref="userNoOfHours" v-model="noOfHours" min="1" max="100"/>
+          <vs-table :data="pricing">
+            <template slot="thead">                    
+              <vs-th>Pricing per hour</vs-th>
+              <vs-th>No of hours</vs-th>
+            </template>
+            <template slot-scope="{data}">
+              <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                <vs-td :data="data[indextr].priceperhour">
+                  ${{ data[indextr].priceperhour }}/hour
+                </vs-td>
+                <vs-td :data="data[indextr].hourmin">
+                  {{data[indextr].hourmin}} to {{data[indextr].hourmax}} hours
+                </vs-td>
+
+              </vs-tr>
+            </template>
+          </vs-table>               
+        </vx-card>
+        
+      <vs-divider />
+
+      <vx-card title="Billing details">
+        <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full name(Individual or company)" 
+          v-model="general.fullName"></vs-input>
+        <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>                
+        <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
+          v-model="general.billingAddress"></vs-input>
+        <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
+        <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+        <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+        
+        <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
+            icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
+        <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span> -->
+      </vx-card>
+
+      <vs-divider />
+      <vx-card title="Payment details">
+        <div ref="stripe"/>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="paymentSettings.autoRecharge" />
+          <span class="ml-4">Auto Recharge</span>
         </div>
-      </form>
-    </tab-content>
+      </vx-card>
 
-    <tab-content title="Billing/Payment Information" class="mb-5" step-size="xs" icon="feather icon-credit-card" 
-      :before-change="validateBillingInformation">
-      <form data-vv-scope="billingInformation"> -->
-        <div class="vx-row">
-          <div class="vx-col lg:w-2/3 w-full">
-            
-              <vx-card title="Select no of hours to prepay">
-                  <!-- <ejs-slider id="noOfHoursSlider" name="noOfHoursSlider" ref="noOfHoursSlider" value=1 min=0 max=100 :ticks='ticks' 
-                      v-model="noOfHours"/>-->                      
-                  <!--<vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="9">
-                    <vs-slider :min="1" :max="100" step="1" v-model="noOfHours" @change="noOfHoursSelectedChanged"/>                    
-                  </vs-col>
-                  <vs-col vs-type="flex" vs-justify="center" vs-align="center" vs-w="3">-->
-                    <vs-input-number id="userNoOfHours" name="userNoOfHours" ref="userNoOfHours" v-model="noOfHours" min="1" max="100"/>
-                 <!--  </vs-col> -->
+      <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
+    </div>
 
-                  <!-- <vs-col vs-type="flex" vs-align="center">
-                    <h4>No of hours selected: {{noOfHours}}</h4>
-                  </vs-col> -->
-
-                  <!--  <ejs-numerictextbox id="noOfHours" name="noOfHours" ref="noOfHours" v-model="noOfHours" format='n' value="1" min="1" 
-                  max="100" strictMode="true" placeholder="Number of hours" floatLabelType="Always" width="25%"/>  -->                           
-                  <vs-table :data="pricing">
-                    <template slot="thead">                    
-                      <vs-th>Pricing per hour</vs-th>
-                      <vs-th>No of hours</vs-th>
-                    </template>
-                    <template slot-scope="{data}">
-                      <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                        <vs-td :data="data[indextr].priceperhour">
-                          ${{ data[indextr].priceperhour }}/hour
-                        </vs-td>
-                        <vs-td :data="data[indextr].hourmin">
-                          {{data[indextr].hourmin}} to {{data[indextr].hourmax}} hours
-                        </vs-td>
-
-                      </vs-tr>
-                    </template>
-                  </vs-table>               
-              </vx-card>
-              
-            <vs-divider />
-
-            <vx-card title="Billing details">
-              <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full name(Individual or company)" 
-                v-model="general.fullName"></vs-input>
-              <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>                
-              <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
-                v-model="general.billingAddress"></vs-input>
-              <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
-              <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-              <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-              
-              <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
-                  icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
-              <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span> -->
-            </vx-card>
-
-            <vs-divider />
-            <vx-card title="Payment details">
-              <div ref="stripe"/>
-              <div class="flex items-center mb-4">
-                <vs-switch v-model="paymentSettings.autoRecharge" />
-                <span class="ml-4">Auto Recharge</span>
-              </div>
-            </vx-card>
-
-            <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
-          </div>
-
-          <div class="vx-col lg:w-1/3 w-full">
-            <vx-card title="Order summary">
-              <div class="flex justify-between mb-2">
-                  <span>No of hours</span>
-                  <span class="font-semibold">{{noOfHours}}</span>
-              </div>
-              <div class="flex justify-between mb-2">
-                  <span>Price per hour</span>
-                  <span class="text-success">${{selectedpriceperhour}}</span>
-              </div>
-              <div class="flex justify-between mb-2">
-                  <span>Auto recharge</span>
-                  <span class="text-success">{{autorechargetext}}</span>
-              </div>
-              <vs-divider />
-              <div class="flex justify-between">
-                  <span>Total</span>
-                  <span class="font-semibold">${{noOfHours * selectedpriceperhour}}</span>
-              </div>
-            </vx-card>
-          </div>    
+    <div class="vx-col lg:w-1/3 w-full">
+      <vx-card title="Order summary">
+        <div class="flex justify-between mb-2">
+            <span>No of hours</span>
+            <span class="font-semibold">{{noOfHours}}</span>
         </div>
-      <!-- </form>
-    </tab-content>
-
-    <tab-content title="Payment Confirmation" class="mb-5" step-size="xs" icon="feather icon-image" 
-      :before-change="validatePaymentConfirmation">
-      <form data-vv-scope="paymentConfirmation">
-        <div class="vx-row">
-          <div class="vx-col md:w-1/2 w-full">
-            <vs-input label="Event Name" v-model="eventName" class="w-full mt-5" name="event_name" v-validate="'required|alpha_spaces'" />
-            <span class="text-danger"></span>
-          </div>
-          <div class="vx-col md:w-1/2 w-full">
-            <vs-select v-model="city" class="w-full select-large mt-5" label="Event Location">
-              <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in cityOptions" class="w-full" />
-            </vs-select>
-          </div>
-          <div class="vx-col md:w-1/2 w-full mt-5">
-            <vs-select v-model="status" class="w-full select-large" label="Event Status">
-              <vs-select-item :key="index" :value="item.value" :text="item.text" v-for="(item,index) in statusOptions" class="w-full" />
-            </vs-select>
-          </div>
-          <div class="vx-col md:w-1/2 w-full md:mt-8">
-            <div class="demo-alignment">
-              <span>Requirements:</span>
-              <div class="flex">
-                <vs-checkbox>Staffing</vs-checkbox>
-                <vs-checkbox>Catering</vs-checkbox>
-              </div>
-            </div>
-          </div>
+        <div class="flex justify-between mb-2">
+            <span>Price per hour</span>
+            <span class="text-success">${{selectedpriceperhour}}</span>
         </div>
-      </form>
-    </tab-content>
-  </form-wizard> -->
+        <div class="flex justify-between mb-2">
+            <span>Auto recharge</span>
+            <span class="text-success">{{autorechargetext}}</span>
+        </div>
+        <vs-divider />
+        <div class="flex justify-between">
+            <span>Total</span>
+            <span class="font-semibold">${{noOfHours * selectedpriceperhour}}</span>
+        </div>
+      </vx-card>
+    </div>    
+  </div>
 </template>
 <style>
   /* .payment-form 
@@ -246,6 +178,7 @@ export default {
   async created() 
   {    
     const currentUserInfo=await this.currentUserInfo();
+    this.general.email=currentUserInfo.email;
     const userId=currentUserInfo.id;
     const listUserProfilesFilter={id:{eq:userId}};      
     const listUserProfilesForTopOffPayment = /* GraphQL */ `
@@ -307,7 +240,9 @@ export default {
         iconColor: '#fa755a',
       },
     };
-    this.card = elements.create('card', { style: style });
+    //https://stripe.com/docs/js/elements_object/create_element?type=card
+    let options={style: style, iconStyle:'solid', hidePostalCode:true};
+    this.card = elements.create('card', options);
     this.card.mount(this.$refs.stripe);
   },
   methods: 
@@ -366,7 +301,37 @@ export default {
         const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge}, headers: {},};
         let paymentIntent=await API.post(apiName, path, initParameter);        
         console.log('paymentIntent:', JSON.stringify(paymentIntent));
-        await savePaymentSettings();
+        let clientSecret=paymentIntent.clientSecret;
+
+        //#region Process card payment
+        // Stripe.js has not yet loaded. Make sure to disable form submission until Stripe.js has loaded.   
+        if (this.stripe===false || this.stripe.elements() === false) 
+        {
+          return;   
+        }
+        
+        //https://stripe.com/docs/js/payment_intents/confirm_card_payment
+        let data = {receipt_email: this.general.email, payment_method: {card: this.card, billing_details: {name: this.general.fullName,},}};
+        const result = await this.stripe.confirmCardPayment(clientSecret, data);
+        console.log(`result: ${JSON.stringify(result)}`);
+
+        if (result.error) 
+        {
+          console.log(`result.error: ${result.error}`);
+          this.$vs.notify({title: 'Error',text: result.error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});      
+        } 
+        else 
+        {
+          if (result.paymentIntent.status === 'succeeded') 
+          {
+            this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+            // There's a risk of the customer closing the window before callback execution. 
+            //Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
+          }
+        }
+        //#endregion
+
+        await this.savePaymentSettings();
       }
       catch(error)
       {

@@ -59,8 +59,7 @@ export default
       {
         // Close animation if passed as payload
         // this.$vs.loading.close()
-        this.$vs.notify({title: 'Login Attempt', text: 'You are already logged in!', iconPack: 'feather', 
-        icon: 'icon-alert-circle', color: 'warning'})
+        this.$vs.notify({title: 'Login Attempt', text: 'You are already logged in!', iconPack: 'feather', icon: 'icon-alert-circle', color: 'warning'})
         return false
       }
       return true
@@ -72,8 +71,7 @@ export default
         const cognitoUser = await Auth.signIn(this.email, this.password);
         console.log(`cognitoUser: ${JSON.stringify(cognitoUser)}`);        
         this.$router.push('/transcripts').catch(() => {});  
-        this.$vs.notify({title: 'Logged in', text: 'You are successfully logged in!', iconPack: 'feather',
-          icon: 'icon-check',color: 'success'}); 
+        this.$vs.notify({title: 'Logged in', text: 'You are successfully logged in!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
       } 
       catch (error) 
       {
