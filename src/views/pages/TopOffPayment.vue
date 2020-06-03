@@ -1,78 +1,81 @@
 <template>  
-  <div class="vx-row">
-    <div class="vx-col lg:w-2/3 w-full">
-      
-        <vx-card title="Select no of hours to prepay">
-          <vs-input-number id="userNoOfHours" name="userNoOfHours" ref="userNoOfHours" v-model="noOfHours" min="1" max="100"/>
-          <vs-table :data="pricing">
-            <template slot="thead">                    
-              <vs-th>Pricing per hour</vs-th>
-              <vs-th>No of hours</vs-th>
-            </template>
-            <template slot-scope="{data}">
-              <vs-tr :key="indextr" v-for="(tr, indextr) in data">
-                <vs-td :data="data[indextr].priceperhour">
-                  ${{ data[indextr].priceperhour }}/hour
-                </vs-td>
-                <vs-td :data="data[indextr].hourmin">
-                  {{data[indextr].hourmin}} to {{data[indextr].hourmax}} hours
-                </vs-td>
-
-              </vs-tr>
-            </template>
-          </vs-table>               
-        </vx-card>
+  <div>    
+    <TopOffPaymentInvoice v-if="showReceiptReceipt"/>    
+    <div class="vx-row" v-else>
+      <div class="vx-col lg:w-2/3 w-full">
         
-      <vs-divider />
+          <vx-card title="Select no of hours to prepay">
+            <vs-input-number id="userNoOfHours" name="userNoOfHours" ref="userNoOfHours" v-model="noOfHours" min="1" max="100"/>
+            <vs-table :data="pricing">
+              <template slot="thead">                    
+                <vs-th>Pricing per hour</vs-th>
+                <vs-th>No of hours</vs-th>
+              </template>
+              <template slot-scope="{data}">
+                <vs-tr :key="indextr" v-for="(tr, indextr) in data">
+                  <vs-td :data="data[indextr].priceperhour">
+                    ${{ data[indextr].priceperhour }}/hour
+                  </vs-td>
+                  <vs-td :data="data[indextr].hourmin">
+                    {{data[indextr].hourmin}} to {{data[indextr].hourmax}} hours
+                  </vs-td>
 
-      <vx-card title="Billing details">
-        <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full name(Individual or company)" 
-          v-model="general.fullName"></vs-input>
-        <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>                
-        <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
-          v-model="general.billingAddress"></vs-input>
-        <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
-        <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-        <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-        
-        <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
-            icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
-        <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span> -->
-      </vx-card>
-
-      <vs-divider />
-      <vx-card title="Payment details">
-        <div ref="stripe"/>
-        <div class="flex items-center mb-4">
-          <vs-switch v-model="paymentSettings.autoRecharge" />
-          <span class="ml-4">Auto Recharge</span>
-        </div>
-      </vx-card>
-
-      <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
-    </div>
-
-    <div class="vx-col lg:w-1/3 w-full">
-      <vx-card title="Order summary">
-        <div class="flex justify-between mb-2">
-            <span>No of hours</span>
-            <span class="font-semibold">{{noOfHours}}</span>
-        </div>
-        <div class="flex justify-between mb-2">
-            <span>Price per hour</span>
-            <span class="text-success">${{selectedpriceperhour}}</span>
-        </div>
-        <div class="flex justify-between mb-2">
-            <span>Auto recharge</span>
-            <span class="text-success">{{autorechargetext}}</span>
-        </div>
+                </vs-tr>
+              </template>
+            </vs-table>               
+          </vx-card>
+          
         <vs-divider />
-        <div class="flex justify-between">
-            <span>Total</span>
-            <span class="font-semibold">${{noOfHours * selectedpriceperhour}}</span>
-        </div>
-      </vx-card>
-    </div>    
+
+        <vx-card title="Billing details">
+          <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full name(Individual or company)" 
+            v-model="general.fullName"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>                
+          <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
+            v-model="general.billingAddress"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
+          <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('country') }}</span>
+          
+          <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
+              icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
+          <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span> -->
+        </vx-card>
+
+        <vs-divider />
+        <vx-card title="Payment details">
+          <div ref="stripe"/>
+          <div class="flex items-center my-4">
+            <vs-switch v-model="paymentSettings.autoRecharge" />
+            <span class="ml-4">Auto Recharge</span>
+          </div>
+        </vx-card>
+
+        <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
+      </div>
+
+      <div class="vx-col lg:w-1/3 w-full">
+        <vx-card title="Order summary">
+          <div class="flex justify-between mb-2">
+              <span>No of hours</span>
+              <span class="font-semibold">{{noOfHours}}</span>
+          </div>
+          <div class="flex justify-between mb-2">
+              <span>Price per hour</span>
+              <span class="text-success">${{selectedpriceperhour}}</span>
+          </div>
+          <div class="flex justify-between mb-2">
+              <span>Auto recharge</span>
+              <span class="text-success">{{autorechargetext}}</span>
+          </div>
+          <vs-divider />
+          <div class="flex justify-between">
+              <span>Total</span>
+              <span class="font-semibold">${{noOfHours * selectedpriceperhour}}</span>
+          </div>
+        </vx-card>
+      </div>    
+    </div>
   </div>
 </template>
 <style>
@@ -130,6 +133,7 @@ import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
 import { loadStripe } from '@stripe/stripe-js';
+import TopOffPaymentInvoice from './TopOffPaymentInvoice.vue'
 
 export default {
   data() {
@@ -146,6 +150,7 @@ export default {
       isUserProfileSavedInDatabase: false,
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
       paymentSettings:{autoRecharge: false},
+      showReceiptReceipt:false
     }
   },
   computed: 
@@ -332,16 +337,19 @@ export default {
         //#endregion
 
         await this.savePaymentSettings();
+        this.showReceiptReceipt=true;
       }
       catch(error)
       {
         console.log(error);
-        this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+        this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});        
+        this.showReceiptReceipt=false;
         return;
       };
     },
   },
   components: {
+    TopOffPaymentInvoice
   }
 }
 </script>

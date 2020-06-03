@@ -79,22 +79,7 @@ const router = new Router({
                         rule: 'editor',
                         requiresAuth: true,
                     },
-                },              
-                {
-                    path: '/invoices',
-                    name: 'invoices',
-                    component: () => import('@/views/pages/Invoices.vue'),
-                    meta: {
-                        breadcrumb: [
-                            { title: 'Home', url: '/' },
-                            { title: 'Pages' },
-                            { title: 'Invoices', active: true },
-                        ],
-                        pageTitle: 'Invoices',
-                        rule: 'editor',
-                        requiresAuth: true,
-                    },
-                },  
+                }, 
                 {
                     path: '/user-settings',
                     name: 'user-settings',

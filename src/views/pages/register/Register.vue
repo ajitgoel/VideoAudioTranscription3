@@ -7,7 +7,7 @@
             <div class="vx-col hidden sm:hidden md:hidden lg:block lg:w-1/2 mx-auto self-center">
                 <img src="@/assets/images/pages/register.jpg" alt="register" class="mx-auto">
             </div>
-            <div class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center  d-theme-dark-bg">
+            <div class="vx-col sm:w-full md:w-full lg:w-1/2 mx-auto self-center d-theme-dark-bg">
               <div class="px-8 pt-8 register-tabs-container" v-if="showConfirmSignupScreen">
                 <div class="vx-card__title mb-4">
                     <h4 class="mb-4">Confirm Signup</h4>
