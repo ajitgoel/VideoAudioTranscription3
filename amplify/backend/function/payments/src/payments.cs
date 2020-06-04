@@ -21,7 +21,8 @@ namespace payments
     // to match if you intend to test the function with 'amplify mock function'
     public class payments
     {
-      const string CURRENCY = "usd";
+      const string USD_CURRENCY = "usd";
+      const string CARD_PAYMENT_METHOD = "card";
       public class Pricing
       {
         public int Id { get; set; }
@@ -35,9 +36,11 @@ namespace payments
         public int NoOFHours { get; set; }
         [JsonProperty(Required = Required.Always)]
         public bool AutoRecharge { get; set; }=false;
+        [JsonProperty(Required = Required.Always)]
+        public string Email { get; set; }
       }
       public class CreatePaymentIntentOutput
-    {
+      {
         [JsonProperty(Required = Required.Always)]
         public string ClientSecret { get; set; }
       }
@@ -82,7 +85,10 @@ namespace payments
             var paymentIntentCreateOptions = new PaymentIntentCreateOptions
             {
               Amount = pricePerHour * singlePaymentInput.NoOFHours * 100,
-              Currency = CURRENCY,
+              Currency = USD_CURRENCY,
+              PaymentMethodTypes = new List<string> {CARD_PAYMENT_METHOD },
+              Description="Top off payment for video audio transcription",
+              ReceiptEmail = singlePaymentInput.Email,
               Metadata = new Dictionary<string, string>
               {
                 { "integration_check", "accept_a_payment" },

@@ -68,15 +68,20 @@ export default
     {
       try 
       {
+        this.$vs.loading();
         const cognitoUser = await Auth.signIn(this.email, this.password);
         console.log(`cognitoUser: ${JSON.stringify(cognitoUser)}`);        
         this.$router.push('/transcripts').catch(() => {});  
         this.$vs.notify({title: 'Logged in', text: 'You are successfully logged in!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
       } 
       catch (error) 
-      {
+      {        
         console.log(`error: ${error}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+      }
+      finally
+      {        
+        this.$vs.loading.close();
       };
     },
     loginWithGoogle() {

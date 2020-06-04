@@ -127,6 +127,7 @@ export default
       }
       try
       {
+        this.$vs.loading();
         const result=await Auth.confirmSignUp(this.email, this.confirmationCode);
         if(result === 'SUCCESS')
         {
@@ -145,6 +146,10 @@ export default
       {
         console.log(`confirmSignUp error: ${JSON.stringify(error)}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+      }
+      finally
+      {        
+        this.$vs.loading.close();
       };
     },
     async registerUser() 
@@ -155,6 +160,7 @@ export default
       }
       try
       {
+        this.$vs.loading();
         const params = {username: this.email, password: this.password, attributes: {email: this.email}};
         const iSignUpResult=await Auth.signUp(params);
         console.log(`signUp iSignUpResult: ${JSON.stringify(this.iSignUpResult)}`);
@@ -171,6 +177,10 @@ export default
         this.showConfirmSignupScreen=false;
         console.log(`signUp error: ${JSON.stringify(error)}`);
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+      }
+      finally
+      {        
+        this.$vs.loading.close();
       };
     },
   }
