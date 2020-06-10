@@ -1,5 +1,5 @@
 {
-  "body": "{'NoOFHours':51,'AutoRecharge':false}",
+  "body": "{'NoOFHours':51,'AutoRecharge':false, 'Email':'ajitgoel@gmail.com'}",
   "resource": "/items/{proxy+}",
   "path": "/payments",
   "httpMethod": "POST",

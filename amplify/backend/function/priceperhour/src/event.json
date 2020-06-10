@@ -1,7 +1,7 @@
 {
-  "body": "{'NoOFHours':51,'AutoRecharge':false, 'Email':'ajitgoel@gmail.com'}",
+  "body": "50",
   "resource": "/items/{proxy+}",
-  "path": "/payments",
+  "path": "/item",
   "httpMethod": "POST",
   "isBase64Encoded": true,
   "queryStringParameters": {
@@ -11,7 +11,7 @@
     "foo": ["bar"]
   },
   "pathParameters": {
-    "proxy": "/payments"
+    "proxy": "/item"
   },
   "stageVariables": {
     "baz": "qux"
@@ -76,7 +76,7 @@
       "userAgent": "Custom User Agent String",
       "user": null
     },
-    "path": "/payments",
+    "path": "/item",
     "resourcePath": "/items/{proxy+}",
     "httpMethod": "GET",
     "apiId": "1234567890",
