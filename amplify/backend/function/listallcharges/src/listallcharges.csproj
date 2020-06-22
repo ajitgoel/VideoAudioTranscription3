@@ -11,6 +11,5 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Models\Models.csproj" />
-    <ProjectReference Include="..\..\priceperhour\src\priceperhour.csproj" />
   </ItemGroup>
 </Project>

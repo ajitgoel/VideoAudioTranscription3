@@ -9,14 +9,6 @@
 		},
 		"env": {
 			"Type": "String"
-		},
-		"apividaudtranscriptionGraphQLAPIIdOutput": {
-			"Type": "String",
-			"Default": "apividaudtranscriptionGraphQLAPIIdOutput"
-		},
-		"apividaudtranscriptionGraphQLAPIEndpointOutput": {
-			"Type": "String",
-			"Default": "apividaudtranscriptionGraphQLAPIEndpointOutput"
 		}
 	},
 	"Conditions": {
@@ -37,16 +29,16 @@
 				"aws:asset:property": "Code"
 			},
 			"Properties": {
-				"Handler": "payments::payments.payments::CreatePaymentIntent",
+				"Handler": "listallcharges::listallcharges.listallcharges::LambdaHandler",
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"payments",
+						"listallcharges",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"payments",
+									"listallcharges",
 									"-",
 									{
 										"Ref": "env"
@@ -64,12 +56,6 @@
 						"REGION": {
 							"Ref": "AWS::Region"
 						},
-						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT": {
-							"Ref": "apividaudtranscriptionGraphQLAPIIdOutput"
-						},
-						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT": {
-							"Ref": "apividaudtranscriptionGraphQLAPIEndpointOutput"
-						},
 						"VUE_APP_STRIPE_PUBLISHABLE_KEY": "pk_test_kcWzN6fwBHhdYKyLP9qBrPgZ00PGq7Ou6g",
 						"VUE_APP_STRIPE_SECRET_KEY": "sk_test_8GAASYcYGl4zvXfXTkfNH3i200HuyvP6fm"
 					}
@@ -84,7 +70,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/payments-5a6f33354e68694b4c52-build.zip"
+					"S3Key": "amplify-builds/listallcharges-5a747567636377762f6f-build.zip"
 				}
 			}
 		},
@@ -94,12 +80,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"vidaudtranscriptionLambdaRoledda42a13",
+						"vidaudtranscriptionLambdaRole3e3e1fd9",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"vidaudtranscriptionLambdaRoledda42a13",
+									"vidaudtranscriptionLambdaRole3e3e1fd9",
 									"-",
 									{
 										"Ref": "env"
@@ -165,59 +151,6 @@
 									}
 								]
 							}
-						}
-					]
-				}
-			}
-		},
-		"AmplifyResourcesPolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "amplify-lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
-						{
-							"Effect": "Allow",
-							"Action": [
-								"appsync:Create*",
-								"appsync:StartSchemaCreation",
-								"appsync:GraphQL",
-								"appsync:Get*",
-								"appsync:List*",
-								"appsync:Update*",
-								"appsync:Delete*"
-							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:appsync:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":apis/",
-											{
-												"Ref": "apividaudtranscriptionGraphQLAPIIdOutput"
-											},
-											"/*"
-										]
-									]
-								}
-							]
 						}
 					]
 				}

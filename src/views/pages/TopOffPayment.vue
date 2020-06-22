@@ -252,6 +252,7 @@ export default {
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
       paymentSettings:{autoRecharge: false},
       showReceiptReceipt:false,
+      receiptUrl:'',
       //#endregion
 
       //#region payment invoice screen
@@ -451,10 +452,8 @@ export default {
       try
       {
         this.$vs.loading();
-        const apiName = 'payments';
-        const path = '/payments';
         const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge, "Email":this.general.email}, headers: {},};
-        let paymentIntent=await API.post(apiName, path, initParameter);        
+        let paymentIntent=await API.post(apiName='payments', path='/payments', initParameter);        
         console.log('paymentIntent:', JSON.stringify(paymentIntent));
         let clientSecret=paymentIntent.clientSecret;
 
@@ -467,18 +466,25 @@ export default {
         
         //https://stripe.com/docs/js/payment_intents/confirm_card_payment
         let data = {receipt_email: this.general.email, payment_method: {card: this.card, billing_details: {name: this.general.fullName,},}};
-        const result = await this.stripe.confirmCardPayment(clientSecret, data);
-        console.log(`result: ${JSON.stringify(result)}`);
+        const confirmCardPaymentResult = await this.stripe.confirmCardPayment(clientSecret, data);
+        console.log(`confirmCardPaymentResult: ${JSON.stringify(confirmCardPaymentResult)}`);
 
-        if (result.error) 
+        if (confirmCardPaymentResult.error) 
         {
-          console.log(`result.error: ${result.error}`);
-          this.$vs.notify({title: 'Error',text: result.error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});      
+          console.log(`confirmCardPaymentResult.error: ${confirmCardPaymentResult.error}`);
+          this.$vs.notify({title: 'Error',text: confirmCardPaymentResult.error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});      
         } 
         else 
         {
-          if (result.paymentIntent.status === 'succeeded') 
+          if (confirmCardPaymentResult.paymentIntent.status === 'succeeded') 
           {
+            let paymentIntentId=confirmCardPaymentResult.id;
+            const chargeListOptions = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
+            let listAllChargesResult=await API.post(apiName='listallcharges', path='/listallcharges', chargeListOptions);              
+            console.log(`listAllChargesResult: ${JSON.stringify(listAllChargesResult)}`); 
+            this.receiptUrl=listAllChargesResult.receiptUrl;
+            console.log(`this.receiptUrl: ${this.receiptUrl}`);
+            
             this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
             // There's a risk of the customer closing the window before callback execution. 
             //Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.

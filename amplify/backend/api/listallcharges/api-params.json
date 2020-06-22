@@ -1,0 +1,41 @@
+{
+    "paths": [
+        {
+            "name": "/listallcharges",
+            "lambdaFunction": "listallcharges",
+            "privacy": {
+                "private": true,
+                "auth": [
+                    "/POST",
+                    "/GET",
+                    "/PUT",
+                    "/PATCH",
+                    "/DELETE"
+                ]
+            }
+        }
+    ],
+    "resourceName": "listallcharges",
+    "apiName": "listallcharges",
+    "functionArns": [
+        {
+            "lambdaFunction": "listallcharges"
+        }
+    ],
+    "privacy": {
+        "auth": 1,
+        "unauth": 0,
+        "authRoleName": "amplify-vidaudtranscription-dev-70417-authRole",
+        "unAuthRoleName": "amplify-vidaudtranscription-dev-70417-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "listallcharges",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

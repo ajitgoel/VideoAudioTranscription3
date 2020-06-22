@@ -35,38 +35,22 @@ namespace priceperhour
           ContractResolver = contractResolver
         };
       }
-    public int Get(int noOfHours, ILambdaContext context)
+      public int Get(int noOfHours, ILambdaContext context)
     {
-      int priceperhour = 0;
-
       try
       {
-        var pricings = new List<Pricing>
-              {
-                new Pricing{Id= 1, Priceperhour= 10, Hourmin=0, Hourmax= 24,},
-                new Pricing{Id= 2, Priceperhour= 9, Hourmin=25, Hourmax= 49,},
-                new Pricing{Id= 3, Priceperhour= 8, Hourmin=50, Hourmax= 100,}
-              };
-        for (var index = 0; index < pricings.Count; index++)
-        {
-          var element = pricings[index];
-          if (element.Hourmin <= noOfHours && element.Hourmax >= noOfHours)
-          {
-            priceperhour = element.Priceperhour;
-          }
-        }
-        return priceperhour;
+        return new Methods().GetPricePerHour(noOfHours);
       }
       catch (Exception exception)
       {
         context.Logger.LogLine($"Exception: {exception}");
-        return priceperhour;
+        return 0;
       }
     }
       
       #pragma warning disable CS1998
       public async Task<APIGatewayProxyResponse> LambdaHandler(APIGatewayProxyRequest apiGatewayProxyRequest, ILambdaContext context)
-    {
+      {
           try
           {
             //https://stripe.com/docs/payments/accept-a-payment
