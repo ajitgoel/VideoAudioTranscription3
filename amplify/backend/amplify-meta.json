@@ -33,7 +33,7 @@
 				"Name": "vidaudtranscription1ea69154PreSignup-dev",
 				"LambdaExecutionRole": "vidaudtranscription1ea69154PreSignup-dev"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.331Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:57.999Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/function/vidaudtranscription1ea69154PreSignup-cloudformation-template.json",
 				"logicalId": "functionvidaudtranscription1ea69154PreSignup"
@@ -53,7 +53,7 @@
 				"Name": "S3Triggere1eb1907-dev",
 				"LambdaExecutionRole": "S3Triggere1eb1907LambdaRolee1eb1907-dev"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.333Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.001Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/function/S3Triggere1eb1907-cloudformation-template.json",
 				"logicalId": "functionS3Triggere1eb1907"
@@ -77,41 +77,41 @@
 					]
 				}
 			],
-			"lastBuildTimeStamp": "2020-06-23T05:04:40.234Z",
-			"lastPackageTimeStamp": "2020-06-23T05:04:52.216Z",
+			"lastBuildTimeStamp": "2020-06-23T05:14:10.739Z",
+			"lastPackageTimeStamp": "2020-06-23T05:14:17.231Z",
 			"distZipFilename": "payments-59354a64546230487955-build.zip",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/function/payments-cloudformation-template.json",
 				"logicalId": "functionpayments"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.334Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.028Z",
 			"output": {
 				"Region": "us-east-1",
 				"Arn": "arn:aws:lambda:us-east-1:529627678433:function:payments-dev",
 				"Name": "payments-dev",
 				"LambdaExecutionRole": "vidaudtranscriptionLambdaRoledda42a13-dev"
 			},
-			"lastPushDirHash": "9nEQdzZX2gKPpY0pj1GW8qHFxWI="
+			"lastPushDirHash": "ivE7+8/vPe0UTf8CQ5A8ZCO9Fm0="
 		},
 		"priceperhour": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",
-			"lastBuildTimeStamp": "2020-06-23T05:04:40.236Z",
-			"lastPackageTimeStamp": "2020-06-22T14:21:06.267Z",
+			"lastBuildTimeStamp": "2020-06-23T05:14:10.744Z",
+			"lastPackageTimeStamp": "2020-06-23T05:14:20.918Z",
 			"distZipFilename": "priceperhour-6636446531374f567346-build.zip",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/function/priceperhour-cloudformation-template.json",
 				"logicalId": "functionpriceperhour"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.336Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.028Z",
 			"output": {
 				"Region": "us-east-1",
 				"Arn": "arn:aws:lambda:us-east-1:529627678433:function:priceperhour-dev",
 				"Name": "priceperhour-dev",
 				"LambdaExecutionRole": "vidaudtranscriptionLambdaRole550d4df5-dev"
 			},
-			"lastPushDirHash": "BFxFi9ACSM8dc6jzfm91RABUrF4="
+			"lastPushDirHash": "Z9Q8S+guytc7aLgRks1RiYR3kY8="
 		},
 		"listallcharges": {
 			"build": true,
@@ -124,20 +124,34 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/function/listallcharges-cloudformation-template.json",
 				"logicalId": "functionlistallcharges"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.337Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.008Z",
 			"output": {
 				"Region": "us-east-1",
 				"Arn": "arn:aws:lambda:us-east-1:529627678433:function:listallcharges-dev",
 				"Name": "listallcharges-dev",
 				"LambdaExecutionRole": "vidaudtranscriptionLambdaRole3e3e1fd9-dev"
 			},
-			"lastPushDirHash": "au+26Hf/+HiCcC5Y4rZdoQ1qg4I="
+			"lastPushDirHash": "RhhBCLyhYRlBE5Y8vQdOlDve8ts="
 		},
 		"PaymentIntent": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda",
-			"lastBuildTimeStamp": "2020-06-23T05:04:40.223Z"
+			"lastBuildTimeStamp": "2020-06-23T05:04:40.223Z",
+			"lastPackageTimeStamp": "2020-06-23T05:05:00.885Z",
+			"distZipFilename": "PaymentIntent-33752f6e526a6350626e-build.zip",
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/function/PaymentIntent-cloudformation-template.json",
+				"logicalId": "functionPaymentIntent"
+			},
+			"lastPushTimeStamp": "2020-06-23T05:15:58.009Z",
+			"output": {
+				"Region": "us-east-1",
+				"Arn": "arn:aws:lambda:us-east-1:529627678433:function:Get-dev",
+				"Name": "Get-dev",
+				"LambdaExecutionRole": "vidaudtranscriptionLambdaRole9fd3b9a3-dev"
+			},
+			"lastPushDirHash": "c0aOrZ/Ek497rr2W58KwENhQJYM="
 		}
 	},
 	"auth": {
@@ -164,7 +178,7 @@
 				"IdentityPoolName": "vidaudtranscription1ea69154_identitypool_1ea69154__dev",
 				"UserPoolName": "vidaudtranscription1ea69154_userpool_1ea69154"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.339Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.011Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/auth/vidaudtranscription1ea69154-cloudformation-template.yml",
 				"logicalId": "authvidaudtranscription1ea69154"
@@ -193,7 +207,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/api/cloudformation-template.json",
 				"logicalId": "apividaudtranscription"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.340Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.013Z",
 			"lastPushDirHash": "kKyMls+Iv28yyDo+K7j0gQtWZ1A="
 		},
 		"payments": {
@@ -213,7 +227,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/api/payments-cloudformation-template.json",
 				"logicalId": "apipayments"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.341Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.015Z",
 			"output": {
 				"ApiName": "payments",
 				"RootUrl": "https://ke0viq9a5h.execute-api.us-east-1.amazonaws.com/dev",
@@ -238,7 +252,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/api/priceperhour-cloudformation-template.json",
 				"logicalId": "apipriceperhour"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.343Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.017Z",
 			"output": {
 				"ApiName": "priceperhour",
 				"RootUrl": "https://qirua8wpa3.execute-api.us-east-1.amazonaws.com/dev",
@@ -263,7 +277,7 @@
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/api/listallcharges-cloudformation-template.json",
 				"logicalId": "apilistallcharges"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.344Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.018Z",
 			"output": {
 				"ApiName": "listallcharges",
 				"RootUrl": "https://az02t48wt1.execute-api.us-east-1.amazonaws.com/dev",
@@ -283,7 +297,18 @@
 						"Arn"
 					]
 				}
-			]
+			],
+			"providerMetadata": {
+				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/api/PaymentIntent-cloudformation-template.json",
+				"logicalId": "apiPaymentIntent"
+			},
+			"lastPushTimeStamp": "2020-06-23T05:15:58.020Z",
+			"output": {
+				"ApiName": "PaymentIntent",
+				"RootUrl": "https://kalgi2en0k.execute-api.us-east-1.amazonaws.com/dev",
+				"ApiId": "kalgi2en0k"
+			},
+			"lastPushDirHash": "8AjrNTEXCBOL2Sub7+UJ1wU6qEI="
 		}
 	},
 	"storage": {
@@ -305,7 +330,7 @@
 				"BucketName": "vidaudtranscription70417-dev",
 				"Region": "us-east-1"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.345Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.022Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/storage/s3-cloudformation-template.json",
 				"logicalId": "storagevidaudtranscription"
@@ -323,7 +348,7 @@
 				"Region": "us-east-1",
 				"HostingBucketName": "vidaudtranscription-dev"
 			},
-			"lastPushTimeStamp": "2020-06-23T05:03:59.347Z",
+			"lastPushTimeStamp": "2020-06-23T05:15:58.024Z",
 			"providerMetadata": {
 				"s3TemplateURL": "https://s3.amazonaws.com/amplify-vidaudtranscription-dev-70417-deployment/amplify-cfn-templates/hosting/template.json",
 				"logicalId": "hostingS3AndCloudFront"
