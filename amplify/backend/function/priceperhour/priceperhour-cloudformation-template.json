@@ -68,7 +68,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/priceperhour-6636446531374f567346-build.zip"
+					"S3Key": "amplify-builds/priceperhour-31664c4a2f704459446f-build.zip"
 				}
 			}
 		},
