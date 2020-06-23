@@ -9,6 +9,8 @@ using Amazon.Lambda.APIGatewayEvents;
 using Newtonsoft.Json;
 using Models;
 using Newtonsoft.Json.Serialization;
+using Stripe;
+using System.Net.Http;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -41,35 +43,62 @@ namespace listallcharges
     /// </summary>
     #pragma warning disable CS1998
     public async Task<APIGatewayProxyResponse> LambdaHandler(APIGatewayProxyRequest apiGatewayProxyRequest, ILambdaContext context)
+    {
+      try
       {
-        try
+        var apiGatewayProxyResponse = new APIGatewayProxyResponse
         {
-          var apiGatewayProxyResponse = new APIGatewayProxyResponse
-          {
-            Headers = new Dictionary<string, string> {
-                      { "Access-Control-Allow-Origin", "*" },
-                      { "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" }
-                    }
-          };
-          context.Logger.LogLine($"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n");
-          if (apiGatewayProxyRequest.HttpMethod == "POST")
-          {
-            var requestBody = apiGatewayProxyRequest.Body;
-            var listAllChargesInput = JsonConvert.DeserializeObject<ListAllChargesInput>(requestBody, jsonSerializerSettings);
-            var listAllChargesOutput = new Methods().ListAllCharges(listAllChargesInput);
-            apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
-            apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(listAllChargesOutput, jsonSerializerSettings);
-          }
-          return apiGatewayProxyResponse;
-        }
-        catch (Exception exception)
+          Headers = new Dictionary<string, string> {
+                    { "Access-Control-Allow-Origin", "*" },
+                    { "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" }
+                  }
+        };
+        context.Logger.LogLine($"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n");
+        if (apiGatewayProxyRequest.HttpMethod == "POST")
         {
-          context.Logger.LogLine($"Exception: {exception}");
-          return new APIGatewayProxyResponse
-          {
-            StatusCode = (int)HttpStatusCode.BadRequest
-          };
+          var requestBody = apiGatewayProxyRequest.Body;
+          var listAllChargesInput = JsonConvert.DeserializeObject<ListAllChargesInput>(requestBody, jsonSerializerSettings);
+          var listAllChargesOutput = await GetPaymentReceiptAsync(listAllChargesInput, context);
+          apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
+          apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(listAllChargesOutput, jsonSerializerSettings);
         }
+        return apiGatewayProxyResponse;
+      }
+      catch (Exception exception)
+      {
+        context.Logger.LogLine($"Exception: {exception}");
+        return new APIGatewayProxyResponse
+        {
+          StatusCode = (int)HttpStatusCode.BadRequest
+        };
       }
     }
+    private async Task<string> GetPaymentReceiptAsync(ListAllChargesInput listAllChargesInput, ILambdaContext context)
+    {
+      StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");//get from environment file.
+      var chargeListOptions = new ChargeListOptions { Limit = 1, PaymentIntent = listAllChargesInput.PaymentIntentId };
+      var chargeService = new ChargeService();
+      var charges = chargeService.List(chargeListOptions);
+      var receiptUrl = charges?.First()?.ReceiptUrl;
+
+      var uri = new Uri(receiptUrl);
+      var baseUri = uri.GetLeftPart(UriPartial.Authority);
+      using var httpClient = new HttpClient
+      {
+        BaseAddress = new Uri(baseUri)
+      };
+      httpClient.DefaultRequestHeaders.Accept.Clear();
+      httpClient.DefaultRequestHeaders.Add("Access-Control-Allow-Origin", "*");
+      var httpResponseMessage = await httpClient.GetAsync(uri.PathAndQuery);
+      var paymentReceiptBody = string.Empty;
+      if (httpResponseMessage.IsSuccessStatusCode)
+      {
+        var response = await httpResponseMessage.Content.ReadAsStringAsync();
+        context.Logger.LogLine($"response: {JsonConvert.SerializeObject(response)}\n");
+        var paymentReceipt = JsonConvert.DeserializeObject<PaymentReceipt>(response);
+        paymentReceiptBody = paymentReceipt.Body;
+      }
+      return paymentReceiptBody;
+    }
+  }
 }

@@ -3,6 +3,8 @@ using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace Models
 {
@@ -19,6 +21,12 @@ namespace Models
     public int Hourmin { get; set; }
     public int Hourmax { get; set; }
   }
+  public class GetPaymentIntentInput
+  {
+    [JsonProperty(Required = Required.Always)]
+    public string PaymentIntentId { get; set; }
+  }
+
   public class CreatePaymentIntentInput
   {
     [JsonProperty(Required = Required.Always)]
@@ -28,12 +36,25 @@ namespace Models
     [JsonProperty(Required = Required.Always)]
     public string Email { get; set; }
   }
+  public class GetPaymentIntentOutput
+  {
+    public string Amount { get; set; }
+    public string InvoiceDate { get; set; }
+    public string PaymentMethod { get; set; }
+    public string ReceiptUrl { get; set; }
+    public string ReceiptNumber { get; set; }
+  }
+
   public class CreatePaymentIntentOutput
   {
     [JsonProperty(Required = Required.Always)]
     public string ClientSecret { get; set; }
   }
-
+  public class PaymentReceipt
+  {
+    [JsonProperty("body")]
+    public string Body { get; set; }
+  }
   public class ListAllChargesInput
   {
     [JsonProperty(Required = Required.Always)]
@@ -64,36 +85,6 @@ namespace Models
         }
       }
       return priceperhour;      
-    }
-
-    public CreatePaymentIntentOutput CreatePaymentIntent(CreatePaymentIntentInput createPaymentIntentInput)
-    {
-      StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");//get from environment file.
-      var pricePerHour = GetPricePerHour(createPaymentIntentInput.NoOFHours);
-      var paymentIntentCreateOptions = new PaymentIntentCreateOptions
-      {
-        Amount = pricePerHour * createPaymentIntentInput.NoOFHours * 100,
-        Currency = Constants.USD_CURRENCY,
-        PaymentMethodTypes = new List<string> { Constants.CARD_PAYMENT_METHOD },
-        Description = "Top off payment for video audio transcription",
-        ReceiptEmail = createPaymentIntentInput.Email,
-        Metadata = new Dictionary<string, string>
-        {
-          { "integration_check", "accept_a_payment" },
-        },
-      };
-      var paymentIntentService = new PaymentIntentService();
-      var paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
-      return new CreatePaymentIntentOutput { ClientSecret = paymentIntent.ClientSecret };
-    }
-
-    public ListAllChargesOutput ListAllCharges(ListAllChargesInput listAllChargesInput)
-    {
-      StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");//get from environment file.
-      var chargeListOptions = new ChargeListOptions { Limit = 1,PaymentIntent=listAllChargesInput.PaymentIntentId };
-      var chargeService = new ChargeService();
-      var charges = chargeService.List(chargeListOptions);
-      return new ListAllChargesOutput { ReceiptUrl = charges?.First()?.ReceiptUrl };
     }
   }
 }

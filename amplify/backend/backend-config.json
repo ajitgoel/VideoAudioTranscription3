@@ -34,6 +34,11 @@
 			"build": true,
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
+		},
+		"PaymentIntent": {
+			"build": true,
+			"providerPlugin": "awscloudformation",
+			"service": "Lambda"
 		}
 	},
 	"auth": {
@@ -104,6 +109,20 @@
 				{
 					"category": "function",
 					"resourceName": "listallcharges",
+					"attributes": [
+						"Name",
+						"Arn"
+					]
+				}
+			]
+		},
+		"PaymentIntent": {
+			"service": "API Gateway",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": [
+				{
+					"category": "function",
+					"resourceName": "PaymentIntent",
 					"attributes": [
 						"Name",
 						"Arn"

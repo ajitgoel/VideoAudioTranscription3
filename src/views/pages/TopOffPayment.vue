@@ -20,109 +20,104 @@
 
         <vx-card id="invoice-container">
 
-            <!-- INVOICE METADATA -->
-            <div class="vx-row leading-loose p-base">
-                <div class="vx-col w-full md:w-1/2 mt-base">
-                    <img src="@/assets/images/logo/logo.png" alt="vuexy-logo">
-                </div>
-                <div class="vx-col w-full md:w-1/2 text-right">
-                    <h1>Invoice</h1>
-                    <div class="invoice__invoice-detail mt-6">
-                        <h6>INVOICE NO.</h6>
-                        <p>{{ invoiceDetails.invoiceNo }}</p>
+          <!-- INVOICE METADATA -->
+          <div class="vx-row leading-loose p-base">
+              <div class="vx-col w-full md:w-1/2 mt-base">
+                  <img src="@/assets/images/logo/logo.png" alt="vuexy-logo">
+              </div>
+              <div class="vx-col w-full md:w-1/2 text-right">
+                  <h1>Invoice</h1>
+                  <div class="invoice__invoice-detail mt-6">
+                      <h6>INVOICE NO.</h6>
+                      <p>{{paymentReceipt.receiptNumber}}</p>
 
-                        <h6 class="mt-4">INVOICE DATE</h6>
-                        <p>{{ invoiceDetails.invoiceDate | date(true) }}</p>
-                    </div>
-                </div>
-                <div class="vx-col w-full md:w-1/2 mt-12">
-                    <h5>Recipient</h5>
-                    <div class="invoice__recipient-info my-4">
-                        <p>{{ recipientDetails.fullName }}</p>
-                        <p>{{ recipientDetails.addressLine1 }}</p>
-                        <p>{{ recipientDetails.addressLine2 }}</p>
-                        <p>{{ recipientDetails.zipcode }}</p>
-                    </div>
-                    <div class="invoice__recipient-contact ">
-                        <p class="flex items-center">
-                            <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ recipientDetails.mailId }}</span>
-                        </p>
-                        <p class="flex items-center">
-                            <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ recipientDetails.mobile }}</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
-                    <h5>{{ companyDetails.name }}</h5>
-                    <div class="invoice__company-info my-4">
-                        <p>{{ companyDetails.addressLine1 }}</p>
-                        <p>{{ companyDetails.addressLine2 }}</p>
-                        <p>{{ companyDetails.zipcode }}</p>
-                    </div>
-                    <div class="invoice__company-contact">
-                        <p class="flex items-center justify-end">
-                            <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ companyDetails.mailId }}</span>
-                        </p>
-                        <p class="flex items-center justify-end">
-                            <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                            <span class="ml-2">{{ companyDetails.mobile }}</span>
-                        </p>
-                    </div>
+                      <h6 class="mt-4">INVOICE DATE</h6>
+                      <p>{{paymentReceipt.invoiceDate}}</p>
 
-                </div>
-            </div>
+                      <h6 class="mt-4">Payment Method</h6>
+                      <p>{{paymentReceipt.paymentMethod}}</p>
+                  </div>
+              </div>
+              <div class="vx-col w-full md:w-1/2 mt-12">
+                  <h5>Recipient</h5>
+                  <div class="invoice__recipient-info my-4">
+                      <p>{{ recipientDetails.fullName }}</p>
+                      <p>{{ recipientDetails.addressLine1 }}</p>
+                      <p>{{ recipientDetails.addressLine2 }}</p>
+                      <p>{{ recipientDetails.zipcode }}</p>
+                  </div>
+                  <div class="invoice__recipient-contact ">
+                      <p class="flex items-center">
+                        <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
+                        <span class="ml-2">{{ recipientDetails.mailId }}</span>
+                      </p>
+                      <p class="flex items-center">
+                        <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
+                        <span class="ml-2">{{ recipientDetails.mobile }}</span>
+                      </p>
+                  </div>
+              </div>
+              <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
+                  <h5>{{ companyDetails.name }}</h5>
+                  <div class="invoice__company-info my-4">
+                    <p>{{ companyDetails.addressLine1 }}</p>
+                    <p>{{ companyDetails.addressLine2 }}</p>
+                    <p>{{ companyDetails.zipcode }}</p>
+                  </div>
+                  <div class="invoice__company-contact">
+                      <p class="flex items-center justify-end">
+                        <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
+                        <span class="ml-2">{{ companyDetails.mailId }}</span>
+                      </p>
+                      <p class="flex items-center justify-end">
+                        <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
+                        <span class="ml-2">{{ companyDetails.mobile }}</span>
+                      </p>
+                  </div>
 
-            <!-- INVOICE CONTENT -->
-            <div class="p-base">
-                <!-- INVOICE TASKS TABLE -->
-                <vs-table hoverFlat :data="invoiceData.tasks">
-                    <!-- HEADER -->
-                    <template slot="thead">
-                        <vs-th>TASK DESCRIPTION</vs-th>
-                        <vs-th>HOURS</vs-th>
-                        <vs-th>RATE</vs-th>
-                        <vs-th>AMOUNT</vs-th>
-                    </template>
+              </div>
+          </div>
+          <div class="p-base">
+              <vs-table hoverFlat :data="invoiceData.tasks">
+                  <template slot="thead">
+                    <vs-th>TASK DESCRIPTION</vs-th>
+                    <vs-th>HOURS</vs-th>
+                    <vs-th>RATE</vs-th>
+                    <vs-th>AMOUNT</vs-th>
+                  </template>
 
-                    <!-- DATA -->
-                    <template slot-scope="{data}">
-                        <vs-tr v-for="(tr, index) in data" :key="index">
-                            <vs-td :data="data[index].task">{{ data[index].task }}</vs-td>
-                            <vs-td :data="data[index].hours">{{ data[index].hours }}</vs-td>
-                            <vs-td :data="data[index].rate">{{ data[index].rate }} USD</vs-td>
-                            <vs-td :data="data[index].amount">{{ data[index].amount }} USD</vs-td>
-                        </vs-tr>
-                    </template>
-                </vs-table>
+                  <template slot-scope="{data}">
+                      <vs-tr v-for="(tr, index) in data" :key="index">
+                        <vs-td :data="data[index].task">{{ data[index].task }}</vs-td>
+                        <vs-td :data="data[index].hours">{{ data[index].hours }}</vs-td>
+                        <vs-td :data="data[index].rate">{{ data[index].rate }} USD</vs-td>
+                        <vs-td :data="data[index].amount">{{ data[index].amount }} USD</vs-td>
+                      </vs-tr>
+                  </template>
+              </vs-table>
 
-                <!-- INVOICE SUMMARY TABLE -->
-                <vs-table hoverFlat class="w-1/2 ml-auto mt-4" :data="invoiceData">
-                    <vs-tr>
-                        <vs-th>SUBTOTAL</vs-th>
-                        <vs-td>{{ invoiceData.subtotal }} USD</vs-td>
-                    </vs-tr>
-                    <vs-tr>
-                        <vs-th>DISCOUNT ({{ invoiceData.discountPercentage }}%)</vs-th>
-                        <vs-td>{{ invoiceData.discountedAmount }} USD</vs-td>
-                    </vs-tr>
-                    <vs-tr>
-                        <th>TOTAL</th>
-                        <td>{{ invoiceData.total }} USD</td>
-                    </vs-tr>
-                </vs-table>
-            </div>
-
-            <!-- INVOICE FOOTER -->
-            <div class="invoice__footer text-right p-base">
-                <p class="mb-4">Transfer the amounts to the business amount below. Please include invoice number on your check.</p>
-                <p>
-                    <span class="mr-8">BANK: <span class="font-semibold">FTSBUS33</span></span>
-                    <span>IBAN: <span class="font-semibold"> G882-1111-2222-3333 </span></span>
-                </p>
-            </div>
+              <vs-table hoverFlat class="w-1/2 ml-auto mt-4" :data="invoiceData">
+                  <vs-tr>
+                    <vs-th>SUBTOTAL</vs-th>
+                    <vs-td>{{ invoiceData.subtotal }} USD</vs-td>
+                  </vs-tr>
+                  <vs-tr>
+                    <vs-th>DISCOUNT ({{ invoiceData.discountPercentage }}%)</vs-th>
+                    <vs-td>{{ invoiceData.discountedAmount }} USD</vs-td>
+                  </vs-tr>
+                  <vs-tr>
+                    <th>TOTAL</th>
+                    <td>{{ invoiceData.total }} USD</td>
+                  </vs-tr>
+              </vs-table>
+          </div>
+          <!-- <div class="invoice__footer text-right p-base">
+              <p class="mb-4">Transfer the amounts to the business amount below. Please include invoice number on your check.</p>
+              <p>
+                  <span class="mr-8">BANK: <span class="font-semibold">FTSBUS33</span></span>
+                  <span>IBAN: <span class="font-semibold"> G882-1111-2222-3333 </span></span>
+              </p>
+          </div> -->
         </vx-card>
     </div>   
     <!--Invoice: End-->
@@ -252,7 +247,7 @@ export default {
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
       paymentSettings:{autoRecharge: false},
       showReceiptReceipt:false,
-      receiptUrl:'',
+      paymentReceipt:null,
       //#endregion
 
       //#region payment invoice screen
@@ -299,7 +294,7 @@ export default {
           discountedAmount: 5700,
           total: 108300,
       }
-      //#endregion payment invoice screen      
+      //#endregion payment invoice screen     
     }
   },
   computed: 
@@ -453,7 +448,7 @@ export default {
       {
         this.$vs.loading();
         const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge, "Email":this.general.email}, headers: {},};
-        let paymentIntent=await API.post(apiName='payments', path='/payments', initParameter);        
+        let paymentIntent=await API.post('payments', '/payments', initParameter);        
         console.log('paymentIntent:', JSON.stringify(paymentIntent));
         let clientSecret=paymentIntent.clientSecret;
 
@@ -472,23 +467,30 @@ export default {
         if (confirmCardPaymentResult.error) 
         {
           console.log(`confirmCardPaymentResult.error: ${confirmCardPaymentResult.error}`);
-          this.$vs.notify({title: 'Error',text: confirmCardPaymentResult.error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});      
-        } 
-        else 
+          this.$vs.notify({title: 'Error', text: `${confirmCardPaymentResult.error.message}. Please correct the error to continue.`, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});        
+          this.showReceiptReceipt=false;
+          return;
+        }
+
+        if (confirmCardPaymentResult.paymentIntent.status === 'succeeded') 
         {
-          if (confirmCardPaymentResult.paymentIntent.status === 'succeeded') 
-          {
-            let paymentIntentId=confirmCardPaymentResult.id;
-            const chargeListOptions = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
-            let listAllChargesResult=await API.post(apiName='listallcharges', path='/listallcharges', chargeListOptions);              
-            console.log(`listAllChargesResult: ${JSON.stringify(listAllChargesResult)}`); 
-            this.receiptUrl=listAllChargesResult.receiptUrl;
-            console.log(`this.receiptUrl: ${this.receiptUrl}`);
-            
-            this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
-            // There's a risk of the customer closing the window before callback execution. 
-            //Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
-          }
+          let paymentIntentId=confirmCardPaymentResult.paymentIntent.id;
+
+          const options = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
+          this.paymentReceipt=await API.post('PaymentIntent', '/Get', options);              
+          console.log(`paymentReceipt: ${JSON.stringify(this.paymentReceipt)}`); 
+
+          /* const chargeListOptions = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
+          this.listAllChargesResult=await API.post('listallcharges', '/listallcharges', chargeListOptions);              
+          console.log(`listAllChargesResult: ${JSON.stringify(this.listAllChargesResult)}`); 
+          this.receiptUrl=listAllChargesResult.receiptUrl;
+          let response=await axios.get(receiptUrl);
+          this.paymentReceipt= response.data;
+          console.log(`this.receiptUrl: ${this.receiptUrl}`); */
+          
+          this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+          // There's a risk of the customer closing the window before callback execution. 
+          //Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
         }
         //#endregion
 
