@@ -52,7 +52,28 @@ namespace payments
         {
           var requestBody=apiGatewayProxyRequest.Body;
           var createPaymentIntentInput = JsonConvert.DeserializeObject<CreatePaymentIntentInput>(requestBody, jsonSerializerSettings);
-          var createPaymentIntentOutput =CreatePaymentIntent(createPaymentIntentInput);
+
+          //var createPaymentIntentOutput =CreatePaymentIntent(createPaymentIntentInput);
+          # region CreatePaymentIntent
+          StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
+          var pricePerHour = new Methods().GetPricePerHour(createPaymentIntentInput.NoOFHours);
+          var paymentIntentCreateOptions = new PaymentIntentCreateOptions
+          {
+            Amount = pricePerHour * createPaymentIntentInput.NoOFHours * 100,
+            Currency = Constants.USD_CURRENCY,
+            PaymentMethodTypes = new List<string> { Constants.CARD_PAYMENT_METHOD },
+            Description = "Top off payment for video audio transcription",
+            ReceiptEmail = createPaymentIntentInput.Email,
+            Metadata = new Dictionary<string, string>
+            {
+              { "integration_check", "accept_a_payment" },
+            },
+          };
+          var paymentIntentService = new PaymentIntentService();
+          var paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
+          var createPaymentIntentOutput =new CreatePaymentIntentOutput { ClientSecret = paymentIntent.ClientSecret };
+          #endregion
+
           apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
           apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(createPaymentIntentOutput, jsonSerializerSettings);
         }
@@ -66,27 +87,6 @@ namespace payments
           StatusCode = (int)HttpStatusCode.BadRequest
         };
       }          
-    }
-
-    private CreatePaymentIntentOutput CreatePaymentIntent(CreatePaymentIntentInput createPaymentIntentInput)
-    {
-      StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
-      var pricePerHour = new Methods().GetPricePerHour(createPaymentIntentInput.NoOFHours);
-      var paymentIntentCreateOptions = new PaymentIntentCreateOptions
-      {
-        Amount = pricePerHour * createPaymentIntentInput.NoOFHours * 100,
-        Currency = Constants.USD_CURRENCY,
-        PaymentMethodTypes = new List<string> { Constants.CARD_PAYMENT_METHOD },
-        Description = "Top off payment for video audio transcription",
-        ReceiptEmail = createPaymentIntentInput.Email,
-        Metadata = new Dictionary<string, string>
-        {
-          { "integration_check", "accept_a_payment" },
-        },
-      };
-      var paymentIntentService = new PaymentIntentService();
-      var paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
-      return new CreatePaymentIntentOutput { ClientSecret = paymentIntent.ClientSecret };
     }
   }
 }

@@ -448,7 +448,7 @@ export default {
       {
         this.$vs.loading();
         const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge, "Email":this.general.email}, headers: {},};
-        let paymentIntent=await API.post('payments', '/payments', initParameter);        
+        let paymentIntent=await API.post('CreatePaymentIntent', '/CreatePaymentIntent', initParameter);        
         console.log('paymentIntent:', JSON.stringify(paymentIntent));
         let clientSecret=paymentIntent.clientSecret;
 
