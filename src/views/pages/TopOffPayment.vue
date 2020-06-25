@@ -28,8 +28,8 @@
               <div class="vx-col w-full md:w-1/2 text-right">
                   <h1>Invoice</h1>
                   <div class="invoice__invoice-detail mt-6">
-                      <h6>INVOICE NO.</h6>
-                      <p>{{paymentReceipt.receiptNumber}}</p>
+                      <h6 v-if="paymentReceipt.receiptNumber">INVOICE NO.</h6>
+                      <p v-if="paymentReceipt.receiptNumber">{{paymentReceipt.receiptNumber}}</p>
 
                       <h6 class="mt-4">INVOICE DATE</h6>
                       <p>{{paymentReceipt.invoiceDate}}</p>
@@ -41,23 +41,23 @@
               <div class="vx-col w-full md:w-1/2 mt-12">
                   <h5>Recipient</h5>
                   <div class="invoice__recipient-info my-4">
-                      <p>{{ recipientDetails.fullName }}</p>
-                      <p>{{ recipientDetails.addressLine1 }}</p>
-                      <p>{{ recipientDetails.addressLine2 }}</p>
-                      <p>{{ recipientDetails.zipcode }}</p>
+                      <p>{{ paymentReceipt.name }}</p>
+                      <p>{{ paymentReceipt.billingDetailsAddress.line1 }}</p>
+                      <p>{{ paymentReceipt.billingDetailsAddress.line2 }}</p>
+                      <p>{{ paymentReceipt.billingDetailsAddress.city }} {{ paymentReceipt.billingDetailsAddress.state }} {{ paymentReceipt.billingDetailsAddress.postal_code }} {{ paymentReceipt.billingDetailsAddress.country }}</p>
                   </div>
                   <div class="invoice__recipient-contact ">
-                      <p class="flex items-center">
+                      <p class="flex items-center" v-if="paymentReceipt.receiptEmail">
                         <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                        <span class="ml-2">{{ recipientDetails.mailId }}</span>
+                        <span class="ml-2">{{ paymentReceipt.receiptEmail }}</span>
                       </p>
-                      <p class="flex items-center">
+                      <p class="flex items-center" v-if="paymentReceipt.phone">
                         <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                        <span class="ml-2">{{ recipientDetails.mobile }}</span>
+                        <span class="ml-2">{{ paymentReceipt.phone }}</span>
                       </p>
                   </div>
               </div>
-              <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
+             <!--  <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
                   <h5>{{ companyDetails.name }}</h5>
                   <div class="invoice__company-info my-4">
                     <p>{{ companyDetails.addressLine1 }}</p>
@@ -74,8 +74,7 @@
                         <span class="ml-2">{{ companyDetails.mobile }}</span>
                       </p>
                   </div>
-
-              </div>
+              </div> -->
           </div>
           <div class="p-base">
               <vs-table hoverFlat :data="invoiceData.tasks">
@@ -88,7 +87,7 @@
 
                   <template slot-scope="{data}">
                       <vs-tr v-for="(tr, index) in data" :key="index">
-                        <vs-td :data="data[index].task">{{ data[index].task }}</vs-td>
+                        <vs-td :data="data[index].task">{{ paymentReceipt.description }}</vs-td>
                         <vs-td :data="data[index].hours">{{ data[index].hours }}</vs-td>
                         <vs-td :data="data[index].rate">{{ data[index].rate }} USD</vs-td>
                         <vs-td :data="data[index].amount">{{ data[index].amount }} USD</vs-td>
@@ -96,20 +95,33 @@
                   </template>
               </vs-table>
 
-              <vs-table hoverFlat class="w-1/2 ml-auto mt-4" :data="invoiceData">
+              <vs-table hoverFlat class="w-1/2 ml-auto mt-4">
                   <vs-tr>
                     <vs-th>SUBTOTAL</vs-th>
-                    <vs-td>{{ invoiceData.subtotal }} USD</vs-td>
+                    <vs-td>{{  }} USD</vs-td>
                   </vs-tr>
                   <vs-tr>
-                    <vs-th>DISCOUNT ({{ invoiceData.discountPercentage }}%)</vs-th>
-                    <vs-td>{{ invoiceData.discountedAmount }} USD</vs-td>
+                    <vs-th>DISCOUNT ({{  }}%)</vs-th>
+                    <vs-td>{{  }} USD</vs-td>
                   </vs-tr>
                   <vs-tr>
                     <th>TOTAL</th>
-                    <td>{{ invoiceData.total }} USD</td>
+                    <td>{{ paymentReceipt.amount }} USD</td>
                   </vs-tr>
               </vs-table>
+          </div>
+          <div class="invoice__footer text-left p-base">
+              <p class="mb-4">If you have any questions, contact us at 
+                <a href="mailto:ajitgoel@gmail.com" target="_blank" rel="nofollow">
+                  <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon> ajitgoel@gmail.com
+                </a> or call at 
+                  <a href="tel:+12146065700" target="_blank" rel="nofollow">
+                    <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>+1 214-606-5700.
+                  </a></p>
+              <p class="mb-4">Something wrong with the email? View it in your <a :href="paymentReceipt.receiptUrl" target="_blank" rel="nofollow">browser</a>.</p>
+              <p class="mb-4">You're receiving this email because you made a purchase at 
+                <a href="http://www.VideoAudioTranscription.com" target="_blank" rel="nofollow">Video Audio Transcription</a>, which partners with 
+                <a href="http://www.stripe.com" target="_blank" rel="nofollow">Stripe</a> to provide invoicing and payment processing.</p>              
           </div>
           <!-- <div class="invoice__footer text-right p-base">
               <p class="mb-4">Transfer the amounts to the business amount below. Please include invoice number on your check.</p>

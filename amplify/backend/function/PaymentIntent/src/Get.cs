@@ -59,11 +59,16 @@ namespace PaymentIntent
 
           var getPaymentIntentOutput = new GetPaymentIntentOutput
           {
-            Amount = paymentIntent?.Amount.ToString(),
+            Amount = (paymentIntent?.Charges?.Data?[0]?.Amount/100).ToString(),
             InvoiceDate = paymentIntent?.Created.ToString("MMMM dd yyyy"),            
-            PaymentMethod = $"{paymentIntent?.Charges?.Data?[0].PaymentMethodDetails?.Card?.Network} - {paymentIntent?.Charges?.Data?[0].PaymentMethodDetails?.Card?.Last4}",
-            ReceiptUrl = paymentIntent?.Charges?.Data?[0].ReceiptUrl,
-            ReceiptNumber = paymentIntent?.Charges?.Data?[0].ReceiptNumber,
+            PaymentMethod = $"{paymentIntent?.Charges?.Data?[0]?.PaymentMethodDetails?.Card?.Network} - {paymentIntent?.Charges?.Data?[0]?.PaymentMethodDetails?.Card?.Last4}",
+            ReceiptUrl = paymentIntent?.Charges?.Data?[0]?.ReceiptUrl,
+            ReceiptNumber = paymentIntent?.Charges?.Data?[0]?.ReceiptNumber,
+            ReceiptEmail = paymentIntent?.Charges?.Data?[0]?.ReceiptEmail,
+            Description = paymentIntent?.Charges?.Data?[0]?.Description,
+            Name = paymentIntent?.Charges?.Data?[0]?.BillingDetails?.Name,
+            Phone = paymentIntent?.Charges?.Data?[0]?.BillingDetails?.Phone,
+            BillingDetailsAddress = paymentIntent?.Charges?.Data?[0]?.BillingDetails?.Address,
           };
 
           apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;

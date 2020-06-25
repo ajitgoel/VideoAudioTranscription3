@@ -43,6 +43,11 @@ namespace Models
     public string PaymentMethod { get; set; }
     public string ReceiptUrl { get; set; }
     public string ReceiptNumber { get; set; }
+    public string ReceiptEmail { get; set; }
+    public string Description { get; set; }
+    public string Name { get; set; }
+    public string Phone { get; set; }
+    public Address BillingDetailsAddress { get; set; }
   }
 
   public class CreatePaymentIntentOutput
