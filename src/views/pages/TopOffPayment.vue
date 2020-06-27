@@ -3,8 +3,8 @@
     <!--Invoice: Start-->
     <div id="invoice-page" v-if="showReceiptReceipt">
         <div class="flex flex-wrap items-center justify-between">
-          <vx-input-group class="mb-base mr-3">
-            <!-- <vs-input v-model="mailTo" placeholder="Email" />
+          <!-- <vx-input-group class="mb-base mr-3">
+            <vs-input v-model="mailTo" placeholder="Email" />
             <template slot="append">
               <div class="append-text btn-addon">
                 <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button>
