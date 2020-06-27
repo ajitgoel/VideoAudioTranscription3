@@ -20,43 +20,42 @@
 
         <vx-card id="invoice-container">
 
-          <!-- INVOICE METADATA -->
           <div class="vx-row leading-loose p-base">
-              <div class="vx-col w-full md:w-1/2 mt-base">
-                  <img src="@/assets/images/logo/logo.png" alt="vuexy-logo">
-              </div>
-              <div class="vx-col w-full md:w-1/2 text-right">
-                  <h1>Invoice</h1>
-                  <div class="invoice__invoice-detail mt-6">
-                      <h6 v-if="paymentReceipt.receiptNumber">INVOICE NO.</h6>
-                      <p v-if="paymentReceipt.receiptNumber">{{paymentReceipt.receiptNumber}}</p>
+            <div class="vx-col w-full md:w-1/2 mt-base">
+                <img src="@/assets/images/logo/logo.png" alt="vuexy-logo">
+            </div>
+            <div class="vx-col w-full md:w-1/2 text-right">
+                <h1>Invoice</h1>
+                <div class="invoice__invoice-detail mt-6">
+                    <h6 v-if="paymentReceipt.receiptNumber">INVOICE NO.</h6>
+                    <p v-if="paymentReceipt.receiptNumber">{{paymentReceipt.receiptNumber}}</p>
 
-                      <h6 class="mt-4">INVOICE DATE</h6>
-                      <p>{{paymentReceipt.invoiceDate}}</p>
+                    <h6 class="mt-4">INVOICE DATE</h6>
+                    <p>{{paymentReceipt.invoiceDate}}</p>
 
-                      <h6 class="mt-4">Payment Method</h6>
-                      <p>{{paymentReceipt.paymentMethod}}</p>
-                  </div>
-              </div>
-              <div class="vx-col w-full md:w-1/2 mt-12">
-                  <h5>Recipient</h5>
-                  <div class="invoice__recipient-info my-4">
-                      <p>{{ paymentReceipt.name }}</p>
-                      <p>{{ paymentReceipt.billingDetailsAddress.line1 }}</p>
-                      <p>{{ paymentReceipt.billingDetailsAddress.line2 }}</p>
-                      <p>{{ paymentReceipt.billingDetailsAddress.city }} {{ paymentReceipt.billingDetailsAddress.state }} {{ paymentReceipt.billingDetailsAddress.postal_code }} {{ paymentReceipt.billingDetailsAddress.country }}</p>
-                  </div>
-                  <div class="invoice__recipient-contact ">
-                      <p class="flex items-center" v-if="paymentReceipt.receiptEmail">
-                        <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                        <span class="ml-2">{{ paymentReceipt.receiptEmail }}</span>
-                      </p>
-                      <p class="flex items-center" v-if="paymentReceipt.phone">
-                        <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                        <span class="ml-2">{{ paymentReceipt.phone }}</span>
-                      </p>
-                  </div>
-              </div>
+                    <h6 class="mt-4">Payment Method</h6>
+                    <p>{{paymentReceipt.paymentMethod}}</p>
+                </div>
+            </div>
+            <div class="vx-col w-full md:w-1/2 mt-12">
+                <h5>Recipient</h5>
+                <div class="invoice__recipient-info my-4">
+                    <p>{{ paymentReceipt.name }}</p>
+                    <p>{{ paymentReceipt.billingDetailsAddress.line1 }}</p>
+                    <p>{{ paymentReceipt.billingDetailsAddress.line2 }}</p>
+                    <p>{{ paymentReceipt.billingDetailsAddress.city }} {{ paymentReceipt.billingDetailsAddress.state }} {{ paymentReceipt.billingDetailsAddress.postal_code }} {{ paymentReceipt.billingDetailsAddress.country }}</p>
+                </div>
+                <div class="invoice__recipient-contact ">
+                    <p class="flex items-center" v-if="paymentReceipt.receiptEmail">
+                      <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
+                      <span class="ml-2">{{ paymentReceipt.receiptEmail }}</span>
+                    </p>
+                    <p class="flex items-center" v-if="paymentReceipt.phone">
+                      <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
+                      <span class="ml-2">{{ paymentReceipt.phone }}</span>
+                    </p>
+                </div>
+            </div>
              <!--  <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
                   <h5>{{ companyDetails.name }}</h5>
                   <div class="invoice__company-info my-4">
@@ -77,51 +76,49 @@
               </div> -->
           </div>
           <div class="p-base">
-              <vs-table hoverFlat :data="invoiceData.tasks">
-                  <template slot="thead">
-                    <vs-th>TASK DESCRIPTION</vs-th>
-                    <vs-th>HOURS</vs-th>
-                    <vs-th>RATE</vs-th>
-                    <vs-th>AMOUNT</vs-th>
-                  </template>
+            <vs-table>
+              <vs-tr>
+                <vs-th>DESCRIPTION</vs-th>
+                <vs-th>NO OF HOURS</vs-th>
+                <vs-th>PRICE PER HOUR</vs-th>
+                <vs-th>DISCOUNT %AGE</vs-th>
+              </vs-tr>
 
-                  <template slot-scope="{data}">
-                      <vs-tr v-for="(tr, index) in data" :key="index">
-                        <vs-td :data="data[index].task">{{ paymentReceipt.description }}</vs-td>
-                        <vs-td :data="data[index].hours">{{ data[index].hours }}</vs-td>
-                        <vs-td :data="data[index].rate">{{ data[index].rate }} USD</vs-td>
-                        <vs-td :data="data[index].amount">{{ data[index].amount }} USD</vs-td>
-                      </vs-tr>
-                  </template>
-              </vs-table>
+              <vs-tr>
+                <vs-td>{{ paymentReceipt.description }}</vs-td>
+                <vs-td>{{ paymentReceipt.noOFHours }}</vs-td>
+                <vs-td>{{ paymentReceipt.pricePerHour }} USD</vs-td>
+                <vs-td>{{ paymentReceipt.discountPercentage }} %</vs-td>
+              </vs-tr>
+            </vs-table>
 
-              <vs-table hoverFlat class="w-1/2 ml-auto mt-4">
-                  <vs-tr>
-                    <vs-th>SUBTOTAL</vs-th>
-                    <vs-td>{{  }} USD</vs-td>
-                  </vs-tr>
-                  <vs-tr>
-                    <vs-th>DISCOUNT ({{  }}%)</vs-th>
-                    <vs-td>{{  }} USD</vs-td>
-                  </vs-tr>
-                  <vs-tr>
-                    <th>TOTAL</th>
-                    <td>{{ paymentReceipt.amount }} USD</td>
-                  </vs-tr>
-              </vs-table>
+            <vs-table class="w-1/2 ml-auto mt-4">
+                <!-- <vs-tr>
+                  <vs-th>SUBTOTAL</vs-th>
+                  <vs-td>{{  }} USD</vs-td>
+                </vs-tr>
+                <vs-tr>
+                  <vs-th>DISCOUNT ({{  }}%)</vs-th>
+                  <vs-td>{{  }} USD</vs-td>
+                </vs-tr> -->
+                <vs-tr>
+                  <th>TOTAL</th>
+                  <td>{{ paymentReceipt.amount }} USD</td>
+                </vs-tr>
+            </vs-table>
           </div>
           <div class="invoice__footer text-left p-base">
-              <p class="mb-4">If you have any questions, contact us at 
-                <a href="mailto:ajitgoel@gmail.com" target="_blank" rel="nofollow">
-                  <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon> ajitgoel@gmail.com
-                </a> or call at 
-                  <a href="tel:+12146065700" target="_blank" rel="nofollow">
-                    <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>+1 214-606-5700.
-                  </a></p>
-              <p class="mb-4">Something wrong with the email? View it in your <a :href="paymentReceipt.receiptUrl" target="_blank" rel="nofollow">browser</a>.</p>
-              <p class="mb-4">You're receiving this email because you made a purchase at 
-                <a href="http://www.VideoAudioTranscription.com" target="_blank" rel="nofollow">Video Audio Transcription</a>, which partners with 
-                <a href="http://www.stripe.com" target="_blank" rel="nofollow">Stripe</a> to provide invoicing and payment processing.</p>              
+            <p class="mb-4">If you have any questions, contact us at 
+              <a href="mailto:ajitgoel@gmail.com" target="_blank" rel="nofollow">
+                <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon> ajitgoel@gmail.com
+              </a> or call at 
+                <a href="tel:+12146065700" target="_blank" rel="nofollow">
+                  <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>+1 214-606-5700.
+                </a></p>
+            <p class="mb-4">Something wrong with the email? View it in your <a :href="paymentReceipt.receiptUrl" target="_blank" rel="nofollow">browser</a>.</p>
+            <p class="mb-4">You're receiving this email because you made a purchase at 
+              <a href="http://www.VideoAudioTranscription.com" target="_blank" rel="nofollow">Video Audio Transcription</a>, which partners with 
+              <a href="http://www.stripe.com" target="_blank" rel="nofollow">Stripe</a> to provide invoicing and payment processing.</p>              
           </div>
           <!-- <div class="invoice__footer text-right p-base">
               <p class="mb-4">Transfer the amounts to the business amount below. Please include invoice number on your check.</p>
@@ -142,6 +139,7 @@
               <template slot="thead">                    
                 <vs-th>Pricing per hour</vs-th>
                 <vs-th>No of hours</vs-th>
+                <vs-th>Discount percentage</vs-th>
               </template>
               <template slot-scope="{data}">
                 <vs-tr :key="indextr" v-for="(tr, indextr) in data">
@@ -152,6 +150,10 @@
                     {{data[indextr].hourmin}} to {{data[indextr].hourmax}} hours
                   </vs-td>
 
+                  <vs-td :data="data[indextr].discountPercentage">
+                    {{ data[indextr].discountPercentage}} %
+                  </vs-td>
+                  
                 </vs-tr>
               </template>
             </vs-table>               
@@ -255,9 +257,9 @@ export default {
       },  
       //#region top off payment screen
       pricing: [
-        {"id": 1,"priceperhour": 10,"hourmin": 0,"hourmax": 24,},
-        {"id": 2,"priceperhour": 9,"hourmin": 25,"hourmax": 49,},
-        {"id": 3,"priceperhour": 8,"hourmin": 50,"hourmax": 100,},
+        {"id": 1,"priceperhour": 10,"hourmin": 0,"hourmax": 24, discountPercentage:0},
+        {"id": 2,"priceperhour": 9,"hourmin": 25,"hourmax": 49, discountPercentage:10},
+        {"id": 3,"priceperhour": 8,"hourmin": 50,"hourmax": 100, discountPercentage:20},
       ],
       stripe: null,
       card: null,
@@ -272,48 +274,14 @@ export default {
 
       //#region payment invoice screen
       mailTo: "",
-      companyDetails: {
-          name: 'Microsion Technologies Pvt. Ltd.',
-          addressLine1: '9 N. Sherwood Court',
-          addressLine2: 'Elyria, OH',
-          zipcode: '94203',
-          mailId: 'hello@pixinvent.net',
-          mobile: '+91 999 999 9999',
-      },
-      recipientDetails: {
-          fullName: 'Peter Stark',
-          addressLine1: '8577 West West Drive ',
-          addressLine2: 'Holbrook, NY',
-          zipcode: '90001',
-          mailId: 'peter@mail.com',
-          mobile: '+91 988 888 8888',
-      },
-      invoiceDetails: {
-          invoiceNo: '001/2019',
-          invoiceDate: 'Mon Dec 10 2018 07:46:00 GMT+0000 (GMT)',
-      },
-      invoiceData: {
-          tasks: [
-              {
-                  id: 1,
-                  task: 'Website Redesign',
-                  hours: 60,
-                  rate: 15,
-                  amount: 90000,
-              },
-              {
-                  id: 2,
-                  task: 'Newsletter template design',
-                  hours: 20,
-                  rate: 12,
-                  amount: 24000,
-              },
-          ],
-          subtotal: 114000,
-          discountPercentage: 5,
-          discountedAmount: 5700,
-          total: 108300,
-      }
+      /* companyDetails: {
+        name: 'Microsion Technologies Pvt. Ltd.',
+        addressLine1: '9 N. Sherwood Court',
+        addressLine2: 'Elyria, OH',
+        zipcode: '94203',
+        mailId: 'hello@pixinvent.net',
+        mobile: '+91 999 999 9999',
+      }, */
       //#endregion payment invoice screen     
     }
   },
@@ -466,7 +434,7 @@ export default {
     {
       try
       {
-        this.$vs.loading();
+        this.$vs.loading({text:'Please wait while your payment is being processed'});
         const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge, "Email":this.general.email}, headers: {},};
         let paymentIntent=await API.post('CreatePaymentIntent', '/CreatePaymentIntent', initParameter);        
         console.log('paymentIntent:', JSON.stringify(paymentIntent));
@@ -499,14 +467,6 @@ export default {
           const options = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
           this.paymentReceipt=await API.post('PaymentIntent', '/Get', options);              
           console.log(`paymentReceipt: ${JSON.stringify(this.paymentReceipt)}`); 
-
-          /* const chargeListOptions = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
-          this.listAllChargesResult=await API.post('listallcharges', '/listallcharges', chargeListOptions);              
-          console.log(`listAllChargesResult: ${JSON.stringify(this.listAllChargesResult)}`); 
-          this.receiptUrl=listAllChargesResult.receiptUrl;
-          let response=await axios.get(receiptUrl);
-          this.paymentReceipt= response.data;
-          console.log(`this.receiptUrl: ${this.receiptUrl}`); */
           
           this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
           // There's a risk of the customer closing the window before callback execution. 

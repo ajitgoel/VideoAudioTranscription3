@@ -15,8 +15,22 @@ using Models;
 // If you rename this namespace, you will need to update the invocation shim to match if you intend to test the function with 'amplify mock function'
 namespace payments
 {
-    // If you rename this class, you will need to update the invocation shim to match if you intend to test the function with 'amplify mock function'
-    public class payments
+  public class CreatePaymentIntentInput
+  {
+    [JsonProperty(Required = Required.Always)]
+    public int NoOFHours { get; set; }
+    [JsonProperty(Required = Required.Always)]
+    public bool AutoRecharge { get; set; } = false;
+    [JsonProperty(Required = Required.Always)]
+    public string Email { get; set; }
+  }
+  public class CreatePaymentIntentOutput
+  {
+    [JsonProperty(Required = Required.Always)]
+    public string ClientSecret { get; set; }
+  }
+  // If you rename this class, you will need to update the invocation shim to match if you intend to test the function with 'amplify mock function'
+  public class payments
     {      
       private readonly JsonSerializerSettings jsonSerializerSettings;
       public payments()
@@ -53,20 +67,21 @@ namespace payments
           var requestBody=apiGatewayProxyRequest.Body;
           var createPaymentIntentInput = JsonConvert.DeserializeObject<CreatePaymentIntentInput>(requestBody, jsonSerializerSettings);
 
-          //var createPaymentIntentOutput =CreatePaymentIntent(createPaymentIntentInput);
           # region CreatePaymentIntent
           StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
-          var pricePerHour = new Methods().GetPricePerHour(createPaymentIntentInput.NoOFHours);
+          var pricing = new Methods().GetPricePerHour(createPaymentIntentInput.NoOFHours);
           var paymentIntentCreateOptions = new PaymentIntentCreateOptions
           {
-            Amount = pricePerHour * createPaymentIntentInput.NoOFHours * 100,
+            Amount = pricing.Priceperhour * createPaymentIntentInput.NoOFHours * 100,
             Currency = Constants.USD_CURRENCY,
             PaymentMethodTypes = new List<string> { Constants.CARD_PAYMENT_METHOD },
             Description = "Top off payment for video audio transcription",
             ReceiptEmail = createPaymentIntentInput.Email,
             Metadata = new Dictionary<string, string>
             {
-              { "integration_check", "accept_a_payment" },
+              { "noOFHours", createPaymentIntentInput.NoOFHours.ToString() },
+              { "pricePerHour", pricing.Priceperhour.ToString() },
+              { "discountPercentage", pricing.DiscountPercentage.ToString() },
             },
           };
           var paymentIntentService = new PaymentIntentService();

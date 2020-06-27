@@ -68,7 +68,7 @@ export default
     {
       try 
       {
-        this.$vs.loading();
+        this.$vs.loading({text:'Please wait while the system logs you in'});
         const cognitoUser = await Auth.signIn(this.email, this.password);
         console.log(`cognitoUser: ${JSON.stringify(cognitoUser)}`);        
         this.$router.push('/transcripts').catch(() => {});  

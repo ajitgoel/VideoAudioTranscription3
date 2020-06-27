@@ -35,18 +35,6 @@ namespace priceperhour
           ContractResolver = contractResolver
         };
       }
-      public int Get(int noOfHours, ILambdaContext context)
-    {
-      try
-      {
-        return new Methods().GetPricePerHour(noOfHours);
-      }
-      catch (Exception exception)
-      {
-        context.Logger.LogLine($"Exception: {exception}");
-        return 0;
-      }
-    }
       
       #pragma warning disable CS1998
       public async Task<APIGatewayProxyResponse> LambdaHandler(APIGatewayProxyRequest apiGatewayProxyRequest, ILambdaContext context)
@@ -66,9 +54,9 @@ namespace priceperhour
             {
               var requestBody = apiGatewayProxyRequest.Body;
               var noOfHours = JsonConvert.DeserializeObject<int>(requestBody, jsonSerializerSettings);
-              int priceperhour = Get(noOfHours, context);
+              var pricing = new Methods().GetPricePerHour(noOfHours);
               apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
-              apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(new { priceperhour }, jsonSerializerSettings);
+              apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(pricing, jsonSerializerSettings);
             }
             return apiGatewayProxyResponse;
           }
@@ -80,6 +68,6 @@ namespace priceperhour
               StatusCode = (int)HttpStatusCode.BadRequest
             };
           }
-    }
+      }
     }
 }

@@ -15,6 +15,28 @@ using Models;
 // If you rename this namespace, you will need to update the invocation shim to match if you intend to test the function with 'amplify mock function'
 namespace PaymentIntent
 {
+  public class GetPaymentIntentInput
+  {
+    [JsonProperty(Required = Required.Always)]
+    public string PaymentIntentId { get; set; }
+  }
+  public class GetPaymentIntentOutput
+  {
+    public string Amount { get; set; }
+    public string InvoiceDate { get; set; }
+    public string PaymentMethod { get; set; }
+    public string ReceiptUrl { get; set; }
+    public string ReceiptNumber { get; set; }
+    public string ReceiptEmail { get; set; }
+    public string Description { get; set; }
+    public string NoOFHours { get; set; }
+    public string PricePerHour { get; set; }
+    public string DiscountPercentage { get; set; }
+    public string Name { get; set; }
+    public string Phone { get; set; }
+    public Address BillingDetailsAddress { get; set; }
+  }
+
   // If you rename this class, you will need to update the invocation shim to match if you intend to test the function with 'amplify mock function'
   public class Get
   {
@@ -57,18 +79,24 @@ namespace PaymentIntent
           var paymentIntent = await new PaymentIntentService().GetAsync(getPaymentIntentInput.PaymentIntentId);
           context.Logger.LogLine($"paymentIntent: {JsonConvert.SerializeObject(paymentIntent)}\n");
 
+          var data=paymentIntent?.Charges?.Data?[0];
+          var metadata=data?.Metadata;
           var getPaymentIntentOutput = new GetPaymentIntentOutput
           {
-            Amount = (paymentIntent?.Charges?.Data?[0]?.Amount/100).ToString(),
+            Amount = (data?.Amount/100).ToString(),
             InvoiceDate = paymentIntent?.Created.ToString("MMMM dd yyyy"),            
-            PaymentMethod = $"{paymentIntent?.Charges?.Data?[0]?.PaymentMethodDetails?.Card?.Network} - {paymentIntent?.Charges?.Data?[0]?.PaymentMethodDetails?.Card?.Last4}",
-            ReceiptUrl = paymentIntent?.Charges?.Data?[0]?.ReceiptUrl,
-            ReceiptNumber = paymentIntent?.Charges?.Data?[0]?.ReceiptNumber,
-            ReceiptEmail = paymentIntent?.Charges?.Data?[0]?.ReceiptEmail,
-            Description = paymentIntent?.Charges?.Data?[0]?.Description,
-            Name = paymentIntent?.Charges?.Data?[0]?.BillingDetails?.Name,
-            Phone = paymentIntent?.Charges?.Data?[0]?.BillingDetails?.Phone,
-            BillingDetailsAddress = paymentIntent?.Charges?.Data?[0]?.BillingDetails?.Address,
+            PaymentMethod = $"{data?.PaymentMethodDetails?.Card?.Network} - {data?.PaymentMethodDetails?.Card?.Last4}",
+            ReceiptUrl = data?.ReceiptUrl,
+            ReceiptNumber = data?.ReceiptNumber,
+            ReceiptEmail = data?.ReceiptEmail,
+            Description = data?.Description,
+            NoOFHours = metadata.ContainsKey("noOFHours")? metadata["noOFHours"] : "",
+            PricePerHour = metadata.ContainsKey("pricePerHour") ? metadata["pricePerHour"] : "",
+            DiscountPercentage= metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
+
+            Name = data?.BillingDetails?.Name,
+            Phone = data?.BillingDetails?.Phone,
+            BillingDetailsAddress = data?.BillingDetails?.Address,
           };
 
           apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
