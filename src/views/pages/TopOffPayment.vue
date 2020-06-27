@@ -4,14 +4,13 @@
     <div id="invoice-page" v-if="showReceiptReceipt">
         <div class="flex flex-wrap items-center justify-between">
           <vx-input-group class="mb-base mr-3">
-            <vs-input v-model="mailTo" placeholder="Email" />
-
+            <!-- <vs-input v-model="mailTo" placeholder="Email" />
             <template slot="append">
               <div class="append-text btn-addon">
                 <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button>
               </div>
             </template>
-          </vx-input-group>
+          </vx-input-group> -->
           <div class="flex items-center">
             <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download" @click="downloadInvoice">Download</vs-button>
             <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" v-print="printInvoice">Print</vs-button>
@@ -76,34 +75,36 @@
               </div> -->
           </div>
           <div class="p-base">
-            <vs-table>
-              <vs-tr>
+            <vs-table hoverFlat :data="paymentReceipt.invoiceData.tasks">
+              <template slot="thead">
                 <vs-th>DESCRIPTION</vs-th>
                 <vs-th>NO OF HOURS</vs-th>
                 <vs-th>PRICE PER HOUR</vs-th>
-                <vs-th>DISCOUNT %AGE</vs-th>
-              </vs-tr>
+                <vs-th>DISCOUNT PERCENTAGE</vs-th>             
+              </template>
 
-              <vs-tr>
-                <vs-td>{{ paymentReceipt.description }}</vs-td>
-                <vs-td>{{ paymentReceipt.noOFHours }}</vs-td>
-                <vs-td>{{ paymentReceipt.pricePerHour }} USD</vs-td>
-                <vs-td>{{ paymentReceipt.discountPercentage }} %</vs-td>
-              </vs-tr>
+              <template slot-scope="{data}">
+                <vs-tr v-for="(tr, index) in data" :key="index">
+                  <vs-td :data="data[index].description">{{ data[index].description }}</vs-td>
+                  <vs-td :data="data[index].noOFHours">{{ data[index].noOFHours }}</vs-td>
+                  <vs-td :data="data[index].pricePerHour">{{ data[index].pricePerHour }} USD</vs-td>
+                  <vs-td :data="data[index].discountPercentage">{{ data[index].discountPercentage }} %</vs-td>
+                </vs-tr>
+            	</template>
             </vs-table>
 
-            <vs-table class="w-1/2 ml-auto mt-4">
+            <vs-table hoverFlat class="w-1/2 ml-auto mt-4" :data="paymentReceipt.invoiceData">
                 <!-- <vs-tr>
                   <vs-th>SUBTOTAL</vs-th>
-                  <vs-td>{{  }} USD</vs-td>
+                  <vs-td>{{paymentReceipt.invoiceData.subtotal}} USD</vs-td>
                 </vs-tr>
                 <vs-tr>
-                  <vs-th>DISCOUNT ({{  }}%)</vs-th>
-                  <vs-td>{{  }} USD</vs-td>
+                  <vs-th>DISCOUNT ({{paymentReceipt.invoiceData.discountPercentage}}%)</vs-th>
+                  <vs-td>{{paymentReceipt.invoiceData.discountedAmount}} USD</vs-td>
                 </vs-tr> -->
                 <vs-tr>
                   <th>TOTAL</th>
-                  <td>{{ paymentReceipt.amount }} USD</td>
+                  <td>{{ paymentReceipt.invoiceData.total }} USD</td>
                 </vs-tr>
             </vs-table>
           </div>
@@ -274,14 +275,6 @@ export default {
 
       //#region payment invoice screen
       mailTo: "",
-      /* companyDetails: {
-        name: 'Microsion Technologies Pvt. Ltd.',
-        addressLine1: '9 N. Sherwood Court',
-        addressLine2: 'Elyria, OH',
-        zipcode: '94203',
-        mailId: 'hello@pixinvent.net',
-        mobile: '+91 999 999 9999',
-      }, */
       //#endregion payment invoice screen     
     }
   },

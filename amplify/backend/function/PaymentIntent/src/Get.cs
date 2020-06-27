@@ -8,7 +8,6 @@ using Amazon.Lambda.APIGatewayEvents;
 using Stripe;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Models;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -22,16 +21,12 @@ namespace PaymentIntent
   }
   public class GetPaymentIntentOutput
   {
-    public string Amount { get; set; }
     public string InvoiceDate { get; set; }
     public string PaymentMethod { get; set; }
     public string ReceiptUrl { get; set; }
     public string ReceiptNumber { get; set; }
     public string ReceiptEmail { get; set; }
-    public string Description { get; set; }
-    public string NoOFHours { get; set; }
-    public string PricePerHour { get; set; }
-    public string DiscountPercentage { get; set; }
+    public object InvoiceData { get; set; }    
     public string Name { get; set; }
     public string Phone { get; set; }
     public Address BillingDetailsAddress { get; set; }
@@ -83,17 +78,30 @@ namespace PaymentIntent
           var metadata=data?.Metadata;
           var getPaymentIntentOutput = new GetPaymentIntentOutput
           {
-            Amount = (data?.Amount/100).ToString(),
             InvoiceDate = paymentIntent?.Created.ToString("MMMM dd yyyy"),            
             PaymentMethod = $"{data?.PaymentMethodDetails?.Card?.Network} - {data?.PaymentMethodDetails?.Card?.Last4}",
             ReceiptUrl = data?.ReceiptUrl,
             ReceiptNumber = data?.ReceiptNumber,
             ReceiptEmail = data?.ReceiptEmail,
-            Description = data?.Description,
-            NoOFHours = metadata.ContainsKey("noOFHours")? metadata["noOFHours"] : "",
-            PricePerHour = metadata.ContainsKey("pricePerHour") ? metadata["pricePerHour"] : "",
-            DiscountPercentage= metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
-
+            InvoiceData = new
+            {
+              Tasks=new[]
+              {
+                new
+                {
+                  Id=1,
+                  Description = data?.Description,
+                  NoOFHours = metadata.ContainsKey("noOFHours") ? metadata["noOFHours"] : "",
+                  PricePerHour = metadata.ContainsKey("pricePerHour") ? metadata["pricePerHour"] : "",
+                  DiscountPercentage = metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
+                  Amount = (data?.Amount/100).ToString(),
+                }
+              },
+              Subtotal= (data?.Amount / 100).ToString(),
+              DiscountPercentage = metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
+              //DiscountedAmount = 5700,
+              Total= (data?.Amount / 100).ToString(),
+            },
             Name = data?.BillingDetails?.Name,
             Phone = data?.BillingDetails?.Phone,
             BillingDetailsAddress = data?.BillingDetails?.Address,
