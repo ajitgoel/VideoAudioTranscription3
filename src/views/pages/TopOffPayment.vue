@@ -13,8 +13,8 @@
             </template>
           </vx-input-group>
           <div class="flex items-center">
-            <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download">Download</vs-button>
-            <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" @click="printInvoice">Print</vs-button>
+            <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download" @click="downloadInvoice">Download</vs-button>
+            <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" v-print="printInvoice">Print</vs-button>
           </div>
         </div>
 
@@ -241,10 +241,18 @@ import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
 import { loadStripe } from '@stripe/stripe-js';
+import html2pdf from 'html2pdf.js'
 
 export default {
   data() {
     return {
+      printInvoice: 
+      {
+        id: "invoice-container",
+        popTitle: 'Payment Invoice',
+        //extraCss: 'https://www.google.com,https://www.google.com',
+        //extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>'
+      },  
       //#region top off payment screen
       pricing: [
         {"id": 1,"priceperhour": 10,"hourmin": 0,"hourmax": 24,},
@@ -524,9 +532,11 @@ export default {
     },
     //#endregion 
     //# region "Invoice receipt" screen
-    printInvoice() {
-        window.print()
-      },
+      downloadInvoice()
+      {
+        var element = document.getElementById('invoice-container');
+        html2pdf().from(element).toPdf().save('Payment Invoice');
+      }
       //#endregion 
   },
   components: {

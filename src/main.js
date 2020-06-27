@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
 import '@/mixins/generalMixins.js';
+import Print from 'vue-print-nb'; 
+Vue.use(Print);
 
 //import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
 //Vue.use(GridPlugin);
@@ -76,9 +78,9 @@ import VueClipboard from 'vue-clipboard2';
 Vue.use(VueClipboard);
 
 // Tour
-import VueTour from 'vue-tour';
+/* import VueTour from 'vue-tour';
 Vue.use(VueTour);
-require('vue-tour/dist/vue-tour.css');
+require('vue-tour/dist/vue-tour.css'); */
 
 // VeeValidate
 import VeeValidate from 'vee-validate';
