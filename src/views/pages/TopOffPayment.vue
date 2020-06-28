@@ -458,11 +458,12 @@ export default {
         if (confirmCardPaymentResult.paymentIntent.status === 'succeeded') 
         {
           let paymentIntentId=confirmCardPaymentResult.paymentIntent.id;
+          let paymentIntentIds=[paymentIntentId];
+          const options = { body: {"paymentIntentIds": paymentIntentIds}, headers: {},};
+          let paymentReceipts=await API.post('PaymentIntent', '/Get', options);              
+          console.log(`paymentReceipts: ${JSON.stringify(paymentReceipts)}`); 
+          this.paymentReceipt=paymentReceipts[0];              
 
-          const options = { body: {"paymentIntentId": paymentIntentId}, headers: {},};
-          this.paymentReceipt=await API.post('PaymentIntent', '/Get', options);              
-          console.log(`paymentReceipt: ${JSON.stringify(this.paymentReceipt)}`); 
-          
           await this.saveUserProfile(paymentIntentId);
           this.showReceiptReceipt=true;
           this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
