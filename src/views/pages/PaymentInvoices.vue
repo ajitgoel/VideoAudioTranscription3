@@ -1,6 +1,21 @@
 <template lang="html">
   <div>
-    <vs-table search stripe max-items="999" pagination :data="paymentReceipts">
+    <div class="flex flex-wrap items-center justify-between">
+      <vx-input-group class="mb-base mr-3">
+        <!-- <vs-input v-model="mailTo" placeholder="Email" /> -->
+        <template slot="append">
+          <div class="append-text btn-addon">
+            <!-- <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button> -->
+          </div>
+        </template>
+      </vx-input-group> 
+      <div class="flex items-center">
+        <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download" @click="downloadInvoices">Download</vs-button>
+        <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" v-print="printInvoice">Print</vs-button>
+      </div>
+    </div>
+
+    <vs-table search stripe max-items="999" id="paymentReceipts" pagination :data="paymentReceipts">
       <template slot="thead">
         <vs-th>Invoice date</vs-th>
         <vs-th>Payment method</vs-th>
@@ -43,10 +58,18 @@ import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
+import html2pdf from 'html2pdf.js';
 
 export default {
   data(){
     return {
+      printInvoice: 
+      {
+        id: "paymentReceipts",
+        popTitle: 'Payment Invoices',
+        //extraCss: 'https://www.google.com,https://www.google.com',
+        //extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>'
+      },  
       paymentReceipts:[],
     }
   },
@@ -87,8 +110,12 @@ export default {
     }; 
   },
   methods:
-  {
-
+  {    
+    downloadInvoices()
+    {
+      var element = document.getElementById('paymentReceipts');
+      html2pdf().from(element).toPdf().save('Payment Invoices');
+    }
   },
   components: {
   }
