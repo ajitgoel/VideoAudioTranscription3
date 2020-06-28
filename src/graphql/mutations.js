@@ -189,6 +189,7 @@ export const createUserProfile = /* GraphQL */ `
       notificationTranscriptsCompleted
       notificationTranscriptsError
       vocabularies
+      paymentInvoices
       paymentSettings {
         autoRecharge
       }
@@ -212,6 +213,7 @@ export const updateUserProfile = /* GraphQL */ `
       notificationTranscriptsCompleted
       notificationTranscriptsError
       vocabularies
+      paymentInvoices
       paymentSettings {
         autoRecharge
       }
@@ -235,6 +237,7 @@ export const deleteUserProfile = /* GraphQL */ `
       notificationTranscriptsCompleted
       notificationTranscriptsError
       vocabularies
+      paymentInvoices
       paymentSettings {
         autoRecharge
       }

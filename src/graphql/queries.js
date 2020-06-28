@@ -119,6 +119,7 @@ export const getUserProfile = /* GraphQL */ `
       notificationTranscriptsCompleted
       notificationTranscriptsError
       vocabularies
+      paymentInvoices
       paymentSettings {
         autoRecharge
       }
@@ -152,6 +153,7 @@ export const listUserProfiles = /* GraphQL */ `
         notificationTranscriptsCompleted
         notificationTranscriptsError
         vocabularies
+        paymentInvoices
         paymentSettings {
           autoRecharge
         }

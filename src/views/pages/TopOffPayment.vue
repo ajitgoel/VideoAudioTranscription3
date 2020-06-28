@@ -3,14 +3,14 @@
     <!--Invoice: Start-->
     <div id="invoice-page" v-if="showReceiptReceipt">
         <div class="flex flex-wrap items-center justify-between">
-          <!-- <vx-input-group class="mb-base mr-3">
-            <vs-input v-model="mailTo" placeholder="Email" />
+          <vx-input-group class="mb-base mr-3">
+            <!-- <vs-input v-model="mailTo" placeholder="Email" /> -->
             <template slot="append">
               <div class="append-text btn-addon">
-                <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button>
+                <!-- <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button> -->
               </div>
             </template>
-          </vx-input-group> -->
+          </vx-input-group> 
           <div class="flex items-center">
             <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download" @click="downloadInvoice">Download</vs-button>
             <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" v-print="printInvoice">Print</vs-button>
@@ -132,8 +132,7 @@
     </div>   
     <!--Invoice: End-->
     <div class="vx-row" v-else>
-      <div class="vx-col lg:w-2/3 w-full">
-        
+      <div class="vx-col lg:w-2/3 w-full">        
           <vx-card title="Select no of hours to prepay">
             <vs-input-number id="userNoOfHours" name="userNoOfHours" ref="userNoOfHours" v-model="noOfHours" min="1" max="100"/>
             <vs-table :data="pricing">
@@ -150,11 +149,9 @@
                   <vs-td :data="data[indextr].hourmin">
                     {{data[indextr].hourmin}} to {{data[indextr].hourmax}} hours
                   </vs-td>
-
                   <vs-td :data="data[indextr].discountPercentage">
                     {{ data[indextr].discountPercentage}} %
-                  </vs-td>
-                  
+                  </vs-td>                  
                 </vs-tr>
               </template>
             </vs-table>               
@@ -268,6 +265,7 @@ export default {
       noOfHours:1,
       isUserProfileSavedInDatabase: false,
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
+      paymentInvoices:[],
       paymentSettings:{autoRecharge: false},
       showReceiptReceipt:false,
       paymentReceipt:null,
@@ -324,6 +322,7 @@ export default {
             billingAddress
             country
             vatNumber
+            paymentInvoices
             paymentSettings {
               autoRecharge
             }
@@ -343,6 +342,7 @@ export default {
         this.general.billingAddress=items[0].billingAddress;
         this.general.country=items[0].country;
         this.general.vatNumber=items[0].vatNumber;
+        this.paymentInvoices=items[0].paymentInvoices==null? []:items[0].paymentInvoices;
         this.paymentSettings.autoRecharge=(items[0].paymentSettings==null || items[0].paymentSettings.autoRecharge==null) ? false:items[0].paymentSettings.autoRecharge;
         this.isUserProfileSavedInDatabase=true;
     }
@@ -390,32 +390,34 @@ export default {
           this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
       };
     },
-    async savePaymentSettings() 
+    async saveUserProfile(paymentIntentId) 
     {
       try 
       {
-          const currentUserInfo=await this.currentUserInfo();
-          const userId=currentUserInfo.id;
-          if(userId == null)
-          {
-              this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
-              return;   
-          }
-          console.log(`userId: ${userId}`);
-          
-          //#region save user profile in dynamodb
-          if(this.isUserProfileSavedInDatabase==false)
-          {
-            const createUserProfileInput={id:userId, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
-            await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
-          }
-          else
-          {
-              const updateUserProfileInput={id:userId, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
-              await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
-          }                
-          //#endregion save user profile in dynamodb
-          this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+        const currentUserInfo=await this.currentUserInfo();
+        const userId=currentUserInfo.id;
+        if(userId == null)
+        {
+          this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+          return;   
+        }
+        console.log(`userId: ${userId}`);
+        
+        //#region save user profile in dynamodb
+        if(this.isUserProfileSavedInDatabase==false)
+        {
+          let paymentInvoicesTemp=[paymentIntentId];
+          const createUserProfileInput={id:userId, paymentInvoices:paymentInvoicesTemp, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
+          await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
+        }
+        else
+        {
+          this.paymentInvoices.push(paymentIntentId);
+          const updateUserProfileInput={id:userId, paymentInvoices:this.paymentInvoices, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
+          await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
+        }                
+        //#endregion save user profile in dynamodb
+        this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
       } 
       catch (error) 
       {
@@ -461,19 +463,20 @@ export default {
           this.paymentReceipt=await API.post('PaymentIntent', '/Get', options);              
           console.log(`paymentReceipt: ${JSON.stringify(this.paymentReceipt)}`); 
           
+          await this.saveUserProfile(paymentIntentId);
+          this.showReceiptReceipt=true;
           this.$vs.notify({title: 'Payment success', text: 'Your payment was successful!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+          return;
           // There's a risk of the customer closing the window before callback execution. 
           //Set up a webhook or plugin to listen for the payment_intent.succeeded event that handles any business critical post-payment actions.
         }
         //#endregion
-
-        await this.savePaymentSettings();
-        this.showReceiptReceipt=true;
+        await this.saveUserProfile();
+        this.showReceiptReceipt=false;
       }
       catch(error)
       {
         console.log(`error: ${JSON.stringify(error)}`); 
-
         this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});        
         this.showReceiptReceipt=false;
         return;
