@@ -241,7 +241,7 @@ import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
 import { loadStripe } from '@stripe/stripe-js';
-import html2pdf from 'html2pdf.js'
+import html2pdf from 'html2pdf.js';
 
 export default {
   data() {

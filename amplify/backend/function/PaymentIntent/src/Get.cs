@@ -17,10 +17,11 @@ namespace PaymentIntent
   public class GetPaymentIntentInput
   {
     [JsonProperty(Required = Required.Always)]
-    public string PaymentIntentId { get; set; }
+    public string[] PaymentIntentIds { get; set; }
   }
   public class GetPaymentIntentOutput
   {
+    public string Id { get; set; }    
     public string InvoiceDate { get; set; }
     public string PaymentMethod { get; set; }
     public string ReceiptUrl { get; set; }
@@ -53,8 +54,9 @@ namespace PaymentIntent
     /// https://stripe.com/docs/payments/accept-a-payment
     /// </remarks>
 #pragma warning disable CS1998
-    public async Task<APIGatewayProxyResponse> GetPaymentIntent(APIGatewayProxyRequest apiGatewayProxyRequest, ILambdaContext context)
+    public async Task<APIGatewayProxyResponse> GetPaymentIntents(APIGatewayProxyRequest apiGatewayProxyRequest, ILambdaContext context)
     {
+      GetPaymentIntentOutput[] getPaymentIntentOutputs = null;
       try
       {
         var apiGatewayProxyResponse = new APIGatewayProxyResponse
@@ -64,62 +66,77 @@ namespace PaymentIntent
                     { "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" }
                   }
         };
-        context.Logger.LogLine($"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n");
         if (apiGatewayProxyRequest.HttpMethod == "POST")
         {
           var requestBody = apiGatewayProxyRequest.Body;
           var getPaymentIntentInput = JsonConvert.DeserializeObject<GetPaymentIntentInput>(requestBody, jsonSerializerSettings);
-
-          StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
-          var paymentIntent = await new PaymentIntentService().GetAsync(getPaymentIntentInput.PaymentIntentId);
-          context.Logger.LogLine($"paymentIntent: {JsonConvert.SerializeObject(paymentIntent)}\n");
-
-          var data=paymentIntent?.Charges?.Data?[0];
-          var metadata=data?.Metadata;
-          var getPaymentIntentOutput = new GetPaymentIntentOutput
+          var tasks = new List<Task<GetPaymentIntentOutput>>();
+          foreach(var paymentIntentId in getPaymentIntentInput.PaymentIntentIds)
           {
-            InvoiceDate = paymentIntent?.Created.ToString("MMMM dd yyyy"),            
-            PaymentMethod = $"{data?.PaymentMethodDetails?.Card?.Network} - {data?.PaymentMethodDetails?.Card?.Last4}",
-            ReceiptUrl = data?.ReceiptUrl,
-            ReceiptNumber = data?.ReceiptNumber,
-            ReceiptEmail = data?.ReceiptEmail,
-            InvoiceData = new
-            {
-              Tasks=new[]
-              {
-                new
-                {
-                  Id=1,
-                  Description = data?.Description,
-                  NoOFHours = metadata.ContainsKey("noOFHours") ? metadata["noOFHours"] : "",
-                  PricePerHour = metadata.ContainsKey("pricePerHour") ? metadata["pricePerHour"] : "",
-                  DiscountPercentage = metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
-                  Amount = (data?.Amount/100).ToString(),
-                }
-              },
-              Subtotal= (data?.Amount / 100).ToString(),
-              DiscountPercentage = metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
-              //DiscountedAmount = 5700,
-              Total= (data?.Amount / 100).ToString(),
-            },
-            Name = data?.BillingDetails?.Name,
-            Phone = data?.BillingDetails?.Phone,
-            BillingDetailsAddress = data?.BillingDetails?.Address,
-          };
+            tasks.Add(GetPaymentIntent(paymentIntentId));
+          }
+          getPaymentIntentOutputs = await Task.WhenAll(tasks);
 
           apiGatewayProxyResponse.StatusCode = (int)HttpStatusCode.OK;
-          apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(getPaymentIntentOutput, jsonSerializerSettings);
+          apiGatewayProxyResponse.Body = JsonConvert.SerializeObject(getPaymentIntentOutputs, jsonSerializerSettings);
         }
         return apiGatewayProxyResponse;
       }
       catch (Exception exception)
       {
-        context.Logger.LogLine($"Exception: {exception}");
+        string logline = $"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n";
+        if (getPaymentIntentOutputs != null)
+        {
+          logline = $"{logline} paymentIntent: {JsonConvert.SerializeObject(getPaymentIntentOutputs)}\n";
+        }
+        logline = $"{logline} Exception: { exception}";
+        context.Logger.LogLine(logline);
         return new APIGatewayProxyResponse
         {
           StatusCode = (int)HttpStatusCode.BadRequest
         };
       }
+    }
+
+    public async Task<GetPaymentIntentOutput> GetPaymentIntent(string paymentIntentId)
+    {
+      StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
+      Stripe.PaymentIntent paymentIntent = await new PaymentIntentService().GetAsync(paymentIntentId);
+      
+      var data = paymentIntent?.Charges?.Data?[0];
+      var metadata = data?.Metadata;
+      var getPaymentIntentOutput = new GetPaymentIntentOutput
+      {
+        Id = paymentIntent?.Id,
+        InvoiceDate = paymentIntent?.Created.ToString("MMMM dd yyyy"),
+        PaymentMethod = $"{data?.PaymentMethodDetails?.Card?.Network} - {data?.PaymentMethodDetails?.Card?.Last4}",
+        ReceiptUrl = data?.ReceiptUrl,
+        ReceiptNumber = data?.ReceiptNumber,
+        ReceiptEmail = data?.ReceiptEmail,
+        InvoiceData = new
+        {
+          Tasks = new[]
+          {
+            new
+            {
+              Id=1,
+              data?.Description,
+              NoOFHours = metadata.ContainsKey("noOFHours") ? metadata["noOFHours"] : "",
+              PricePerHour = metadata.ContainsKey("pricePerHour") ? metadata["pricePerHour"] : "",
+              DiscountPercentage = metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
+              Amount = (data?.Amount/100).ToString(),
+            }
+          },
+          Subtotal = (data?.Amount / 100).ToString(),
+          DiscountPercentage = metadata.ContainsKey("discountPercentage") ? metadata["discountPercentage"] : "",
+          //DiscountedAmount = 5700,
+          Total = (data?.Amount / 100).ToString(),
+        },
+        Name = data?.BillingDetails?.Name,
+        Phone = data?.BillingDetails?.Phone,
+        BillingDetailsAddress = data?.BillingDetails?.Address,
+      };
+      return getPaymentIntentOutput;
     }
   }
 }

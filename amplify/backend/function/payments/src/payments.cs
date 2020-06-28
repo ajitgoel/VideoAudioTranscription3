@@ -52,6 +52,7 @@ namespace payments
     #pragma warning disable CS1998
     public async Task<APIGatewayProxyResponse> CreatePaymentIntent(APIGatewayProxyRequest apiGatewayProxyRequest, ILambdaContext context)
     {
+      PaymentIntent paymentIntent = null;
       try
       {
         var apiGatewayProxyResponse = new APIGatewayProxyResponse
@@ -61,7 +62,6 @@ namespace payments
                     { "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" }
                   }
         };
-        context.Logger.LogLine($"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n");
         if (apiGatewayProxyRequest.HttpMethod == "POST")
         {
           var requestBody=apiGatewayProxyRequest.Body;
@@ -69,7 +69,7 @@ namespace payments
 
           # region CreatePaymentIntent
           StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
-          var pricing = new Methods().GetPricePerHour(createPaymentIntentInput.NoOFHours);
+          Pricing pricing = new Methods().GetPricePerHour(createPaymentIntentInput.NoOFHours);
           var paymentIntentCreateOptions = new PaymentIntentCreateOptions
           {
             Amount = pricing.Priceperhour * createPaymentIntentInput.NoOFHours * 100,
@@ -85,7 +85,7 @@ namespace payments
             },
           };
           var paymentIntentService = new PaymentIntentService();
-          var paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
+          paymentIntent = paymentIntentService.Create(paymentIntentCreateOptions);
           var createPaymentIntentOutput =new CreatePaymentIntentOutput { ClientSecret = paymentIntent.ClientSecret };
           #endregion
 
@@ -96,7 +96,13 @@ namespace payments
       }
       catch(Exception exception)
       {
-        context.Logger.LogLine($"Exception: {exception}");
+        string logline = $"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n";
+        if (paymentIntent != null)
+        {
+          logline = $"{logline} paymentIntent: {JsonConvert.SerializeObject(paymentIntent)}\n";
+        }
+        logline = $"{logline} Exception: { exception}";
+        context.Logger.LogLine(logline);
         return new APIGatewayProxyResponse
         {
           StatusCode = (int)HttpStatusCode.BadRequest

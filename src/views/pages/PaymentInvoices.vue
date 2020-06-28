@@ -1,6 +1,6 @@
 <template lang="html">
   <div>
-    <vs-table max-items="3" pagination :data="users">
+    <vs-table max-items="10" pagination :data="users">
       <template slot="thead">
         <vs-th>Email</vs-th>
         <vs-th>Name</vs-th>
@@ -28,6 +28,14 @@
 </template>
 
 <script>
+import { Auth } from 'aws-amplify';
+import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
+import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
+import API, {graphqlOperation} from '@aws-amplify/api';
+//import { Validator } from 'vee-validate';
+//import { loadStripe } from '@stripe/stripe-js';
+//import html2pdf from 'html2pdf.js';
+
 export default {
   data: () => ({
     users: [
@@ -103,5 +111,51 @@ export default {
       }
     ]
   }),
+  async created() 
+  {    
+    const currentUserInfo=await this.currentUserInfo();
+    const userId=currentUserInfo.id;
+    const listUserProfilesFilter={id:{eq:userId}};      
+    const listUserProfiles = /* GraphQL */ `
+      query ListUserProfiles(
+        $filter: ModelUserProfileFilterInput
+        $limit: Int
+        $nextToken: String
+      ) {
+        listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          items {
+            id
+            paymentInvoices
+          }
+          nextToken
+        }
+      }
+    `;
+    const result = await API.graphql(graphqlOperation(listUserProfiles, {filter: listUserProfilesFilter}));
+    console.log(`result: ${JSON.stringify(result)}`);
+    
+    const options = { body: {"paymentIntentIds": result.data.listUserProfiles.items[0].paymentInvoices}, headers: {},};
+    console.log(`options: ${JSON.stringify(options)}`); 
+    let paymentReceipt=await API.post('PaymentIntent', '/Get', options);              
+    console.log(`paymentReceipt: ${JSON.stringify(paymentReceipt)}`); 
+    
+    /* const items=result.data.listUserProfiles.items;
+    console.log('items:', JSON.stringify(items));
+    if(items.length>0)
+    {
+        this.id=items[0].id;
+        this.general.fullName=items[0].fullName;
+        this.general.billingAddress=items[0].billingAddress;
+        this.general.country=items[0].country;
+        this.general.vatNumber=items[0].vatNumber;
+        this.paymentInvoices=items[0].paymentInvoices==null? []:items[0].paymentInvoices;
+        this.paymentSettings.autoRecharge=(items[0].paymentSettings==null || items[0].paymentSettings.autoRecharge==null) ? false:items[0].paymentSettings.autoRecharge;
+        this.isUserProfileSavedInDatabase=true;
+    }
+    else
+    {
+        this.isUserProfileSavedInDatabase=false;
+    } */
+  },
 }
 </script>

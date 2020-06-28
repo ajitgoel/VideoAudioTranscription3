@@ -1,5 +1,5 @@
 {
-  "body": "{'paymentIntentId': 'pi_1GyhQcKs9y22NbsB3EwGj47z'}",
+  "body": "{'paymentIntentIds': ['pi_1GyqwIKs9y22NbsBgyO8eCyA','pi_1GyqzNKs9y22NbsB5VcfR5i0']}",
   "resource": "/items/{proxy+}",
   "path": "/Get",
   "httpMethod": "POST",

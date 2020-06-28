@@ -29,7 +29,7 @@
 				"aws:asset:property": "Code"
 			},
 			"Properties": {
-				"Handler": "PaymentIntent::PaymentIntent.Get::GetPaymentIntent",
+				"Handler": "PaymentIntent::PaymentIntent.Get::GetPaymentIntents",
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
@@ -70,7 +70,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/PaymentIntent-45574441416d57465555-build.zip"
+					"S3Key": "amplify-builds/PaymentIntent-3851426b42552b2b3342-build.zip"
 				}
 			}
 		},
