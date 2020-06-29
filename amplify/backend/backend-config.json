@@ -30,15 +30,20 @@
 			"providerPlugin": "awscloudformation",
 			"service": "Lambda"
 		},
-		"listallcharges": {
-			"build": true,
-			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
-		},
 		"PaymentIntent": {
 			"build": true,
 			"providerPlugin": "awscloudformation",
-			"service": "Lambda"
+			"service": "Lambda",
+			"dependsOn": [
+				{
+					"category": "api",
+					"resourceName": "vidaudtranscription",
+					"attributes": [
+						"GraphQLAPIIdOutput",
+						"GraphQLAPIEndpointOutput"
+					]
+				}
+			]
 		}
 	},
 	"auth": {
@@ -81,20 +86,6 @@
 				{
 					"category": "function",
 					"resourceName": "priceperhour",
-					"attributes": [
-						"Name",
-						"Arn"
-					]
-				}
-			]
-		},
-		"listallcharges": {
-			"service": "API Gateway",
-			"providerPlugin": "awscloudformation",
-			"dependsOn": [
-				{
-					"category": "function",
-					"resourceName": "listallcharges",
 					"attributes": [
 						"Name",
 						"Arn"

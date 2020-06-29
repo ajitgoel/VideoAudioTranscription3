@@ -1,1 +1,12 @@
-{}
+{
+    "permissions": {
+        "api": {
+            "vidaudtranscription": [
+                "create",
+                "read",
+                "update",
+                "delete"
+            ]
+        }
+    }
+}
