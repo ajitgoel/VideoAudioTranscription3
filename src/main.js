@@ -6,16 +6,21 @@ Vue.use(Print);
 
 //import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
 //Vue.use(GridPlugin);
-import {TextBoxPlugin, NumericTextBoxPlugin, SliderPlugin, UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
-import {ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
-import { enableRipple } from '@syncfusion/ej2-base';
+//import {TextBoxPlugin, NumericTextBoxPlugin, SliderPlugin, UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
+import {TextBoxPlugin} from '@syncfusion/ej2-vue-inputs';
+//import {ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
+//import { enableRipple } from '@syncfusion/ej2-base';
+import { ListViewPlugin } from '@syncfusion/ej2-vue-lists';
+import { DropDownListPlugin } from '@syncfusion/ej2-vue-dropdowns';
 
-enableRipple(true);
-Vue.use(ButtonPlugin);
+Vue.use(DropDownListPlugin);
+//enableRipple(true);
+Vue.use(ListViewPlugin);
+//Vue.use(ButtonPlugin);
 Vue.use(TextBoxPlugin);
-Vue.use(UploaderPlugin); 
-Vue.use(SliderPlugin);
-Vue.use(NumericTextBoxPlugin);
+//Vue.use(UploaderPlugin); 
+//Vue.use(SliderPlugin);
+//Vue.use(NumericTextBoxPlugin);
 
 //#region Globally register components
 import TermsConditions from '@/views/pages/TermsConditions.vue';

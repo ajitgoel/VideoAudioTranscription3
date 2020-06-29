@@ -6,9 +6,16 @@
         <vs-switch v-model="paymentSettings.autoRecharge" />
         <span class="ml-4">Auto Recharge</span>
       </div>
+
+       <h6 class="mb-4">Transcription settings</h6>
+      <div class="flex items-center mb-4">
+        <vs-switch v-model="useVocabulary" />
+        <span class="ml-4">Use vocabulary when file is transcribed</span>
+      </div>
+
     </div>
     <div class="flex flex-wrap items-center justify-end mt-base">
-      <vs-button class="ml-auto mt-2" @click="savePaymentSettings">Save payment settings</vs-button>
+      <vs-button class="ml-auto mt-2" @click="save">Save settings</vs-button>
     </div>
   </vx-card>
 </template>
@@ -22,7 +29,8 @@ export default {
   data() {
     return {
       isUserProfileSavedInDatabase: false,
-      paymentSettings:{autoRecharge: false}
+      paymentSettings:{autoRecharge: false},
+      useVocabulary:false
     }
   },
   computed: { 
@@ -52,7 +60,7 @@ export default {
   },
   methods: 
   {
-    async savePaymentSettings() 
+    async save() 
     {
         try 
         {

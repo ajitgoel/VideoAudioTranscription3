@@ -636,11 +636,11 @@ export default [
         i18n: "Invoices",
       },
       {
-        url: '/user-settings',
-        slug: 'user-settings',
-        name: "User Settings",
+        url: '/settings',
+        slug: 'settings',
+        name: "Settings",
         icon: "SettingsIcon",
-        i18n: "UserSettings",
+        i18n: "Settings",
       },
       /*{
         url: '/faq',

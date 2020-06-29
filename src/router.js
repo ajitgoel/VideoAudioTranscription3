@@ -96,14 +96,14 @@ const router = new Router({
                     },
                 }, 
                 {
-                    path: '/user-settings',
-                    name: 'user-settings',
-                    component: () => import('@/views/pages/user-settings/UserSettings.vue'),
+                    path: '/settings',
+                    name: 'settings',
+                    component: () => import('@/views/pages/user-settings/Settings.vue'),
                     meta: {
                         breadcrumb: [
                             { title: 'Home', url: '/' },
                             { title: 'Pages' },
-                            { title: 'User Settings', active: true },
+                            { title: 'Settings', active: true },
                         ],
                         pageTitle: 'Settings',
                         rule: 'editor',requiresAuth: true,

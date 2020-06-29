@@ -170,57 +170,24 @@
           </vx-card>
         </vs-tab>
         <vs-tab label="Upload file">
-          <vx-card title="Select file to transcribe">
-            <vs-list>
-              <vs-list-item title="Your device" subtitle="">
-                <template slot="avatar">
-                  <vs-avatar />
-                </template>
-              </vs-list-item>
-              <vs-list-item title="Public links" subtitle="Eg: Youtube, Instagram etc">
-                <template slot="avatar">
-                  <vs-avatar vs-text="Vuesax"/>
-                </template>
-              </vs-list-item>
-              <vs-list-item title="Google drive" subtitle="">
-                <template slot="avatar">
-                  <vs-avatar vs-text="Vuesax"/>
-                </template>
-              </vs-list-item>
-              <vs-list-item title="Dropbox" subtitle="">
-                <template slot="avatar">
-                  <vs-avatar />
-                </template>
-              </vs-list-item>
-              <vs-list-item title="Your Vimeo channel" subtitle="">
-                <template slot="avatar">
-                  <vs-avatar vs-text="Vuesax"/>
-                </template>
-              </vs-list-item>
-              <vs-list-item title="Your Youtube channel" subtitle="">
-                <template slot="avatar">
-                  <vs-avatar vs-text="Vuesax"/>
-                </template>
-              </vs-list-item>
-              <vs-list-item title="Wistia" subtitle="">
-                <template slot="avatar">
-                  <vs-avatar vs-text="Vuesax"/>
-                </template>
-              </vs-list-item>
-            </vs-list>
-            <!-- <vs-input class="w-3/4 mb-base" name="fullname" ref="fullname" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full name(Individual or company)" 
-              v-model="general.fullName"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('fullname') }}</span>                
-            <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
-              v-model="general.billingAddress"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
-            <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-            
-            <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
-                icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
-            <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span> -->
-          </vx-card>
+           <div class="vx-row">
+            <div class="vx-col lg:w-1/3 w-full">  
+              <vx-card title="Select file to transcribe">
+                <ejs-listview id='fileSources' :dataSource='fileSources' :fields='fileSourcesFields'/>
+              </vx-card>  
+            </div>
+            <div class="vx-col lg:w-2/3 w-full">            
+              <vx-card title="">
+                <div class="flex items-center my-4">
+                  <ejs-dropdownlist id='fileLanguage' :dataSource='fileLanguages' :fields='fileLanguagesFields' allowFiltering='true' placeholder='Select file language' ></ejs-dropdownlist>    
+                </div>
+                <div class="flex items-center my-4">
+                  <vs-switch v-model="useVocabulary" />
+                  <span class="ml-4">Use my vocabulary</span>
+                </div>
+              </vx-card>               
+            </div>
+          </div>
         </vs-tab>
 
         <vs-tab label="Payment details">
@@ -261,8 +228,14 @@
     }
   }
 }
+#fileSources 
+{
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+}
 </style>
 <script>
+import { ListViewPlugin } from '@syncfusion/ej2-vue-lists';
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
@@ -275,6 +248,150 @@ export default {
   data() {
     return {
       operation:'',  
+      fileSources : [
+        { text: 'Your device', id: '1', category: 'Local sources'  },
+        { text: 'Public links" subtitle="Eg: Youtube, Instagram etc', id: '2', category: 'Online sources'  },
+        { text: 'Google drive', id: '3' , category: 'Online sources' },
+        { text: 'Dropbox', id: '4', category: 'Online sources'  },
+        { text: 'Your Vimeo channel', id: '5', category: 'Online sources'  },
+        { text: 'Your Youtube channel', id: '6', category: 'Online sources'  },
+        { text: 'Wistia', id: '7', category: 'Online sources' },
+      ],
+      fileSourcesFields: { groupBy: 'category' },
+      //#region File Languages
+      fileLanguages: 
+      [
+        {Category: 'Top languages', Id: 'en-GB', Text: 'English (United Kingdom)'},
+        {Category: 'Top languages', Id: 'en-US', Text: 'English (United States)'},
+        {Category: 'Top languages', Id: 'en', Text: 'English (Multiple Accents)'},
+        {Category: 'Top languages', Id: 'es-ES', Text: 'Spanish (Spain)'},
+        {Category: 'Top languages', Id: 'ca-ES', Text: 'Catalan (Spain)'},
+        {Category: 'Top languages', Id: 'fr-FR', Text: 'French (France)'},
+          
+        {Category: 'All languages', Id: 'af-ZA', Text: 'Afrikaans (South Africa)'},
+        {Category: 'All languages', Id: 'am-ET', Text: 'Amharic (Ethiopia)'},
+        {Category: 'All languages', Id: 'hy-AM', Text: 'Armenian (Armenia)'},
+        {Category: 'All languages', Id: 'az-AZ', Text: 'Azerbaijani (Azerbaijan)'},
+        {Category: 'All languages', Id: 'id-ID', Text: 'Indonesian (Indonesia)'},
+        {Category: 'All languages', Id: 'ms-MY', Text: 'Malay (Malaysia)'},
+        {Category: 'All languages', Id: 'bn-BD', Text: 'Bengali (Bangladesh)'},
+        {Category: 'All languages', Id: 'bn-IN', Text: 'Bengali (India)'},
+        {Category: 'All languages', Id: 'ca-ES', Text: 'Catalan (Spain)'},
+        {Category: 'All languages', Id: 'cs-CZ', Text: 'Czech (Czech Republic)'},
+        {Category: 'All languages', Id: 'da-DK', Text: 'Danish (Denmark)'},
+        {Category: 'All languages', Id: 'de-DE', Text: 'German (Germany)'},
+        {Category: 'All languages', Id: 'en-AU', Text: 'English (Australia)'},
+        {Category: 'All languages', Id: 'en-CA', Text: 'English (Canada)'},
+        {Category: 'All languages', Id: 'en-GH', Text: 'English (Ghana)'},
+        {Category: 'All languages', Id: 'en-GB', Text: 'English (United Kingdom)'},
+        {Category: 'All languages', Id: 'en-IN', Text: 'English (India)'},
+        {Category: 'All languages', Id: 'en-IE', Text: 'English (Ireland)'},
+        {Category: 'All languages', Id: 'en-KE', Text: 'English (Kenya)'},
+        {Category: 'All languages', Id: 'en-NZ', Text: 'English (New Zealand)'},
+        {Category: 'All languages', Id: 'en-NG', Text: 'English (Nigeria)'},
+        {Category: 'All languages', Id: 'en-PH', Text: 'English (Philippines)'},
+        {Category: 'All languages', Id: 'en-ZA', Text: 'English (South Africa)'},
+        {Category: 'All languages', Id: 'en-TZ', Text: 'English (Tanzania)'},
+        {Category: 'All languages', Id: 'en-US', Text: 'English (United States)'},
+        {Category: 'All languages', Id: 'es-AR', Text: 'Spanish (Argentina)'},
+        {Category: 'All languages', Id: 'es-BO', Text: 'Spanish (Bolivia)'},
+        {Category: 'All languages', Id: 'es-CL', Text: 'Spanish (Chile)'},
+        {Category: 'All languages', Id: 'es-CO', Text: 'Spanish (Colombia)'},
+        {Category: 'All languages', Id: 'es-CR', Text: 'Spanish (Costa Rica)'},
+        {Category: 'All languages', Id: 'es-EC', Text: 'Spanish (Ecuador)'},
+        {Category: 'All languages', Id: 'es-SV', Text: 'Spanish (El Salvador)'},
+        {Category: 'All languages', Id: 'es-ES', Text: 'Spanish (Spain)'},
+        {Category: 'All languages', Id: 'es-US', Text: 'Spanish (United States)'},
+        {Category: 'All languages', Id: 'es-GT', Text: 'Spanish (Guatemala)'},
+        {Category: 'All languages', Id: 'es-HN', Text: 'Spanish (Honduras)'},
+        {Category: 'All languages', Id: 'es-MX', Text: 'Spanish (Mexico)'},
+        {Category: 'All languages', Id: 'es-NI', Text: 'Spanish (Nicaragua)'},
+        {Category: 'All languages', Id: 'es-PA', Text: 'Spanish (Panama)'},
+        {Category: 'All languages', Id: 'es-PY', Text: 'Spanish (Paraguay)'},
+        {Category: 'All languages', Id: 'es-PE', Text: 'Spanish (Peru)'},
+        {Category: 'All languages', Id: 'es-PR', Text: 'Spanish (Puerto Rico)'},
+        {Category: 'All languages', Id: 'es-DO', Text: 'Spanish (Dominican Republic)'},
+        {Category: 'All languages', Id: 'es-UY', Text: 'Spanish (Uruguay)'},
+        {Category: 'All languages', Id: 'es-VE', Text: 'Spanish (Venezuela)'},
+        {Category: 'All languages', Id: 'eu-ES', Text: 'Basque (Spain)'},
+        {Category: 'All languages', Id: 'fil-PH', Text: 'Filipino (Philippines)'},
+        {Category: 'All languages', Id: 'fr-CA', Text: 'French (Canada)'},
+        {Category: 'All languages', Id: 'fr-FR', Text: 'French (France)'},
+        {Category: 'All languages', Id: 'gl-ES', Text: 'Galician (Spain)'},
+        {Category: 'All languages', Id: 'ka-GE', Text: 'Georgian (Georgia)'},
+        {Category: 'All languages', Id: 'gu-IN', Text: 'Gujarati (India)'},
+        {Category: 'All languages', Id: 'hr-HR', Text: 'Croatian (Croatia)'},
+        {Category: 'All languages', Id: 'zu-ZA', Text: 'Zulu (South Africa)'},
+        {Category: 'All languages', Id: 'is-IS', Text: 'Icelandic (Iceland)'},
+        {Category: 'All languages', Id: 'it-IT', Text: 'Italian (Italy)'},
+        {Category: 'All languages', Id: 'jv-ID', Text: 'Javanese (Indonesia)'},
+        {Category: 'All languages', Id: 'kn-IN', Text: 'Kannada (India)'},
+        {Category: 'All languages', Id: 'km-KH', Text: 'Khmer (Cambodia)'},
+        {Category: 'All languages', Id: 'lo-LA', Text: 'Lao (Laos)'},
+        {Category: 'All languages', Id: 'lv-LV', Text: 'Latvian (Latvia)'},
+        {Category: 'All languages', Id: 'lt-LT', Text: 'Lithuanian (Lithuania)'},
+        {Category: 'All languages', Id: 'hu-HU', Text: 'Hungarian (Hungary)'},
+        {Category: 'All languages', Id: 'ml-IN', Text: 'Malayalam (India)'},
+        {Category: 'All languages', Id: 'mr-IN', Text: 'Marathi (India)'},
+        {Category: 'All languages', Id: 'nl-NL', Text: 'Dutch (Netherlands)'},
+        {Category: 'All languages', Id: 'ne-NP', Text: 'Nepali (Nepal)'},
+        {Category: 'All languages', Id: 'nb-NO', Text: 'Norwegian Bokmål (Norway)'},
+        {Category: 'All languages', Id: 'pl-PL', Text: 'Polish (Poland)'},
+        {Category: 'All languages', Id: 'pt-BR', Text: 'Portuguese (Brazil)'},
+        {Category: 'All languages', Id: 'pt-PT', Text: 'Portuguese (Portugal)'},
+        {Category: 'All languages', Id: 'ro-RO', Text: 'Romanian (Romania)'},
+        {Category: 'All languages', Id: 'si-LK', Text: 'Sinhala (Srilanka)'},
+        {Category: 'All languages', Id: 'sk-SK', Text: 'Slovak (Slovakia)'},
+        {Category: 'All languages', Id: 'sl-SI', Text: 'Slovenian (Slovenia)'},
+        {Category: 'All languages', Id: 'su-ID', Text: 'Sundanese (Indonesia)'},
+        {Category: 'All languages', Id: 'sw-TZ', Text: 'Swahili (Tanzania)'},
+        {Category: 'All languages', Id: 'sw-KE', Text: 'Swahili (Kenya)'},
+        {Category: 'All languages', Id: 'fi-FI', Text: 'Finnish (Finland)'},
+        {Category: 'All languages', Id: 'sv-SE', Text: 'Swedish (Sweden)'},
+        {Category: 'All languages', Id: 'ta-IN', Text: 'Tamil (India)'},
+        {Category: 'All languages', Id: 'ta-SG', Text: 'Tamil (Singapore)'},
+        {Category: 'All languages', Id: 'ta-LK', Text: 'Tamil (Sri Lanka)'},
+        {Category: 'All languages', Id: 'ta-MY', Text: 'Tamil (Malaysia)'},
+        {Category: 'All languages', Id: 'te-IN', Text: 'Telugu (India)'},
+        {Category: 'All languages', Id: 'vi-VN', Text: 'Vietnamese (Vietnam)'},
+        {Category: 'All languages', Id: 'tr-TR', Text: 'Turkish (Turkey)'},
+        {Category: 'All languages', Id: 'ur-PK', Text: 'Urdu (Pakistan)'},
+        {Category: 'All languages', Id: 'ur-IN', Text: 'Urdu (India)'},
+        {Category: 'All languages', Id: 'el-GR', Text: 'Greek (Greece)'},
+        {Category: 'All languages', Id: 'bg-BG', Text: 'Bulgarian (Bulgaria)'},
+        {Category: 'All languages', Id: 'ru-RU', Text: 'Russian (Russia)'},
+        {Category: 'All languages', Id: 'sr-RS', Text: 'Serbian (Serbia)'},
+        {Category: 'All languages', Id: 'uk-UA', Text: 'Ukrainian (Ukraine)'},
+        {Category: 'All languages', Id: 'he-IL', Text: 'Hebrew (Israel)'},
+        {Category: 'All languages', Id: 'ar-IL', Text: 'Arabic (Israel)'},
+        {Category: 'All languages', Id: 'ar-JO', Text: 'Arabic (Jordan)'},
+        {Category: 'All languages', Id: 'ar-AE', Text: 'Arabic (United Arab Emirates)'},
+        {Category: 'All languages', Id: 'ar-BH', Text: 'Arabic (Bahrain)'},
+        {Category: 'All languages', Id: 'ar-DZ', Text: 'Arabic (Algeria)'},
+        {Category: 'All languages', Id: 'ar-SA', Text: 'Arabic (Saudi Arabia)'},
+        {Category: 'All languages', Id: 'ar-IQ', Text: 'Arabic (Iraq)'},
+        {Category: 'All languages', Id: 'ar-KW', Text: 'Arabic (Kuwait)'},
+        {Category: 'All languages', Id: 'ar-MA', Text: 'Arabic (Morocco)'},
+        {Category: 'All languages', Id: 'ar-TN', Text: 'Arabic (Tunisia)'},
+        {Category: 'All languages', Id: 'ar-OM', Text: 'Arabic (Oman)'},
+        {Category: 'All languages', Id: 'ar-PS', Text: 'Arabic (State of Palestine)'},
+        {Category: 'All languages', Id: 'ar-QA', Text: 'Arabic (Qatar)'},
+        {Category: 'All languages', Id: 'ar-LB', Text: 'Arabic (Lebanon)'},
+        {Category: 'All languages', Id: 'ar-EG', Text: 'Arabic (Egypt)'},
+        {Category: 'All languages', Id: 'fa-IR', Text: 'Persian (Iran)'},
+        {Category: 'All languages', Id: 'hi-IN', Text: 'Hindi (India)'},
+        {Category: 'All languages', Id: 'th-TH', Text: 'Thai (Thailand)'},
+        {Category: 'All languages', Id: 'ko-KR', Text: 'Korean (South Korea)'},
+        {Category: 'All languages', Id: 'cmn-Hant-TW', Text: 'Chinese, Mandarin (Traditional, Taiwan)'},
+        {Category: 'All languages', Id: 'yue-Hant-HK', Text: 'Chinese, Cantonese (Traditional, Hong Kong)'},
+        {Category: 'All languages', Id: 'ja-JP', Text: 'Japanese (Japan)'},
+        {Category: 'All languages', Id: 'cmn-Hans-HK', Text: 'Chinese, Mandarin (Simplified, Hong Kong)'},
+        {Category: 'All languages', Id: 'cmn-Hans-CN', Text: 'Chinese, Mandarin (Simplified, China)'},
+      ],
+      //#endregion
+      fileLanguagesFields : { groupBy: 'Category', text: 'Text', value: 'Id' },
+    
+      useVocabulary:false,
       printInvoice: 
       {
         id: "invoice-container",

@@ -92,7 +92,7 @@ export default {
 		TopOffPayment: "Top Off Payment",
 		YourVocabulary:'Your Vocabulary',
 		Invoices:'Invoices',
-		UserSettings: 'User Settings',
+		Settings: 'Settings',
 		
 		Invoice: 'Invoice',
 		FAQ: 'FAQ',

@@ -85,7 +85,7 @@ export default {
       {title: "Top Off Payment",           url: "/top-off-payment",              icon: "SettingsIcon",       is_bookmarked: false},
       {title: "Vocabulary",                url: "/vocabulary",                   icon: "SettingsIcon",       is_bookmarked: false},
       {title: "Invoices",                  url: "/invoices",                     icon: "InfoIcon",       is_bookmarked: false},
-      {title: "User Settings",             url: "/user-settings",                icon: "SettingsIcon",       is_bookmarked: false},
+      {title: "Settings",                  url: "/settings",                icon: "SettingsIcon",       is_bookmarked: false},
 
       {title: "FAQ Page",                  url: "/faq",                          icon: "HelpCircleIcon",     is_bookmarked: false},
       {title: "KnowledgeBase Page",        url: "/knowledge-base",               icon: "BookIcon",           is_bookmarked: false},
