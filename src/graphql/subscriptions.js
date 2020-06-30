@@ -165,12 +165,18 @@ export const onCreateUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      notificationTranscriptsCompleted
-      notificationTranscriptsError
       vocabularies
       paymentInvoices
+      notificationSettings {
+        notifyWhenTranscriptsCompleted
+        notifyWhenTranscriptsError
+      }
       paymentSettings {
         autoRecharge
+      }
+      transcriptionSettings {
+        defaultFileLanguageWhenFileIsTranscribed
+        useVocabularyWhenFileIsTranscribed
       }
       createdAt
       updatedAt
@@ -186,12 +192,18 @@ export const onUpdateUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      notificationTranscriptsCompleted
-      notificationTranscriptsError
       vocabularies
       paymentInvoices
+      notificationSettings {
+        notifyWhenTranscriptsCompleted
+        notifyWhenTranscriptsError
+      }
       paymentSettings {
         autoRecharge
+      }
+      transcriptionSettings {
+        defaultFileLanguageWhenFileIsTranscribed
+        useVocabularyWhenFileIsTranscribed
       }
       createdAt
       updatedAt
@@ -207,12 +219,18 @@ export const onDeleteUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      notificationTranscriptsCompleted
-      notificationTranscriptsError
       vocabularies
       paymentInvoices
+      notificationSettings {
+        notifyWhenTranscriptsCompleted
+        notifyWhenTranscriptsError
+      }
       paymentSettings {
         autoRecharge
+      }
+      transcriptionSettings {
+        defaultFileLanguageWhenFileIsTranscribed
+        useVocabularyWhenFileIsTranscribed
       }
       createdAt
       updatedAt

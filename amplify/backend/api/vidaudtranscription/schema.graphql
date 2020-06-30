@@ -28,15 +28,24 @@ type UserProfile @model
   billingAddress: String
   country: String
   vatNumber: String
-  notificationTranscriptsCompleted: Boolean
-  notificationTranscriptsError: Boolean
   vocabularies: [String!]
   paymentInvoices: [String!]
+  notificationSettings: NotificationSettings
   paymentSettings: PaymentSettings
+  transcriptionSettings: TranscriptionSettings
+}
+type NotificationSettings {
+  notifyWhenTranscriptsCompleted: Boolean
+  notifyWhenTranscriptsError: Boolean
 }
 type PaymentSettings {
     autoRecharge: Boolean
 }
+type TranscriptionSettings {
+    defaultFileLanguageWhenFileIsTranscribed: String
+    useVocabularyWhenFileIsTranscribed: Boolean
+}
+
 type VideoS3Info {
     key: String!
     width: Int!

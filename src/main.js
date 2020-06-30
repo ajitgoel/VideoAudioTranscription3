@@ -87,9 +87,8 @@ Vue.use(VueClipboard);
 Vue.use(VueTour);
 require('vue-tour/dist/vue-tour.css'); */
 
-// VeeValidate
 import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
+Vue.use(VeeValidate, {fieldsBagName: 'formFields'});
 
 import Amplify from 'aws-amplify';
 //import Amplify, { Analytics} from 'aws-amplify';

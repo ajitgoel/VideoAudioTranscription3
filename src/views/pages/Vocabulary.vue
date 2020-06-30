@@ -19,7 +19,6 @@
 </template>
 <script>
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfilesForVocabularies} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 export default
 {
@@ -54,6 +53,21 @@ export default
         const userId=currentUserInfo.id;
         
         const listUserProfilesFilter={id:{eq:userId}};
+        const listUserProfilesForVocabularies = /* GraphQL */ `
+        query ListUserProfiles(
+            $filter: ModelUserProfileFilterInput
+            $limit: Int
+            $nextToken: String
+        ) {
+            listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+            items {
+                id
+                vocabularies
+            }
+            nextToken
+            }
+        }
+        `;
         const result = await API.graphql(graphqlOperation(listUserProfilesForVocabularies, {filter: listUserProfilesFilter}));
         console.log(`result: ${JSON.stringify(result)}`);
         const items=result.data.listUserProfiles.items;

@@ -1,36 +1,64 @@
 <template>
-  <vx-card no-shadow>
-    <div class="mb-base">
-      <h6 class="mb-4">Payment settings</h6>
-      <div class="flex items-center mb-4">
-        <vs-switch v-model="paymentSettings.autoRecharge" />
-        <span class="ml-4">Auto Recharge</span>
-      </div>
+  <div>
+    <vx-card no-shadow>
+      <div class="mb-base">
+        <h6 class="mb-4">Payment settings</h6>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="paymentSettings.autoRecharge" />
+          <span class="ml-4">Auto Recharge</span>
+        </div>
+      </div>  
+    </vx-card>    
+      
+    <vx-card no-shadow>
+      <div class="mb-base">
+        <h6 class="mb-4">Transcription settings</h6>
+        <div class="flex items-center my-4">
+          <ejs-dropdownlist id='fileLanguage' :dataSource='$options.fileLanguages' :fields='fileLanguagesFields' 
+            v-model="transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed" allowFiltering='true' placeholder='Select default file language when file is transcribed'/>
+        </div>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="transcriptionSettings.useVocabularyWhenFileIsTranscribed" />
+          <span class="ml-4">Use vocabulary when file is transcribed</span>
+        </div>
+      </div>    
+    </vx-card>
 
-       <h6 class="mb-4">Transcription settings</h6>
-      <div class="flex items-center mb-4">
-        <vs-switch v-model="useVocabulary" />
-        <span class="ml-4">Use vocabulary when file is transcribed</span>
+    <!--Notifications:Start-->
+    <vx-card no-shadow>
+      <div class="mb-base">
+        <h6 class="mb-4">Notifications</h6>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="notificationSettings.notifyWhenTranscriptsCompleted" />
+          <span class="ml-4">Notify me when my transcripts are done processing</span>
+        </div>
+        <div class="flex items-center mb-4">
+          <vs-switch v-model="notificationSettings.notifyWhenTranscriptsError" />
+          <span class="ml-4">Notify me when there is a problem with my transcripts</span>
+        </div>
       </div>
+    </vx-card>
+    <!--Notifications:End-->
 
-    </div>
     <div class="flex flex-wrap items-center justify-end mt-base">
       <vs-button class="ml-auto mt-2" @click="save">Save settings</vs-button>
-    </div>
-  </vx-card>
+    </div>  
+  </div>
 </template>
 <script>
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfilesForPaymentSettings} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
+import {FILE_LANGUAGES} from '@/static.js';
 
 export default {
   data() {
     return {
       isUserProfileSavedInDatabase: false,
       paymentSettings:{autoRecharge: false},
-      useVocabulary:false
+      transcriptionSettings: {defaultFileLanguageWhenFileIsTranscribed:false, useVocabularyWhenFileIsTranscribed:false},
+      notificationSettings: {notifyWhenTranscriptsCompleted:false, notifyWhenTranscriptsError:false},
+      fileLanguagesFields : { groupBy: 'Category', text: 'Text', value: 'Id' },
     }
   },
   computed: { 
@@ -39,65 +67,110 @@ export default {
     },   
   },
   async created() 
-  {
-      const currentUserInfo=await this.currentUserInfo();
-      const userId=currentUserInfo.id;
-      const listUserProfilesFilter={id:{eq:userId}};
-      const result = await API.graphql(graphqlOperation(listUserProfilesForPaymentSettings, {filter: listUserProfilesFilter}));
-      console.log(`result: ${JSON.stringify(result)}`);
-      const items=result.data.listUserProfiles.items;
-      if(items.length>0)
-      {
-          this.id=items[0].id;
-          this.paymentSettings.autoRecharge=(items[0].paymentSettings==null || items[0].paymentSettings.autoRecharge==null) ? 
-            false:items[0].paymentSettings.autoRecharge;
-          this.isUserProfileSavedInDatabase=true;
+  {      
+    this.$options.fileLanguages = FILE_LANGUAGES;
+    const currentUserInfo=await this.currentUserInfo();
+    const userId=currentUserInfo.id;
+    const listUserProfilesFilter={id:{eq:userId}};
+    const listUserProfilesForPaymentSettings = /* GraphQL */ `
+      query ListUserProfiles(
+        $filter: ModelUserProfileFilterInput
+        $limit: Int
+        $nextToken: String
+      ) {
+        listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
+          items {
+            id
+            paymentSettings {
+              autoRecharge
+            }   
+            transcriptionSettings {
+              defaultFileLanguageWhenFileIsTranscribed
+              useVocabularyWhenFileIsTranscribed
+            }
+            notificationSettings {
+              notifyWhenTranscriptsCompleted
+              notifyWhenTranscriptsError
+            }
+          }
+          nextToken
+        }
       }
-      else
-      {
-          this.isUserProfileSavedInDatabase=false;
-      }
+    `;
+
+    const result = await API.graphql(graphqlOperation(listUserProfilesForPaymentSettings, {filter: listUserProfilesFilter}));
+    console.log(`result: ${JSON.stringify(result)}`);
+    const items=result.data.listUserProfiles.items;
+    if(items.length>0)
+    {
+      this.id=items[0].id;
+      this.paymentSettings.autoRecharge=(items[0].paymentSettings==null || items[0].paymentSettings.autoRecharge==null) ? false:items[0].paymentSettings.autoRecharge;
+      this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed=
+        (items[0].transcriptionSettings==null || items[0].transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed==null) ? 
+        false:items[0].transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed;
+      this.transcriptionSettings.useVocabularyWhenFileIsTranscribed=
+        (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed==null) ? 
+        false:items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed;
+
+      this.notificationSettings.notifyWhenTranscriptsCompleted=
+        (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsCompleted==null) ? 
+        false:items[0].notificationSettings.notifyWhenTranscriptsCompleted;
+      this.notificationSettings.notifyWhenTranscriptsError=
+        (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsError==null) ? 
+        false:items[0].notificationSettings.notifyWhenTranscriptsError;
+
+      this.isUserProfileSavedInDatabase=true;
+    }
+    else
+    {
+      this.isUserProfileSavedInDatabase=false;
+    }
   },
   methods: 
   {
     async save() 
     {
-        try 
+      try 
+      {
+        const currentUserInfo=await this.currentUserInfo();
+        const userId=currentUserInfo.id;
+        if(userId == null)
         {
-            const currentUserInfo=await this.currentUserInfo();
-            const userId=currentUserInfo.id;
-            if(userId == null)
-            {
-                this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', 
-                    icon: 'icon-alert-circle', color: 'danger'});
-                return;   
-            }
-            console.log(`userId: ${userId}`);
-            
-            //#region save user profile in dynamodb
-            if(this.isUserProfileSavedInDatabase==false)
-            {
-              const createUserProfileInput={id:userId, 
-                paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
-              await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
-            }
-            else
-            {
-                const updateUserProfileInput={id:userId,                 
-                  paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
-                await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
-            }                
-            //#endregion save user profile in dynamodb
-
-            this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather',
-                icon: 'icon-check',color: 'success'}); 
-        } 
-        catch (error) 
+          this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', 
+              icon: 'icon-alert-circle', color: 'danger'});
+          return;   
+        }
+        console.log(`userId: ${userId}`);
+        
+        //#region save user profile in dynamodb
+        const createOrUpdateUserProfileInput={
+              id:userId, 
+              paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,},
+              transcriptionSettings:{
+                defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
+                useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed,
+                },
+              notificationSettings:{
+                notifyWhenTranscriptsCompleted: this.notificationSettings.notifyWhenTranscriptsCompleted,
+                notifyWhenTranscriptsError: this.notificationSettings.notifyWhenTranscriptsError,
+                },  
+            };
+        if(this.isUserProfileSavedInDatabase==false)
         {
-            console.log(error);
-            this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', 
-                color: 'danger'});
-        };
+          await API.graphql(graphqlOperation(createUserProfile,{input: createOrUpdateUserProfileInput}));
+        }
+        else
+        {
+          await API.graphql(graphqlOperation(updateUserProfile, {input: createOrUpdateUserProfileInput}));
+        }                
+        //#endregion save user profile in dynamodb
+        this.$vs.notify({title: 'Success', text: 'Payment, transcription and notification settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+      } 
+      catch (error) 
+      {
+        console.log(error);
+        this.$vs.notify({title: 'Error',text: error.message, iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
+      };
     },
   }
 }

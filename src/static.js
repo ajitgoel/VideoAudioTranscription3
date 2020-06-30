@@ -1,4 +1,4 @@
-    export const fileLanguages =[
+    export const FILE_LANGUAGES =[
         {Category: 'Top languages', Id: 'en-GB', Text: 'English (United Kingdom)'},
         {Category: 'Top languages', Id: 'en-US', Text: 'English (United States)'},
         {Category: 'Top languages', Id: 'en', Text: 'English (Multiple Accents)'},

@@ -116,12 +116,18 @@ export const getUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      notificationTranscriptsCompleted
-      notificationTranscriptsError
       vocabularies
       paymentInvoices
+      notificationSettings {
+        notifyWhenTranscriptsCompleted
+        notifyWhenTranscriptsError
+      }
       paymentSettings {
         autoRecharge
+      }
+      transcriptionSettings {
+        defaultFileLanguageWhenFileIsTranscribed
+        useVocabularyWhenFileIsTranscribed
       }
       createdAt
       updatedAt
@@ -150,12 +156,18 @@ export const listUserProfiles = /* GraphQL */ `
         billingAddress
         country
         vatNumber
-        notificationTranscriptsCompleted
-        notificationTranscriptsError
         vocabularies
         paymentInvoices
+        notificationSettings {
+          notifyWhenTranscriptsCompleted
+          notifyWhenTranscriptsError
+        }
         paymentSettings {
           autoRecharge
+        }
+        transcriptionSettings {
+          defaultFileLanguageWhenFileIsTranscribed
+          useVocabularyWhenFileIsTranscribed
         }
         createdAt
         updatedAt
