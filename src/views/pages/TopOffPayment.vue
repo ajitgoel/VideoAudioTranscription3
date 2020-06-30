@@ -135,7 +135,7 @@
       <div class="vx-col lg:w-2/3 w-full">        
         <vx-card title="Select no of hours to prepay">
           <vs-input-number id="userNoOfHours" name="userNoOfHours" ref="userNoOfHours" v-model="noOfHours" min="1" max="100"/>
-          <vs-table :data="pricing">
+          <vs-table :data="$options.pricing">
             <template slot="thead">                    
               <vs-th>Pricing per hour</vs-th>
               <vs-th>No of hours</vs-th>
@@ -241,6 +241,7 @@ import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
 import { loadStripe } from '@stripe/stripe-js';
 import html2pdf from 'html2pdf.js';
+import {PRICING} from '@/static.js';
 
 export default {
   data() {
@@ -253,11 +254,6 @@ export default {
         //extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>'
       },  
       //#region top off payment screen
-      pricing: [
-        {"id": 1,"priceperhour": 10,"hourmin": 0,"hourmax": 24, discountPercentage:0},
-        {"id": 2,"priceperhour": 9,"hourmin": 25,"hourmax": 49, discountPercentage:10},
-        {"id": 3,"priceperhour": 8,"hourmin": 50,"hourmax": 100, discountPercentage:20},
-      ],
       stripe: null,
       card: null,
       
@@ -283,9 +279,9 @@ export default {
     },
     selectedpriceperhour()
     {
-      for (let index = 0; index < this.pricing.length; index++) 
+      for (let index = 0; index < this.$options.pricing.length; index++) 
       {
-        const element = this.pricing[index];
+        const element = this.$options.pricing[index];
         if(element.hourmin <=this.noOfHours && element.hourmax >=this.noOfHours)
         {
           return element.priceperhour;
@@ -304,6 +300,7 @@ export default {
   },
   async created() 
   {    
+    this.$options.pricing = PRICING;
     const currentUserInfo=await this.currentUserInfo();
     this.general.email=currentUserInfo.email;
     const userId=currentUserInfo.id;

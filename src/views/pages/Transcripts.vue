@@ -1,209 +1,91 @@
 <template>  
-  <div>    
-    <!--Invoice: Start-->
-    <div id="invoice-page" v-if="showReceiptReceipt">
-      <div class="flex flex-wrap items-center justify-between">
-        <vx-input-group class="mb-base mr-3">
-          <!-- <vs-input v-model="mailTo" placeholder="Email" /> -->
-          <template slot="append">
-            <div class="append-text btn-addon">
-              <!-- <vs-button type="border" @click="mailTo = ''" class="whitespace-no-wrap">Send Invoice</vs-button> -->
-            </div>
-          </template>
-        </vx-input-group> 
-        <div class="flex items-center">
-          <vs-button class="mb-base mr-3" type="border" icon-pack="feather" icon="icon icon-download" @click="downloadInvoice">Download</vs-button>
-          <vs-button class="mb-base mr-3" icon-pack="feather" icon="icon icon-file" v-print="printInvoice">Print</vs-button>
-        </div>
-      </div>
-
-      <vx-card id="invoice-container">
-
-        <div class="vx-row leading-loose p-base">
-          <div class="vx-col w-full md:w-1/2 mt-base">
-              <img src="@/assets/images/logo/logo.png" alt="vuexy-logo">
+  <div class="vx-row">
+    <vs-tabs id="tabs" ref="tabs" :value="currentTab"> 
+      <vs-tab label="Operation type">
+        <vx-card title="Select type of operation">
+          <vs-row vs-justify="center">
+              <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                  <vs-card>
+                      <div slot="header">
+                          <h6>Transcription</h6>
+                      </div>
+                      <div>
+                          <span>Some text about difference between transcription and subtitles operation</span>
+                      </div>
+                      <div slot="footer">
+                          <vs-row vs-justify="flex-end">
+                              <vs-button @click="selectOperation('transcription')">Select</vs-button>
+                          </vs-row>
+                      </div>
+                  </vs-card>
+              </vs-col>
+              <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
+                  <vs-card>
+                      <div slot="header">
+                          <h6>Subtitles</h6>
+                      </div>
+                      <div>
+                          <span>Some text about difference between transcription and subtitles operation</span>
+                      </div>
+                      <div slot="footer">
+                          <vs-row vs-justify="flex-end">
+                              <vs-button @click="selectOperation('subtitles')">Select</vs-button>
+                          </vs-row>
+                      </div>
+                  </vs-card>
+              </vs-col>
+          </vs-row>
+        </vx-card>
+      </vs-tab>
+      <vs-tab label="Upload file">
+          <div class="vx-row">
+          <div class="vx-col lg:w-1/3 w-full">  
+            <vx-card title="Select file source">
+              <ejs-listview id='fileSources' :dataSource='$options.fileSources' :fields='fileSourcesFields'/>
+            </vx-card>  
           </div>
-          <div class="vx-col w-full md:w-1/2 text-right">
-              <h1>Invoice</h1>
-              <div class="invoice__invoice-detail mt-6">
-                  <h6 v-if="paymentReceipt.receiptNumber">INVOICE NO.</h6>
-                  <p v-if="paymentReceipt.receiptNumber">{{paymentReceipt.receiptNumber}}</p>
-
-                  <h6 class="mt-4">INVOICE DATE</h6>
-                  <p>{{paymentReceipt.invoiceDate}}</p>
-
-                  <h6 class="mt-4">Payment Method</h6>
-                  <p>{{paymentReceipt.paymentMethod}}</p>
+          <div class="vx-col lg:w-2/3 w-full">            
+            <vx-card title="Select file to transcribe and transcription settings">
+              <div class="flex items-center my-6">
+                <ejs-uploader ref="localDeviceFiles" id='localDeviceFiles' name="localDeviceFiles" :selected="localDeviceFilesSelected" 
+                  :allowedExtensions="$options.audioVideoFileExtensions"></ejs-uploader>
               </div>
-          </div>
-          <div class="vx-col w-full md:w-1/2 mt-12">
-              <h5>Recipient</h5>
-              <div class="invoice__recipient-info my-4">
-                  <p>{{ paymentReceipt.name }}</p>
-                  <p>{{ paymentReceipt.billingDetailsAddress.line1 }}</p>
-                  <p>{{ paymentReceipt.billingDetailsAddress.line2 }}</p>
-                  <p>{{ paymentReceipt.billingDetailsAddress.city }} {{ paymentReceipt.billingDetailsAddress.state }} {{ paymentReceipt.billingDetailsAddress.postal_code }} {{ paymentReceipt.billingDetailsAddress.country }}</p>
+              <h6 class="mb-4">Select file language</h6>
+              <div class="flex items-center my-6">
+                <ejs-dropdownlist id='fileLanguage' :dataSource='$options.fileLanguages' :fields='fileLanguagesFields' 
+                  v-model="transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed" allowFiltering='true' placeholder='Select file language' />
               </div>
-              <div class="invoice__recipient-contact ">
-                  <p class="flex items-center" v-if="paymentReceipt.receiptEmail">
-                    <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                    <span class="ml-2">{{ paymentReceipt.receiptEmail }}</span>
-                  </p>
-                  <p class="flex items-center" v-if="paymentReceipt.phone">
-                    <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                    <span class="ml-2">{{ paymentReceipt.phone }}</span>
-                  </p>
+              <div class="flex items-center my-6">
+                <vs-switch v-model="transcriptionSettings.useVocabularyWhenFileIsTranscribed" />
+                <span class="ml-4">Use my vocabulary</span>
               </div>
+
+              <div class="flex items-center mb-4">
+                <vs-switch v-model="notificationSettings.notifyWhenTranscriptsCompleted" />
+                <span class="ml-4">Notify me when my transcripts are done processing</span>
+              </div>
+              <div class="flex items-center mb-4">
+                <vs-switch v-model="notificationSettings.notifyWhenTranscriptsError" />
+                <span class="ml-4">Notify me when there is a problem with my transcripts</span>
+              </div>
+              
+            </vx-card>               
           </div>
-            <!--  <div class="vx-col w-full md:w-1/2 mt-base text-right mt-12">
-                <h5>{{ companyDetails.name }}</h5>
-                <div class="invoice__company-info my-4">
-                  <p>{{ companyDetails.addressLine1 }}</p>
-                  <p>{{ companyDetails.addressLine2 }}</p>
-                  <p>{{ companyDetails.zipcode }}</p>
-                </div>
-                <div class="invoice__company-contact">
-                    <p class="flex items-center justify-end">
-                      <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon>
-                      <span class="ml-2">{{ companyDetails.mailId }}</span>
-                    </p>
-                    <p class="flex items-center justify-end">
-                      <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>
-                      <span class="ml-2">{{ companyDetails.mobile }}</span>
-                    </p>
-                </div>
-            </div> -->
         </div>
-        <div class="p-base">
-          <vs-table hoverFlat :data="paymentReceipt.invoiceData.tasks">
-            <template slot="thead">
-              <vs-th>DESCRIPTION</vs-th>
-              <vs-th>NO OF HOURS</vs-th>
-              <vs-th>PRICE PER HOUR</vs-th>
-              <vs-th>DISCOUNT PERCENTAGE</vs-th>             
-            </template>
+      </vs-tab>
 
-            <template slot-scope="{data}">
-              <vs-tr v-for="(tr, index) in data" :key="index">
-                <vs-td :data="data[index].description">{{ data[index].description }}</vs-td>
-                <vs-td :data="data[index].noOFHours">{{ data[index].noOFHours }}</vs-td>
-                <vs-td :data="data[index].pricePerHour">{{ data[index].pricePerHour }} USD</vs-td>
-                <vs-td :data="data[index].discountPercentage">{{ data[index].discountPercentage }} %</vs-td>
-              </vs-tr>
-            </template>
-          </vs-table>
-
-          <vs-table hoverFlat class="w-1/2 ml-auto mt-4" :data="paymentReceipt.invoiceData">
-              <!-- <vs-tr>
-                <vs-th>SUBTOTAL</vs-th>
-                <vs-td>{{paymentReceipt.invoiceData.subtotal}} USD</vs-td>
-              </vs-tr>
-              <vs-tr>
-                <vs-th>DISCOUNT ({{paymentReceipt.invoiceData.discountPercentage}}%)</vs-th>
-                <vs-td>{{paymentReceipt.invoiceData.discountedAmount}} USD</vs-td>
-              </vs-tr> -->
-              <vs-tr>
-                <th>TOTAL</th>
-                <td>{{ paymentReceipt.invoiceData.total }} USD</td>
-              </vs-tr>
-          </vs-table>
-        </div>
-        <div class="invoice__footer text-left p-base">
-          <p class="mb-4">If you have any questions, contact us at 
-            <a href="mailto:ajitgoel@gmail.com" target="_blank" rel="nofollow">
-              <feather-icon icon="MailIcon" svgClasses="h-4 w-4"></feather-icon> ajitgoel@gmail.com
-            </a> or call at 
-              <a href="tel:+12146065700" target="_blank" rel="nofollow">
-                <feather-icon icon="PhoneIcon" svgClasses="h-4 w-4"></feather-icon>+1 214-606-5700.
-              </a></p>
-          <p class="mb-4">Something wrong with the email? View it in your <a :href="paymentReceipt.receiptUrl" target="_blank" rel="nofollow">browser</a>.</p>
-          <p class="mb-4">You're receiving this email because you made a purchase at 
-            <a href="http://www.VideoAudioTranscription.com" target="_blank" rel="nofollow">Video Audio Transcription</a>, which partners with 
-            <a href="http://www.stripe.com" target="_blank" rel="nofollow">Stripe</a> to provide invoicing and payment processing.</p>              
-        </div>
-        <!-- <div class="invoice__footer text-right p-base">
-            <p class="mb-4">Transfer the amounts to the business amount below. Please include invoice number on your check.</p>
-            <p>
-                <span class="mr-8">BANK: <span class="font-semibold">FTSBUS33</span></span>
-                <span>IBAN: <span class="font-semibold"> G882-1111-2222-3333 </span></span>
-            </p>
-        </div> -->
-      </vx-card>
-    </div>   
-    <!--Invoice: End-->
-    <div class="vx-row" v-else>
-      <vs-tabs id="tabs" ref="tabs"> 
-        <vs-tab label="Operation type">
-          <vx-card title="Select type of operation">
-            <vs-row vs-justify="center">
-                <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                    <vs-card>
-                        <div slot="header">
-                            <h6>Transcription</h6>
-                        </div>
-                        <div>
-                            <span>Some text about difference between transcription and subtitles operation</span>
-                        </div>
-                        <div slot="footer">
-                            <vs-row vs-justify="flex-end">
-                                <vs-button @click="selectOperation('transcription')">Select</vs-button>
-                            </vs-row>
-                        </div>
-                    </vs-card>
-                </vs-col>
-                <vs-col type="flex" vs-justify="center" vs-align="center" vs-w="6">
-                    <vs-card>
-                        <div slot="header">
-                            <h6>Subtitles</h6>
-                        </div>
-                        <div>
-                            <span>Some text about difference between transcription and subtitles operation</span>
-                        </div>
-                        <div slot="footer">
-                            <vs-row vs-justify="flex-end">
-                                <vs-button @click="selectOperation('subtitles')">Select</vs-button>
-                            </vs-row>
-                        </div>
-                    </vs-card>
-                </vs-col>
-            </vs-row>
-          </vx-card>
-        </vs-tab>
-        <vs-tab label="Upload file">
-           <div class="vx-row">
-            <div class="vx-col lg:w-1/3 w-full">  
-              <vx-card title="Select file to transcribe">
-                <ejs-listview id='fileSources' :dataSource='fileSources' :fields='fileSourcesFields'/>
-              </vx-card>  
-            </div>
-            <div class="vx-col lg:w-2/3 w-full">            
-              <vx-card title="">
-                <div class="flex items-center my-4">
-                  <ejs-dropdownlist id='fileLanguage' :dataSource='$options.fileLanguages' :fields='fileLanguagesFields' 
-                   v-model="transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed" allowFiltering='true' placeholder='Select file language' />
-                </div>
-                <div class="flex items-center my-4">
-                  <vs-switch v-model="transcriptionSettings.useVocabularyWhenFileIsTranscribed" />
-                  <span class="ml-4">Use my vocabulary</span>
-                </div>
-              </vx-card>               
-            </div>
+      <vs-tab label="Payment details">
+        <vx-card title="Payment details">
+          <div ref="stripe"/>
+          <div class="flex items-center my-4">
+            <vs-switch v-model="paymentSettings.autoRecharge" />
+            <span class="ml-4">Auto Recharge</span>
           </div>
-        </vs-tab>
+        </vx-card>
+        <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
+      </vs-tab>
+    </vs-tabs>
 
-        <vs-tab label="Payment details">
-         <vx-card title="Payment details">
-            <div ref="stripe"/>
-            <div class="flex items-center my-4">
-              <vs-switch v-model="paymentSettings.autoRecharge" />
-              <span class="ml-4">Auto Recharge</span>
-            </div>
-          </vx-card>
-          <vs-button class="float-right mt-6" @click="PlaceOrder" :disabled="!validateForm">Place your order</vs-button> 
-        </vs-tab>
-      </vs-tabs>
-
-    </div>
   </div>
 </template>
 <style lang="scss">
@@ -234,6 +116,11 @@
   border: 1px solid #dddddd;
   border-radius: 3px;
 }
+.control-section 
+{
+  height: 100%;
+  min-height: 200px;
+}
 </style>
 <script>
 import { ListViewPlugin } from '@syncfusion/ej2-vue-lists';
@@ -241,26 +128,17 @@ import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
-import { loadStripe } from '@stripe/stripe-js';
-import html2pdf from 'html2pdf.js';
-import {FILE_LANGUAGES} from '@/static.js';
+import {FILE_SOURCES, FILE_LANGUAGES, AUDIO_VIDEO_FILE_EXTENSIONS} from '@/static.js';
 
 export default {
   data() {
     return {
-      operation:'',  
-      fileSources : [
-        { text: 'Your device', id: '1', category: 'Local sources'  },
-        { text: 'Public links" subtitle="Eg: Youtube, Instagram etc', id: '2', category: 'Online sources'  },
-        { text: 'Google drive', id: '3' , category: 'Online sources' },
-        { text: 'Dropbox', id: '4', category: 'Online sources'  },
-        { text: 'Your Vimeo channel', id: '5', category: 'Online sources'  },
-        { text: 'Your Youtube channel', id: '6', category: 'Online sources'  },
-        { text: 'Wistia', id: '7', category: 'Online sources' },
-      ],
+      operation:'',
       fileSourcesFields: { groupBy: 'category' },
       fileLanguagesFields : { groupBy: 'Category', text: 'Text', value: 'Id' },
       transcriptionSettings: {defaultFileLanguageWhenFileIsTranscribed:false, useVocabularyWhenFileIsTranscribed:false},
+      notificationSettings: {notifyWhenTranscriptsCompleted:false, notifyWhenTranscriptsError:false},
+      currentTab:0,
 
       printInvoice: 
       {
@@ -270,11 +148,6 @@ export default {
         //extraHead: '<meta http-equiv="Content-Language"content="zh-cn"/>'
       },  
       //#region top off payment screen
-      pricing: [
-        {"id": 1,"priceperhour": 10,"hourmin": 0,"hourmax": 24, discountPercentage:0},
-        {"id": 2,"priceperhour": 9,"hourmin": 25,"hourmax": 49, discountPercentage:10},
-        {"id": 3,"priceperhour": 8,"hourmin": 50,"hourmax": 100, discountPercentage:20},
-      ],
       stripe: null,
       card: null,
       
@@ -298,18 +171,6 @@ export default {
     {
       return (this.paymentSettings.autoRecharge===true?"Yes":"No");
     },
-    selectedpriceperhour()
-    {
-      for (let index = 0; index < this.pricing.length; index++) 
-      {
-        const element = this.pricing[index];
-        if(element.hourmin <=this.noOfHours && element.hourmax >=this.noOfHours)
-        {
-          return element.priceperhour;
-        }        
-      }
-      return 0;
-    },
     validateForm() 
     {         
       if(this.noOfHours > 0  && this.general.fullName!="" && this.general.billingAddress != "" && this.general.country!="")
@@ -321,7 +182,9 @@ export default {
   },
   async created() 
   {    
+    this.$options.fileSources = FILE_SOURCES;
     this.$options.fileLanguages = FILE_LANGUAGES;
+    this.$options.audioVideoFileExtensions = AUDIO_VIDEO_FILE_EXTENSIONS;
     const currentUserInfo=await this.currentUserInfo();
     this.general.email=currentUserInfo.email;
     const userId=currentUserInfo.id;
@@ -347,6 +210,10 @@ export default {
               defaultFileLanguageWhenFileIsTranscribed
               useVocabularyWhenFileIsTranscribed
             }
+            notificationSettings {
+              notifyWhenTranscriptsCompleted
+              notifyWhenTranscriptsError
+            }
           }
           nextToken
         }
@@ -371,6 +238,14 @@ export default {
         this.transcriptionSettings.useVocabularyWhenFileIsTranscribed=
           (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed==null) ? 
           false:items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed;
+
+        this.notificationSettings.notifyWhenTranscriptsCompleted=
+          (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsCompleted==null) ? 
+          false:items[0].notificationSettings.notifyWhenTranscriptsCompleted;
+        this.notificationSettings.notifyWhenTranscriptsError=
+          (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsError==null) ? 
+          false:items[0].notificationSettings.notifyWhenTranscriptsError;
+
         this.isUserProfileSavedInDatabase=true;
     }
     else
@@ -379,35 +254,18 @@ export default {
     }
   },
   async mounted() 
-  {    
-    this.stripe = await loadStripe(process.env.VUE_APP_STRIPE_PUBLISHABLE_KEY);
-    let elements = this.stripe.elements();
-    const style = {
-      base: {
-        color: '#32325d',
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: 'antialiased',
-        fontSize: '16px',
-        '::placeholder': {
-          color: '#aab7c4',
-        },
-      },
-      invalid: {
-        color: '#fa755a',
-        iconColor: '#fa755a',
-      },
-    };
-    //https://stripe.com/docs/js/elements_object/create_element?type=card
-    let options={style: style, iconStyle:'solid', hidePostalCode:true};
-    this.card = elements.create('card', options);
-    this.card.mount(this.$refs.stripe);
+  {  
   },
   methods: 
   { 
+    localDeviceFilesSelected(args)
+    {
+      console.log(`localDeviceFilesSelected: ${JSON.stringify(args)}`); 
+    },
     selectOperation(operation1)
     {
       this.operation=operation1;
-      this.$refs.tabs.value=1;
+      this.currentTab=1;
     },
     //# region "Top off payment" screen
     async SavePaymentMethod()

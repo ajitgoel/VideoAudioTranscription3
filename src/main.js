@@ -7,7 +7,7 @@ Vue.use(Print);
 //import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
 //Vue.use(GridPlugin);
 //import {TextBoxPlugin, NumericTextBoxPlugin, SliderPlugin, UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
-import {TextBoxPlugin} from '@syncfusion/ej2-vue-inputs';
+import {UploaderPlugin, TextBoxPlugin} from '@syncfusion/ej2-vue-inputs';
 //import {ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
 //import { enableRipple } from '@syncfusion/ej2-base';
 import { ListViewPlugin } from '@syncfusion/ej2-vue-lists';
@@ -18,7 +18,7 @@ Vue.use(DropDownListPlugin);
 Vue.use(ListViewPlugin);
 //Vue.use(ButtonPlugin);
 Vue.use(TextBoxPlugin);
-//Vue.use(UploaderPlugin); 
+Vue.use(UploaderPlugin); 
 //Vue.use(SliderPlugin);
 //Vue.use(NumericTextBoxPlugin);
 

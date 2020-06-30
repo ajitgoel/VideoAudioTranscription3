@@ -69,7 +69,6 @@
 <script>
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
-import {listUserProfilesForGeneral} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
 
 export default {

@@ -1,4 +1,19 @@
-    export const FILE_LANGUAGES =[
+export const PRICING= [
+        {"id": 1,"priceperhour": 10,"hourmin": 0,"hourmax": 24, discountPercentage:0},
+        {"id": 2,"priceperhour": 9,"hourmin": 25,"hourmax": 49, discountPercentage:10},
+        {"id": 3,"priceperhour": 8,"hourmin": 50,"hourmax": 100, discountPercentage:20},
+      ];
+export const AUDIO_VIDEO_FILE_EXTENSIONS= '.WEBM, .MPG, .MP2, .MPEG, .MPE, .MPV, .OGG, .MP4, .M4P, .M4V, .AVI, .WMV, .MOV, .QT, .FLV, .SWF, AVCHD';
+export const FILE_SOURCES= [
+    { text: 'Your device', id: '1', category: 'Local sources'  },
+    { text: 'Public links" subtitle="Eg: Youtube, Instagram etc', id: '2', category: 'Online sources'  },
+    { text: 'Google drive', id: '3' , category: 'Online sources' },
+    { text: 'Dropbox', id: '4', category: 'Online sources'  },
+    { text: 'Your Vimeo channel', id: '5', category: 'Online sources'  },
+    { text: 'Your Youtube channel', id: '6', category: 'Online sources'  },
+    { text: 'Wistia', id: '7', category: 'Online sources' },
+  ];
+export const FILE_LANGUAGES =[
         {Category: 'Top languages', Id: 'en-GB', Text: 'English (United Kingdom)'},
         {Category: 'Top languages', Id: 'en-US', Text: 'English (United States)'},
         {Category: 'Top languages', Id: 'en', Text: 'English (Multiple Accents)'},

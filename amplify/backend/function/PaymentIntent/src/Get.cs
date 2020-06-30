@@ -8,7 +8,6 @@ using Amazon.Lambda.APIGatewayEvents;
 using Stripe;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using Amazon.DynamoDBv2;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -99,11 +98,19 @@ namespace PaymentIntent
       }
     }
     /*You can access the following resource attributes as environment variables from your Lambda function
-        API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT, API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT, ENV, REGION*/
+        API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT, API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT, ENV, REGION
+    https://github.com/graphql-dotnet/graphql-client
+    https://stackoverflow.com/questions/57119086/how-to-use-the-awssdk-appsync-net-core-nuget-package-to-perform-mutations-and-q
+    https://github.com/graphql-dotnet/graphql-client/blob/master/examples/GraphQL.Client.Example/Program.cs
+     */
     public async Task<GetPaymentIntentOutput> GetPaymentIntent(string paymentIntentId)
     {
       StripeConfiguration.ApiKey = Environment.GetEnvironmentVariable("VUE_APP_STRIPE_SECRET_KEY");
-      var amazonDynamoDBClient= new AmazonDynamoDBClient();
+      var apiVIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT = Environment.GetEnvironmentVariable("API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT");
+      var apiVIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT = Environment.GetEnvironmentVariable("API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT");
+      var environment = Environment.GetEnvironmentVariable("ENV");
+      var region = Environment.GetEnvironmentVariable("REGION");
+
       Stripe.PaymentIntent paymentIntent = await new PaymentIntentService().GetAsync(paymentIntentId);
       
       var data = paymentIntent?.Charges?.Data?[0];
