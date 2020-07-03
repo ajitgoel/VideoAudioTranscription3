@@ -49,8 +49,8 @@ export default
     },
     async created() 
     {
-        const currentUserInfo=await this.currentUserInfo();
-        const userId=currentUserInfo.id;
+        const currentUserInfoResult=await this.currentUserInfo();
+        const userId=currentUserInfoResult.id;
         
         const listUserProfilesFilter={id:{eq:userId}};
         const listUserProfilesForVocabularies = /* GraphQL */ `
@@ -95,8 +95,8 @@ export default
         {
             try 
             {
-                const currentUserInfo=await this.currentUserInfo();
-                const userId=currentUserInfo.id;
+                const currentUserInfoResult=await this.currentUserInfo();
+                const userId=currentUserInfoResult.id;
                 if(userId == null)
                 {
                     this.$vs.notify({title: 'Error',text: 'There was an error saving your vocabulary', iconPack: 'feather', 

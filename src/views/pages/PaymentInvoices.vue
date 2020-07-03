@@ -77,8 +77,8 @@ export default {
     try
     {
       this.$vs.loading({text:'Please wait while the system loads your data'});        
-      const currentUserInfo=await this.currentUserInfo();
-      const userId=currentUserInfo.id;
+      const currentUserInfoResult=await this.currentUserInfo();
+      const userId=currentUserInfoResult.id;
       const listUserProfilesFilter={id:{eq:userId}};      
       const listUserProfiles = /* GraphQL */ `
         query ListUserProfiles(

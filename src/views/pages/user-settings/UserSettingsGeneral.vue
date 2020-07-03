@@ -22,11 +22,8 @@
       <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" 
         icon-pack="feather" label-placeholder="Full Billing address" v-model="general.billingAddress"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>
-      
-      <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border 
-        icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
-      <span class="text-danger text-sm">{{ errors.first('country') }}</span>
-      
+      <ejs-dropdownlist id='country' :dataSource='$options.countries' :fields='countriesFields' v-model="general.country" allowFiltering='true' placeholder='Select country' 
+        width="50%"/>
       <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
         icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.vatNumber"></vs-input>
       <span class="text-danger text-sm">{{ errors.first('vatnumber') }}</span>
@@ -70,21 +67,18 @@
 import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
+import {COUNTRIES} from '@/static.js';
 
 export default {
   data() {
-    return {
+    return {      
+      countriesFields : {text: 'text', value: 'value' },
       isUserProfileSavedInDatabase: false,
       general:{email: "", fullName: "", billingAddress: "", country: "", vatNumber: ""},
       userProfileChangePassword:{oldPassword: "", newPassword: "", confirmPassword: ""},      
       notification:{transcriptsCompleted: false, transcriptsError: false,}
     }
   },
-  /* computed: { 
-    activeUserInfo() {
-      return this.$store.state.AppActiveUser
-    },   
-  }, */
   mounted() 
   {       
     this.$nextTick(function()
@@ -93,22 +87,23 @@ export default {
     });        
   },
   async created() 
-  {
-      const currentUserInfo=await this.currentUserInfo();
-      this.general.email=currentUserInfo.email;
-      const items=await this.getuserprofile();
-      if(items.length>0)
-      {
-          this.general.fullName=items[0].fullName;
-          this.general.billingAddress=items[0].billingAddress;
-          this.general.country=items[0].country;
-          this.general.vatNumber=items[0].vatNumber;
-          this.isUserProfileSavedInDatabase=true;
-      }
-      else
-      {
-        this.isUserProfileSavedInDatabase=false;
-      }
+  {      
+    this.$options.countries = COUNTRIES;
+    const currentUserInfoResult=await this.currentUserInfo();
+    this.general.email=currentUserInfoResult.email;
+    const items=await this.getuserprofile();
+    if(items.length>0)
+    {
+        this.general.fullName=items[0].fullName;
+        this.general.billingAddress=items[0].billingAddress;
+        this.general.country=items[0].country;
+        this.general.vatNumber=items[0].vatNumber;
+        this.isUserProfileSavedInDatabase=true;
+    }
+    else
+    {
+      this.isUserProfileSavedInDatabase=false;
+    }
   },
   methods: 
   {
@@ -116,8 +111,8 @@ export default {
     {
       try 
       {
-        const currentUserInfo=await this.currentUserInfo();
-        const userId=currentUserInfo.id;
+        const currentUserInfoResult=await this.currentUserInfo();
+        const userId=currentUserInfoResult.id;
         if(userId == null)
         {
             this.$vs.notify({title: 'Error',text: 'There was an error saving your profile', iconPack: 'feather', 

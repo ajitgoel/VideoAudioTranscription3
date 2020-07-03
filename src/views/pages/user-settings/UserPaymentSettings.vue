@@ -69,8 +69,8 @@ export default {
   async created() 
   {      
     this.$options.fileLanguages = FILE_LANGUAGES;
-    const currentUserInfo=await this.currentUserInfo();
-    const userId=currentUserInfo.id;
+    const currentUserInfoResult=await this.currentUserInfo();
+    const userId=currentUserInfoResult.id;
     const listUserProfilesFilter={id:{eq:userId}};
     const listUserProfilesForPaymentSettings = /* GraphQL */ `
       query ListUserProfiles(
@@ -132,8 +132,8 @@ export default {
     {
       try 
       {
-        const currentUserInfo=await this.currentUserInfo();
-        const userId=currentUserInfo.id;
+        const currentUserInfoResult=await this.currentUserInfo();
+        const userId=currentUserInfoResult.id;
         if(userId == null)
         {
           this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', 

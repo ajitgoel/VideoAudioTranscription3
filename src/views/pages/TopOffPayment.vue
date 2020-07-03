@@ -166,7 +166,9 @@
           <vs-input class="w-full my-base"  name="billingaddress" ref="billingaddress" icon-no-border icon="icon icon-lock" icon-pack="feather" label-placeholder="Full Billing address" 
             v-model="general.billingAddress"></vs-input>
           <span class="text-danger text-sm">{{ errors.first('billingaddress') }}</span>              
-          <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input>
+          <!-- <vs-input class="w-1/4 my-base"  label-placeholder="Country" name="country" ref="country" icon-no-border icon="icon icon-lock" icon-pack="feather" v-model="general.country"></vs-input> -->
+          <ejs-dropdownlist id='country' :dataSource='$options.countries' :fields='countriesFields' v-model="general.country" allowFiltering='true' placeholder='Select country' width="50%"/>
+
           <span class="text-danger text-sm">{{ errors.first('country') }}</span>
           
           <!-- <vs-input class="w-1/2 my-base"  label-placeholder="VAT number(if applicable)" name="vatnumber" ref="vatnumber" 
@@ -241,7 +243,7 @@ import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
 import { loadStripe } from '@stripe/stripe-js';
 import html2pdf from 'html2pdf.js';
-import {PRICING} from '@/static.js';
+import {PRICING, COUNTRIES} from '@/static.js';
 
 export default {
   data() {
@@ -256,6 +258,7 @@ export default {
       //#region top off payment screen
       stripe: null,
       card: null,
+      countriesFields : {text: 'text', value: 'value' },
       
       noOfHours:1,
       isUserProfileSavedInDatabase: false,
@@ -301,9 +304,10 @@ export default {
   async created() 
   {    
     this.$options.pricing = PRICING;
-    const currentUserInfo=await this.currentUserInfo();
-    this.general.email=currentUserInfo.email;
-    const userId=currentUserInfo.id;
+    this.$options.countries = COUNTRIES;
+    const currentUserInfoResult=await this.currentUserInfo();
+    this.general.email=currentUserInfoResult.email;
+    const userId=currentUserInfoResult.id;
     const listUserProfilesFilter={id:{eq:userId}};      
     const listUserProfilesForTopOffPayment = /* GraphQL */ `
       query ListUserProfiles(
@@ -390,8 +394,8 @@ export default {
     {
       try 
       {
-        const currentUserInfo=await this.currentUserInfo();
-        const userId=currentUserInfo.id;
+        const currentUserInfoResult=await this.currentUserInfo();
+        const userId=currentUserInfoResult.id;
         if(userId == null)
         {
           this.$vs.notify({title: 'Error',text: 'There was an error saving your payment settings', iconPack: 'feather', icon: 'icon-alert-circle', color: 'danger'});
