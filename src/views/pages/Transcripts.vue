@@ -92,6 +92,7 @@ import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
 import {FILE_SOURCES, FILE_LANGUAGES, AUDIO_VIDEO_FILE_EXTENSIONS_MimeTypes, QuotaMaximumAudioFileSizeInBytes} from '@/static.js';
+import {v4 as uuid} from 'uuid';
 
 export default {
   data() {
@@ -206,19 +207,35 @@ export default {
         this.$vs.loading({text:'Please wait while your file is being uploaded'});
         var i;
         for (i = 0; i < validFilesData.length; i++) 
-        {
-          let key=validFilesData[i].name;
-          let objectToBeUploaded=validFilesData[i];
+        {          
           let fileExtension=validFilesData[i].type;
-          let contentType =AUDIO_VIDEO_FILE_EXTENSIONS_MimeTypes.find(function (item) {return item.extension === fileExtension;});
-          
-          console.log(`key : ${JSON.stringify(key)} ${JSON.stringify(objectToBeUploaded)} ${JSON.stringify(fileExtension)} ${JSON.stringify(contentType)} `); 
-
-          let config={level: 'private', contentType: contentType};
-          let result =await Storage.put(key, objectToBeUploaded, config);
+          let key=`${uuid()}.${fileExtension}`;
+          let objectToBeUploaded=validFilesData[i];
+          let matchedItem =AUDIO_VIDEO_FILE_EXTENSIONS_MimeTypes.find(
+            function (item) {return item.extension === ('.' + fileExtension);});
+          let mimeType =matchedItem.mimeType;
+          let config={contentType: mimeType, metadata: 
+            {
+              defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
+              useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed,
+              notifyWhenTranscriptsCompleted:this.notificationSettings.notifyWhenTranscriptsCompleted,
+              notifyWhenTranscriptsError: this.notificationSettings.notifyWhenTranscriptsError
+            }};
+          console.log(`key : ${JSON.stringify(key)} ${JSON.stringify(objectToBeUploaded)} 
+            ${JSON.stringify(fileExtension)} ${JSON.stringify(mimeType)} config: ${JSON.stringify(config)}`); 
+          let that=this;
+          Storage.vault.put(key, objectToBeUploaded).then(async function(result) 
+          {
+            console.log(`result : ${JSON.stringify(result)}`);           
+          })
+          .catch(function(error)
+          {              
+            console.log(`error : ${JSON.stringify(error)}`);           
+            that.$vs.notify({title:'Error',text:`${error.message}`,iconPack:'feather',icon: 'icon-alert-circle', color: 'danger'});        
+            return;
+          });
         }
-        this.$vs.loading({text:'Please wait while your file is being transcribed'});
-        
+        this.$vs.loading({text:'Please wait while your file is being transcribed'});        
 
         /*const initParameter = { body: {"NoOFHours": this.noOfHours, "AutoRecharge":this.paymentSettings.autoRecharge, "Email":this.general.email}, headers: {},};
         let paymentIntent=await API.post('CreatePaymentIntent', '/CreatePaymentIntent', initParameter);        

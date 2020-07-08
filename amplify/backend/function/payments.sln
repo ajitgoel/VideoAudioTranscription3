@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "payments", "payments\src\pa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Get", "PaymentIntent\src\Get.csproj", "{1E92FC1A-8737-4776-A21D-B1C50A3D94BB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "transcribeaudiovideo", "transcribeaudiovideo\src\transcribeaudiovideo.csproj", "{435CB46A-6694-4B0F-BCD2-43B655C2E5E0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{1E92FC1A-8737-4776-A21D-B1C50A3D94BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E92FC1A-8737-4776-A21D-B1C50A3D94BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E92FC1A-8737-4776-A21D-B1C50A3D94BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{435CB46A-6694-4B0F-BCD2-43B655C2E5E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{435CB46A-6694-4B0F-BCD2-43B655C2E5E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{435CB46A-6694-4B0F-BCD2-43B655C2E5E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{435CB46A-6694-4B0F-BCD2-43B655C2E5E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -90,28 +90,11 @@ require('vue-tour/dist/vue-tour.css'); */
 import VeeValidate from 'vee-validate';
 Vue.use(VeeValidate, {fieldsBagName: 'formFields'});
 
-import Amplify,{Auth, Storage} from 'aws-amplify';
+import Amplify,{Storage} from 'aws-amplify';
 import '@aws-amplify/ui-vue';
 // @ts-ignore
 import aws_exports from './aws-exports';
 Amplify.configure(aws_exports);
-
-/*Amplify.configure({
-    Auth: {
-        identityPoolId: 'us-east-1:d5bdd6ce-4ef4-4d25-81ac-47bcf08d9007', //REQUIRED - Amazon Cognito Identity Pool ID
-        region: "us-east-1", // REQUIRED - Amazon Cognito Region
-        userPoolId: "us-east-1_b6sLX6k7X", //OPTIONAL - Amazon Cognito User Pool ID
-        userPoolWebClientId: "6plmdr9nj2oo7hdofugbpctd6l", //OPTIONAL - Amazon Cognito Web Client ID
-    },
-    
-    Storage: {
-        AWSS3: {
-            bucket: "vidaudtranscriptionbucket70417-dev", //REQUIRED -  Amazon S3 bucket
-            region: "us-east-1", //OPTIONAL -  Amazon service region
-        }
-    }
-});*/
-
 Vue.prototype.$Amplify = Amplify;
 
 /* Analytics.autoTrack('session', {enable: true,provider: 'AWSPinpoint'});
