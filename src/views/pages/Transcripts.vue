@@ -224,7 +224,7 @@ export default {
           console.log(`key : ${JSON.stringify(key)} ${JSON.stringify(objectToBeUploaded)} 
             ${JSON.stringify(fileExtension)} ${JSON.stringify(mimeType)} config: ${JSON.stringify(config)}`); 
           let that=this;
-          Storage.vault.put(key, objectToBeUploaded).then(async function(result) 
+          Storage.vault.put(key, objectToBeUploaded, config).then(async function(result) 
           {
             console.log(`result : ${JSON.stringify(result)}`);           
           })

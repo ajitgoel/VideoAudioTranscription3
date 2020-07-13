@@ -127,5 +127,11 @@ https://www.npmjs.com/package/vue-stripe-elements-plus
     - [x] ~~unable to focus on textarea.~~
     - [ ] Show number of lines in the textarea, below textarea.
     - [x] ~~set focus to last line in the textarea~~
-11. Home page screen
+11. Upload transcribing video
+	- [ ] Upload file to S3
+	- [ ] call .net webservice to transcribe file using amazon transcribe
+	- [ ] Find file formats supported by amazon transcribe
+	- [ ] Use metadata passed from the vuejs frontend.
+	- [ ] use environment variables from application.
+12. Home page screen
     - [ ] Show pricing
