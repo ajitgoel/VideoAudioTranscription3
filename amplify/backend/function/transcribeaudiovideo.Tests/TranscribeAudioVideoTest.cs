@@ -10,8 +10,6 @@ using Amazon.S3.Model;
 using Amazon.S3.Util;
 using System.IO;
 using Microsoft.Extensions.Configuration;
-using System;
-using Newtonsoft.Json;
 using System.Diagnostics;
 using Amazon.TranscribeService;
 using System.Linq;
@@ -65,6 +63,43 @@ namespace transcribeaudiovideo.Tests
                       {
                         Bucket = new S3EventNotification.S3BucketEntity {Name = bucketName },
                         Object = new S3EventNotification.S3ObjectEntity {Key = key }
+                      }
+                    }
+                  }
+        };
+        var transcribeaudiovideo = new transcribeaudiovideo(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var contentType = await transcribeaudiovideo.LambdaHandler(s3Event, null);
+        Assert.Equal(fileContentType, contentType);
+      }
+      finally
+      {
+        //await AmazonS3Util.DeleteS3BucketWithObjectsAsync(amazonS3Client1, bucketName);
+      }
+    }
+
+    [Fact]
+    public async Task TestS3EventLambdaFunction2()
+    {
+      var config = new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build();
+      var aws_access_key_id = config["aws_access_key_id"];
+      var aws_secret_access_key = config["aws_secret_access_key"];
+
+      var region = "us-east-1";
+      var regionendpoint = RegionEndpoint.GetBySystemName(region);
+      var amazonS3Client1 = new AmazonS3Client(aws_access_key_id, aws_secret_access_key, regionendpoint);
+      var fileContentType = "video/mp4";
+      try
+      {
+        var s3Event = new S3Event
+        {
+          Records = new List<S3EventNotification.S3EventNotificationRecord>
+                  {
+                    new S3EventNotification.S3EventNotificationRecord
+                    {
+                      S3 = new S3EventNotification.S3Entity
+                      {
+                        Bucket = new S3EventNotification.S3BucketEntity {Name = "vidaudtranscriptionb772eac002c6449096461a128cad70417-dev" },
+                        Object = new S3EventNotification.S3ObjectEntity {Key = "private/us-east-1%3A5e9adf47-2390-4860-842e-27e75527ce3f/04476ec4-2f7a-42ea-8c02-4eb8ab233889.mp4" }
                       }
                     }
                   }

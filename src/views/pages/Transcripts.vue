@@ -217,6 +217,7 @@ export default {
           let config={contentType: mimeType, metadata: 
             {
               defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
+              //boolean needs to be converted to string else aws amplify storage throws errors
               useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed.toString(),
               notifyWhenTranscriptsCompleted:this.notificationSettings.notifyWhenTranscriptsCompleted.toString(),
               notifyWhenTranscriptsError: this.notificationSettings.notifyWhenTranscriptsError.toString()
@@ -224,16 +225,17 @@ export default {
           console.log(`key : ${JSON.stringify(key)} ${JSON.stringify(objectToBeUploaded)} 
             ${JSON.stringify(fileExtension)} ${JSON.stringify(mimeType)} config: ${JSON.stringify(config)}`); 
           let that=this;
-          Storage.vault.put(key, objectToBeUploaded, config).then(async function(result) 
+          try
           {
-            console.log(`result : ${JSON.stringify(result)}`);           
-          })
-          .catch(function(error)
+            var result=await Storage.vault.put(key, objectToBeUploaded, config);
+            console.log(`result : ${JSON.stringify(result)}`);                     
+          }
+          catch(error)
           {              
             console.log(`error : ${JSON.stringify(error)}`);           
             that.$vs.notify({title:'Error',text:`${error.message}`,iconPack:'feather',icon: 'icon-alert-circle', color: 'danger'});        
             return;
-          });
+          };
         }
         this.$vs.loading({text:'Please wait while your file is being transcribed'});        
 

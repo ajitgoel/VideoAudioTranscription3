@@ -44,8 +44,8 @@ namespace transcribeaudiovideo
     private readonly AmazonTranscribeServiceClient amazonTranscribeServiceClient;
     public transcribeaudiovideo()
     {
-      amazonTranscribeServiceClient = new AmazonTranscribeServiceClient();
       region = Environment.GetEnvironmentVariable("REGION");
+      amazonTranscribeServiceClient = new AmazonTranscribeServiceClient(RegionEndpoint);
       amazonS3Client1 = new AmazonS3Client(RegionEndpoint);
     }
     public transcribeaudiovideo(IAmazonS3 iAmazonS3, string region, string aws_access_key_id, string aws_secret_access_key)
@@ -67,9 +67,11 @@ namespace transcribeaudiovideo
         var filename = WebUtility.UrlDecode(s3Event.Object.Key);
 
         var fileExtension= filename.Split('.').Last();
-        iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: environment : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(environment)}\n");
+        iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: environment : " +
+          $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(environment)}\n");
         var getObjectMetadataResponse = await this.amazonS3Client1.GetObjectMetadataAsync(s3Event.Bucket.Name, filename);
-        iLambdaContext?.Logger.LogLine($"getObjectMetadataResponse : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getObjectMetadataResponse)}\n");
+        iLambdaContext?.Logger.LogLine($"getObjectMetadataResponse : " +
+          $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getObjectMetadataResponse)}\n");
 
         var keyprefix = "x-amz-meta-";
         var defaultFileLanguageWhenFileIsTranscribed = getObjectMetadataResponse.Metadata[$"{keyprefix}defaultfilelanguagewhenfileistranscribed"];
@@ -107,7 +109,7 @@ namespace transcribeaudiovideo
       };
       var media = new Media
       {
-        MediaFileUri = string.Format("https://{0}.s3.amazonaws.com/{1}", bucket, key)
+        MediaFileUri = $"https://s3.{region}.amazonaws.com/{bucket}/{key}" 
       };
       var cancellationToken = new CancellationToken();
       var startTranscriptionJobRequest = new StartTranscriptionJobRequest
@@ -136,7 +138,8 @@ namespace transcribeaudiovideo
       {
         var getTranscriptionJobResponse2 =
           await amazonTranscribeServiceClient.GetTranscriptionJobAsync(getTranscriptionJobRequest);
-        iLambdaContext?.Logger.LogLine($"getTranscriptionJobResponse2 : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getTranscriptionJobResponse2)}\n");
+        iLambdaContext?.Logger.LogLine($"getTranscriptionJobResponse2 : " +
+          $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getTranscriptionJobResponse2)}\n");
 
         if (getTranscriptionJobResponse2.TranscriptionJob.TranscriptionJobStatus == TranscriptionJobStatus.COMPLETED)
         {
