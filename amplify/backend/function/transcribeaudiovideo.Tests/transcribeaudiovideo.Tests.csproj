@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\transcribeaudiovideo\src\transcribeaudiovideo.csproj" />
   </ItemGroup>
 

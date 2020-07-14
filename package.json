@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@aws-amplify/storage": "^3.2.7",
-    "@aws-amplify/ui-vue": "^0.2.8",
+    "@aws-amplify/ui-vue": "^0.2.10",
     "@chenfengyuan/vue-countdown": "^1.1.2",
     "@fortawesome/fontawesome-free": "^5.13.0",
     "@react-native-community/netinfo": "^5.5.0",
@@ -27,7 +27,7 @@
     "ag-grid-vue": "^21.0.1",
     "algoliasearch": "^3.33.0",
     "apexcharts": "^3.6.12",
-    "aws-amplify": "^3.0.18",
+    "aws-amplify": "^3.0.20",
     "axios": "^0.19.2",
     "chart.js": "^2.8.0",
     "core-js": "2.6.5",

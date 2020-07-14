@@ -69,7 +69,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/transcribeaudiovideo-6f3677596131584c4735-build.zip"
+					"S3Key": "amplify-builds/transcribeaudiovideo-4a3435767659364c7969-build.zip"
 				}
 			}
 		},
@@ -150,6 +150,30 @@
 									}
 								]
 							}
+						},
+						{
+							"Action": [
+								"s3:PutObject",
+								"s3:GetObject",
+								"s3:ListBucket",
+								"s3:DeleteObject"
+							],
+							"Resource": "*",
+							"Effect": "Allow"
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"transcribe:*"
+							],
+							"Resource": "*"
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"comprehend:*"
+							],
+							"Resource": "*"
 						}
 					]
 				}

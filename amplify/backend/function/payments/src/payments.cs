@@ -96,10 +96,10 @@ namespace payments
       }
       catch(Exception exception)
       {
-        string logline = $"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n";
+        string logline = $"apiGatewayProxyRequest: {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(apiGatewayProxyRequest)}\n";
         if (paymentIntent != null)
         {
-          logline = $"{logline} paymentIntent: {JsonConvert.SerializeObject(paymentIntent)}\n";
+          logline = $"{logline} paymentIntent: {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(paymentIntent)}\n";
         }
         logline = $"{logline} Exception: { exception}";
         context.Logger.LogLine(logline);

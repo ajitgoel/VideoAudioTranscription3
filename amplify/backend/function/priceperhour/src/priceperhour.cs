@@ -49,7 +49,7 @@ namespace priceperhour
                               { "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" }
                             }
             };
-            context.Logger.LogLine($"apiGatewayProxyRequest: {JsonConvert.SerializeObject(apiGatewayProxyRequest)}\n");
+            context.Logger.LogLine($"apiGatewayProxyRequest: {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(apiGatewayProxyRequest)}\n");
             if (apiGatewayProxyRequest.HttpMethod == "POST")
             {
               var requestBody = apiGatewayProxyRequest.Body;

@@ -217,9 +217,9 @@ export default {
           let config={contentType: mimeType, metadata: 
             {
               defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
-              useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed,
-              notifyWhenTranscriptsCompleted:this.notificationSettings.notifyWhenTranscriptsCompleted,
-              notifyWhenTranscriptsError: this.notificationSettings.notifyWhenTranscriptsError
+              useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed.toString(),
+              notifyWhenTranscriptsCompleted:this.notificationSettings.notifyWhenTranscriptsCompleted.toString(),
+              notifyWhenTranscriptsError: this.notificationSettings.notifyWhenTranscriptsError.toString()
             }};
           console.log(`key : ${JSON.stringify(key)} ${JSON.stringify(objectToBeUploaded)} 
             ${JSON.stringify(fileExtension)} ${JSON.stringify(mimeType)} config: ${JSON.stringify(config)}`); 

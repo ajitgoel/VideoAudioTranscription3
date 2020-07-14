@@ -17,6 +17,7 @@ using Amazon.TranscribeService;
 using Amazon.TranscribeService.Model;
 using Newtonsoft.Json;
 using Amazon;
+using Models;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -40,8 +41,6 @@ namespace transcribeaudiovideo
     }
     private string region;
     private IAmazonS3 amazonS3Client1;
-    //private IAmazonS3 amazonS3Client2;
-    //private IAmazonS3 amazonS3Client3;
     private readonly AmazonTranscribeServiceClient amazonTranscribeServiceClient;
     public transcribeaudiovideo()
     {
@@ -53,7 +52,6 @@ namespace transcribeaudiovideo
     {
       this.region = region;
       this.amazonTranscribeServiceClient = new AmazonTranscribeServiceClient(aws_access_key_id, aws_secret_access_key, RegionEndpoint);
-      //this.amazonS3Client1 = new AmazonS3Client(aws_access_key_id, aws_secret_access_key, RegionEndpoint);
       this.amazonS3Client1 = iAmazonS3;
     }
     public async Task<string> LambdaHandler(S3Event environment, ILambdaContext iLambdaContext)
@@ -66,18 +64,18 @@ namespace transcribeaudiovideo
       }
       try
       {
-        var filename = s3Event.Object.Key;        
+        var filename = WebUtility.UrlDecode(s3Event.Object.Key);
+
         var fileExtension= filename.Split('.').Last();
-        iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: environment : {JsonConvert.SerializeObject(environment)}\n");
+        iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: environment : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(environment)}\n");
         var getObjectMetadataResponse = await this.amazonS3Client1.GetObjectMetadataAsync(s3Event.Bucket.Name, filename);
-        iLambdaContext?.Logger.LogLine($"getObjectMetadataResponse : {JsonConvert.SerializeObject(getObjectMetadataResponse)}\n");
+        iLambdaContext?.Logger.LogLine($"getObjectMetadataResponse : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getObjectMetadataResponse)}\n");
 
         var keyprefix = "x-amz-meta-";
         var defaultFileLanguageWhenFileIsTranscribed = getObjectMetadataResponse.Metadata[$"{keyprefix}defaultfilelanguagewhenfileistranscribed"];
         var useVocabularyWhenFileIsTranscribed = getObjectMetadataResponse.Metadata[$"{keyprefix}usevocabularywhenfileistranscribed"];
         var notifyWhenTranscriptsCompleted = getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptscompleted"];
         var notifyWhenTranscriptsError = getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptserror"];
-
 
         if(defaultFileLanguageWhenFileIsTranscribed == null || useVocabularyWhenFileIsTranscribed == null ||
           notifyWhenTranscriptsCompleted == null||notifyWhenTranscriptsError ==null)
@@ -93,7 +91,8 @@ namespace transcribeaudiovideo
       }
       catch (Exception exception)
       {
-          iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: exception : {JsonConvert.SerializeObject(exception)}\n");
+          iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: exception : " +
+            $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(exception)}\n");
           throw;
       }
     }
@@ -119,9 +118,14 @@ namespace transcribeaudiovideo
         MediaFormat = mediaFormat,
         TranscriptionJobName = Guid.NewGuid().ToString()
       };
+
+      iLambdaContext?.Logger.LogLine($"startTranscriptionJobRequest : " +
+        $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(startTranscriptionJobRequest)}\n");
+
       var startTranscriptionJobResponse =
         await amazonTranscribeServiceClient.StartTranscriptionJobAsync(startTranscriptionJobRequest, cancellationToken);
-      iLambdaContext?.Logger.LogLine($"startTranscriptionJobResponse : {JsonConvert.SerializeObject(startTranscriptionJobResponse)}\n");
+      iLambdaContext?.Logger.LogLine($"startTranscriptionJobResponse : " +
+        $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(startTranscriptionJobResponse)}\n");
 
       var getTranscriptionJobRequest = new GetTranscriptionJobRequest
       {
@@ -132,7 +136,7 @@ namespace transcribeaudiovideo
       {
         var getTranscriptionJobResponse2 =
           await amazonTranscribeServiceClient.GetTranscriptionJobAsync(getTranscriptionJobRequest);
-        iLambdaContext?.Logger.LogLine($"getTranscriptionJobResponse2 : {JsonConvert.SerializeObject(getTranscriptionJobResponse2)}\n");
+        iLambdaContext?.Logger.LogLine($"getTranscriptionJobResponse2 : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getTranscriptionJobResponse2)}\n");
 
         if (getTranscriptionJobResponse2.TranscriptionJob.TranscriptionJobStatus == TranscriptionJobStatus.COMPLETED)
         {
@@ -144,7 +148,7 @@ namespace transcribeaudiovideo
         {
           isComplete = true;
           iLambdaContext?.Logger.LogLine(
-            $"ProcessTranscribe: exception : {JsonConvert.SerializeObject(getTranscriptionJobResponse2)}\n");
+            $"ProcessTranscribe: exception : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getTranscriptionJobResponse2)}\n");
         }
         else
         {

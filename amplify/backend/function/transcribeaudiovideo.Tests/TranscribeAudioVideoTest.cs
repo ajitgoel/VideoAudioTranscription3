@@ -21,7 +21,7 @@ namespace transcribeaudiovideo.Tests
   public class TranscribeAudioVideoTest
   {
     [Fact]
-    public async Task TestS3EventLambdaFunction()
+    public async Task TestS3EventLambdaFunction1()
     {
       var config = new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build();
       var aws_access_key_id = config["aws_access_key_id"];
@@ -52,7 +52,7 @@ namespace transcribeaudiovideo.Tests
         putObjectRequest.Metadata.Add("notifyWhenTranscriptsError", notifyWhenTranscriptsError.ToString());
 
         var putObjectResponse=await amazonS3Client1.PutObjectAsync(putObjectRequest);
-        Debug.Print($"putObjectResponse : {JsonConvert.SerializeObject(putObjectResponse)}\n");
+        Debug.Print($"putObjectResponse : {Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(putObjectResponse)}\n");
 
         // Setup the S3 event object that S3 notifications would create with the fields used by the Lambda function.
         var s3Event = new S3Event
@@ -91,6 +91,9 @@ namespace transcribeaudiovideo.Tests
       Assert.Equal(mediaFormat.Value, MediaFormat.Mp4.Value);
       var extension = key.Split('.').Last();
       Assert.Equal("mp4", extension);
+
+      var file=System.Net.WebUtility.UrlDecode("private/us-east-1%3A5e9adf47-2390-4860-842e-27e75527ce3f/6425f78c-a23d-4a71-aee2-f6b1a0a1e355.mp4");
+      Assert.Equal("private/us-east-1:5e9adf47-2390-4860-842e-27e75527ce3f/6425f78c-a23d-4a71-aee2-f6b1a0a1e355.mp4", file);
     }
   }
 }

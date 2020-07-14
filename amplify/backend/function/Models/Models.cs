@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Models
 {
+
   public class Constants
   {
     public const string USD_CURRENCY = "usd";
@@ -49,6 +50,17 @@ namespace Models
         }
       }
       return null;      
+    }
+  }
+
+  public static class Extensions
+  {
+    public static string SerializeObjectIgnoreReferenceLoopHandling(object objectToSerialize)
+    {
+      return JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings()
+      {
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+      });
     }
   }
 }
