@@ -21,6 +21,16 @@
           <vs-switch v-model="transcriptionSettings.useVocabularyWhenFileIsTranscribed" />
           <span class="ml-4">Use vocabulary when file is transcribed</span>
         </div>
+        <div class="flex items-center mb-4">
+            <vs-switch v-model="transcriptionSettings.useAutomaticContentRedaction" />
+            <span class="ml-4">Use automatic content redaction when file is transcribed              
+              <a href='#' @click='showAutomaticContentRedactionHelp=true'>Help</a> 
+              <vs-popup title="Help" :active.sync="showAutomaticContentRedactionHelp">
+                <AutomaticContentRedactionHelp/>
+              </vs-popup> 
+            </span>
+        </div>
+        
       </div>    
     </vx-card>
 
@@ -50,15 +60,21 @@ import { Auth } from 'aws-amplify';
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import {FILE_LANGUAGES} from '@/static.js';
+import AutomaticContentRedactionHelp from "@/views/pages/AutomaticContentRedactionHelp.vue";
 
 export default {
+  components: {
+    AutomaticContentRedactionHelp
+  },
   data() {
     return {
       isUserProfileSavedInDatabase: false,
       paymentSettings:{autoRecharge: false},
-      transcriptionSettings: {defaultFileLanguageWhenFileIsTranscribed:false, useVocabularyWhenFileIsTranscribed:false},
+      transcriptionSettings: {defaultFileLanguageWhenFileIsTranscribed:false, useVocabularyWhenFileIsTranscribed:false,
+        useAutomaticContentRedaction:false},
       notificationSettings: {notifyWhenTranscriptsCompleted:false, notifyWhenTranscriptsError:false},
       fileLanguagesFields : { groupBy: 'Category', text: 'Text', value: 'Id' },
+      showAutomaticContentRedactionHelp:false,
     }
   },
   computed: { 
@@ -87,6 +103,7 @@ export default {
             transcriptionSettings {
               defaultFileLanguageWhenFileIsTranscribed
               useVocabularyWhenFileIsTranscribed
+              useAutomaticContentRedaction
             }
             notificationSettings {
               notifyWhenTranscriptsCompleted
@@ -111,7 +128,10 @@ export default {
       this.transcriptionSettings.useVocabularyWhenFileIsTranscribed=
         (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed==null) ? 
         false:items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed;
-
+      this.transcriptionSettings.useAutomaticContentRedaction=
+        (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useAutomaticContentRedaction==null) ? 
+        false:items[0].transcriptionSettings.useAutomaticContentRedaction;  
+        
       this.notificationSettings.notifyWhenTranscriptsCompleted=
         (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsCompleted==null) ? 
         false:items[0].notificationSettings.notifyWhenTranscriptsCompleted;
@@ -149,6 +169,7 @@ export default {
               transcriptionSettings:{
                 defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
                 useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed,
+                useAutomaticContentRedaction: this.transcriptionSettings.useAutomaticContentRedaction,
                 },
               notificationSettings:{
                 notifyWhenTranscriptsCompleted: this.notificationSettings.notifyWhenTranscriptsCompleted,

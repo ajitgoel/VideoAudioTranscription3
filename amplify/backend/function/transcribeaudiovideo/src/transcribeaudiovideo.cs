@@ -18,6 +18,7 @@ using Amazon.TranscribeService.Model;
 using Newtonsoft.Json;
 using Amazon;
 using Models;
+using Extensions = Models.Extensions;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -68,43 +69,50 @@ namespace transcribeaudiovideo
 
         var fileExtension= filename.Split('.').Last();
         iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: environment : " +
-          $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(environment)}\n");
+          $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(environment)}\n");
         var getObjectMetadataResponse = await this.amazonS3Client1.GetObjectMetadataAsync(s3Event.Bucket.Name, filename);
         iLambdaContext?.Logger.LogLine($"getObjectMetadataResponse : " +
-          $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(getObjectMetadataResponse)}\n");
+          $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(getObjectMetadataResponse)}\n");
 
         var keyprefix = "x-amz-meta-";
-        var defaultFileLanguageWhenFileIsTranscribed = getObjectMetadataResponse.Metadata[$"{keyprefix}defaultfilelanguagewhenfileistranscribed"];
-        var useVocabularyWhenFileIsTranscribed = getObjectMetadataResponse.Metadata[$"{keyprefix}usevocabularywhenfileistranscribed"];
-        var notifyWhenTranscriptsCompleted = getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptscompleted"];
-        var notifyWhenTranscriptsError = getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptserror"];
-
-        if(defaultFileLanguageWhenFileIsTranscribed == null || useVocabularyWhenFileIsTranscribed == null ||
-          notifyWhenTranscriptsCompleted == null||notifyWhenTranscriptsError ==null)
-        {
-          throw new Exception("Error with passed parameters");
-        }  
+        var defaultFileLanguageWhenFileIsTranscribed =
+          getObjectMetadataResponse.Metadata[$"{keyprefix}defaultfilelanguagewhenfileistranscribed"].
+          IsNullOrWhiteSpaceWithDefault(Extensions.Default_File_Language_When_File_Is_Transcribed);
+        var useVocabularyWhenFileIsTranscribed =
+          getObjectMetadataResponse.Metadata[$"{keyprefix}usevocabularywhenfileistranscribed"].IsNullOrWhiteSpaceWithDefault(false);
+        var useAutomaticContentRedaction =
+          getObjectMetadataResponse.Metadata[$"{keyprefix}useautomaticcontentredaction"].IsNullOrWhiteSpaceWithDefault(false);
+        var notifyWhenTranscriptsCompleted =
+          getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptscompleted"].IsNullOrWhiteSpaceWithDefault(false);
+        var notifyWhenTranscriptsError =
+          getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptserror"].IsNullOrWhiteSpaceWithDefault(false);
 
         var languageCode = LanguageCode.FindValue(defaultFileLanguageWhenFileIsTranscribed);
         var mediaFormat = MediaFormat.FindValue(fileExtension);
 
-        await ProcessTranscribe(s3Event.Bucket.Name, s3Event.Object.Key, languageCode, mediaFormat, iLambdaContext);
+        await ProcessTranscribe(s3Event.Bucket.Name, s3Event.Object.Key, languageCode, mediaFormat, useAutomaticContentRedaction, iLambdaContext);
         return getObjectMetadataResponse.Headers.ContentType;
       }
       catch (Exception exception)
       {
           iLambdaContext?.Logger.LogLine($"transcribeaudiovideo: exception : " +
-            $"{Models.Extensions.SerializeObjectIgnoreReferenceLoopHandling(exception)}\n");
+            $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(exception)}\n");
           throw;
       }
     }
-    private async Task ProcessTranscribe(string bucket, string key, LanguageCode languageCode, MediaFormat mediaFormat,
+    private async Task ProcessTranscribe(string bucket, string key, LanguageCode languageCode, MediaFormat mediaFormat, bool useAutomaticContentRedaction,
       ILambdaContext iLambdaContext)
     {
+      ContentRedaction contentRedaction = null;
+      if (useAutomaticContentRedaction==true)
+      {
+        contentRedaction = new ContentRedaction() { RedactionOutput = RedactionOutput.Redacted, RedactionType = RedactionType.PII };
+      }
+
       var settings = new Settings
       {
         ShowSpeakerLabels = true,
-        MaxSpeakerLabels = 2,
+        MaxSpeakerLabels = Extensions.Max_Speaker_Labels,
         //VocabularyName = "Vocab"
       };
       var media = new Media
@@ -114,6 +122,7 @@ namespace transcribeaudiovideo
       var cancellationToken = new CancellationToken();
       var startTranscriptionJobRequest = new StartTranscriptionJobRequest
       {
+        ContentRedaction= contentRedaction,
         LanguageCode = languageCode,
         Settings = settings,
         Media = media,

@@ -63,6 +63,15 @@
                 <vs-switch v-model="transcriptionSettings.useVocabularyWhenFileIsTranscribed" />
                 <span class="ml-4">Use my vocabulary</span>
               </div>
+              <div class="flex items-center my-6">
+                <vs-switch v-model="transcriptionSettings.useAutomaticContentRedaction" />
+                <span class="ml-4">Use automatic content redaction
+                  <a href='#' @click='showAutomaticContentRedactionHelp=true'>Help</a> 
+                  <vs-popup title="Help" :active.sync="showAutomaticContentRedactionHelp">
+                    <AutomaticContentRedactionHelp/>
+                  </vs-popup>                  
+                </span>
+              </div>
 
               <div class="flex items-center mb-4">
                 <vs-switch v-model="notificationSettings.notifyWhenTranscriptsCompleted" />
@@ -91,18 +100,25 @@ import Storage from "@aws-amplify/storage";
 import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import { Validator } from 'vee-validate';
-import {FILE_SOURCES, FILE_LANGUAGES, AUDIO_VIDEO_FILE_EXTENSIONS_MimeTypes, QuotaMaximumAudioFileSizeInBytes} from '@/static.js';
+import {FILE_SOURCES, FILE_LANGUAGES, AUDIO_VIDEO_FILE_EXTENSIONS_MimeTypes, QuotaMaximumAudioFileSizeInBytes} 
+  from '@/static.js';
 import {v4 as uuid} from 'uuid';
+import AutomaticContentRedactionHelp from "@/views/pages/AutomaticContentRedactionHelp.vue";
 
 export default {
+  components: {
+    AutomaticContentRedactionHelp
+  },
   data() {
     return {
       operation:'',
       fileSourcesFields: { groupBy: 'category' },
       fileLanguagesFields : { groupBy: 'Category', text: 'Text', value: 'Id' },
-      transcriptionSettings: {defaultFileLanguageWhenFileIsTranscribed:false, useVocabularyWhenFileIsTranscribed:false},
+      transcriptionSettings: {defaultFileLanguageWhenFileIsTranscribed:false, useVocabularyWhenFileIsTranscribed:false, 
+        useAutomaticContentRedaction:false},
       notificationSettings: {notifyWhenTranscriptsCompleted:false, notifyWhenTranscriptsError:false},
       currentTab:0,
+      showAutomaticContentRedactionHelp:false,
     }
   },
   computed: 
@@ -145,6 +161,7 @@ export default {
             transcriptionSettings {
               defaultFileLanguageWhenFileIsTranscribed
               useVocabularyWhenFileIsTranscribed
+              useAutomaticContentRedaction
             }
             notificationSettings {
               notifyWhenTranscriptsCompleted
@@ -168,7 +185,10 @@ export default {
         this.transcriptionSettings.useVocabularyWhenFileIsTranscribed=
           (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed==null) ? 
           false:items[0].transcriptionSettings.useVocabularyWhenFileIsTranscribed;
-
+        this.transcriptionSettings.useAutomaticContentRedaction=
+          (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useAutomaticContentRedaction==null) ? 
+          false:items[0].transcriptionSettings.useAutomaticContentRedaction;  
+        
         this.notificationSettings.notifyWhenTranscriptsCompleted=
           (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsCompleted==null) ? 
           false:items[0].notificationSettings.notifyWhenTranscriptsCompleted;
@@ -219,15 +239,16 @@ export default {
               defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
               //boolean needs to be converted to string else aws amplify storage throws errors
               useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed.toString(),
+              useAutomaticContentRedaction: this.transcriptionSettings.useAutomaticContentRedaction.toString(),
               notifyWhenTranscriptsCompleted:this.notificationSettings.notifyWhenTranscriptsCompleted.toString(),
               notifyWhenTranscriptsError: this.notificationSettings.notifyWhenTranscriptsError.toString()
             }};
           console.log(`key : ${JSON.stringify(key)} ${JSON.stringify(objectToBeUploaded)} 
             ${JSON.stringify(fileExtension)} ${JSON.stringify(mimeType)} config: ${JSON.stringify(config)}`); 
-          let that=this;
           try
           {
             var result=await Storage.vault.put(key, objectToBeUploaded, config);
+            //var result=await Storage.put(key, objectToBeUploaded, config);
             console.log(`result : ${JSON.stringify(result)}`);                     
           }
           catch(error)
@@ -298,7 +319,5 @@ export default {
     },
     //#endregion 
   },
-  components: {
-  }
 }
 </script>

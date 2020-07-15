@@ -177,6 +177,7 @@ export const onCreateUserProfile = /* GraphQL */ `
       transcriptionSettings {
         defaultFileLanguageWhenFileIsTranscribed
         useVocabularyWhenFileIsTranscribed
+        useAutomaticContentRedaction
       }
       createdAt
       updatedAt
@@ -204,6 +205,7 @@ export const onUpdateUserProfile = /* GraphQL */ `
       transcriptionSettings {
         defaultFileLanguageWhenFileIsTranscribed
         useVocabularyWhenFileIsTranscribed
+        useAutomaticContentRedaction
       }
       createdAt
       updatedAt
@@ -231,6 +233,7 @@ export const onDeleteUserProfile = /* GraphQL */ `
       transcriptionSettings {
         defaultFileLanguageWhenFileIsTranscribed
         useVocabularyWhenFileIsTranscribed
+        useAutomaticContentRedaction
       }
       createdAt
       updatedAt

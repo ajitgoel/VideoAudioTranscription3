@@ -55,12 +55,22 @@ namespace Models
 
   public static class Extensions
   {
+    public static string Default_File_Language_When_File_Is_Transcribed="en-US";
+
     public static string SerializeObjectIgnoreReferenceLoopHandling(object objectToSerialize)
     {
       return JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings()
       {
         ReferenceLoopHandling = ReferenceLoopHandling.Ignore
       });
+    }
+    public static string IsNullOrWhiteSpaceWithDefault(this string stringInstance, string defaultValue)
+    {
+      return string.IsNullOrWhiteSpace(stringInstance)? defaultValue : stringInstance;
+    }
+    public static bool IsNullOrWhiteSpaceWithDefault(this string stringInstance, bool defaultValue)
+    {
+      return string.IsNullOrWhiteSpace(stringInstance) ? defaultValue : System.Convert.ToBoolean(stringInstance);
     }
   }
 }

@@ -44,6 +44,7 @@ type PaymentSettings {
 type TranscriptionSettings {
     defaultFileLanguageWhenFileIsTranscribed: String
     useVocabularyWhenFileIsTranscribed: Boolean
+    useAutomaticContentRedaction:Boolean
 }
 
 type VideoS3Info {

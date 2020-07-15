@@ -23,6 +23,8 @@
                   placeholder="Confirmation code" class="w-full mt-6" label-placeholder="Confirmation code" v-model="confirmationCode" 
                   scope="ConfirmSignup" icon-no-border icon="icon icon-code" icon-pack="feather" />
                 <span class="text-danger text-sm">{{ errors.first('confirmationCode') }}</span>
+
+                <vs-button type="border" @click='showConfirmSignupScreen=false' class="mt-6">Register</vs-button>
                 <vs-button class="float-right mt-6" @click="confirmSignUp" :disabled="!validateConfirmationCode">
                   Confirm email
                 </vs-button>
@@ -52,21 +54,16 @@
                     icon-no-border/>
                   <span class="text-danger text-sm">{{ errors.first('confirm_password') }}</span>
 
-                  <vs-checkbox id="termsAndConditionsPrivacyPolicy" v-model="isTermsConditionAcceptedPrivacyPolicy" class="mt-6">                        
-                    <label for="termsAndConditionsPrivacyPolicy">By clicking <strong>Register</strong>, I</label>
-                  </vs-checkbox><br/>
-                  1. Agree and consent to the <span><a href='/terms-conditions' target='_blank' rel="nofollow">User Agreement</a></span>, its policies, and the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
-                  2. Expressly instruct VideoAudioTranscription service to communicate specific information about me and my account to third parties in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>. <br/>
-                  3. Specifically and expressly consent to the use of website tracking methods, including cookies, and to the safe and secure transmission of your personal information outside the European Economic Area in accordance with the <span><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></span>.
-
-                  <!-- <br/><strong>User Agreement and Privacy Policy</strong><br/>
-                  These documents are designed to inform you of your rights and obligations when using the VideoAudioTranscription service. <br/>-->
-
                   <div class="flex flex-wrap justify-between my-5">
                     <a href='#' @click='showConfirmSignupScreen=true'>Enter Verification Code</a>
                   </div>                    
                   <vs-button type="border" to="/login" class="mt-6">Login</vs-button>
                   <vs-button class="float-right mt-6" @click="registerUser" :disabled="!validateForm">Register</vs-button>
+
+                   <div class="flex flex-wrap justify-left my-5">
+                    By creating an account, you agree to VideoAudioTranscription's <div class="mr-2"><a href='/terms-conditions' target='_blank' rel="nofollow">Conditions of Use</a></div> and <div class="ml-2"><a href='/privacy-policy' target='_blank' rel="nofollow">Privacy Policy</a></div>.
+                  </div> 
+
                 </div>
                 <!--Register: End-->
               </div>
@@ -84,8 +81,7 @@ export default
   name: "Register",
   data() 
   {
-    return {email: '', password: '', confirm_password: '', isTermsConditionAcceptedPrivacyPolicy: false, 
-      showConfirmSignupScreen:false, confirmationCode:''};
+    return {email: '', password: '', confirm_password: '', showConfirmSignupScreen:false, confirmationCode:''};
   },
   computed: 
   {
@@ -95,8 +91,7 @@ export default
     },
     validateForm() 
     {
-      return !this.errors.any('CreateAccount') && this.email != '' && this.password != '' && this.confirm_password != '' && 
-        this.isTermsConditionAcceptedPrivacyPolicy === true;
+      return !this.errors.any('CreateAccount') && this.email != '' && this.password != '' && this.confirm_password != '';
     }
   },
   mounted() 
