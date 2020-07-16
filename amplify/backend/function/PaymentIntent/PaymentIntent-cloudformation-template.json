@@ -83,8 +83,8 @@
 				"Runtime": "dotnetcore3.1",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/PaymentIntent-43754c55574e734e3978-build.zip"
+					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Key": "amplify-builds/PaymentIntent-77565730765958532b41-build.zip"
 				}
 			}
 		},

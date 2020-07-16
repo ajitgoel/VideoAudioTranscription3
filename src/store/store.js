@@ -18,13 +18,7 @@ import actions from "./actions"
 
 Vue.use(Vuex)
 
-// import moduleTodo from './todo/moduleTodo.js'
-// import moduleCalendar from './calendar/moduleCalendar.js'
-// import moduleChat from './chat/moduleChat.js'
-// import moduleEmail from './email/moduleEmail.js'
 import moduleAuth from './auth/moduleAuth.js'
-import moduleECommerce from './eCommerce/moduleECommerce.js'
-
 
 export default new Vuex.Store({
     getters,
@@ -37,7 +31,7 @@ export default new Vuex.Store({
         // chat: moduleChat,
         // email: moduleEmail,
         auth: moduleAuth,
-        eCommerce: moduleECommerce,
+        //eCommerce: moduleECommerce,
     },
     strict: process.env.NODE_ENV !== 'production'
 })

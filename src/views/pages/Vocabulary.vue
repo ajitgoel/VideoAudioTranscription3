@@ -1,13 +1,18 @@
 <template>
     <vx-card title="Your vocabulary">
         <span>
-            Create a custom vocabulary to help Video Audio Transcription when transcribing technical terms, proper nouns 
-            such as a company name or your cat’s nickname.<br/>
+            You can give Video Audio Transcription more information about how to process speech in your input file by
+            creating a custom vocabulary. <br/>
+            A custom vocabulary is a list of specific words that you want Video Audio Transcription 
+            to recognize in your audio input. <br/>
+            These are generally domain-specific words and phrases, words that Video Audio Transcription isn't recognizing, 
+            or proper nouns.
+            <br/>
             To use it simply add words, and select <code>Use my vocabulary</code> when uploading a file.<br/><br/>
             <code>
-                ✔︎ It can be a word or a phrase (baby boom, gnocchi).<br/>
                 ✔︎ Enter only one entry per line.<br/>
-                ✔︎ You can enter acronyms (HS, CEO).
+                ✔︎ Enter acronyms or other words whose letters should be pronounced individually as single letters separated by dots, such as A.B.C. or F.B.I.. <br/>
+                ✔︎ To enter the plural form of an acronym, such as "FBIs", separate the "s" from the acronym with a hyphen: F.B.I.-s.<br/>
             </code><br/><br/>
         </span>
         <div>
@@ -18,7 +23,6 @@
     </vx-card> 
 </template>
 <script>
-import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 export default
 {
@@ -110,13 +114,33 @@ export default
                 let vocabulariesArray_RemoveEmptyElements = vocabulariesArray.filter(function(item){return item!==''});
                 let vocabulariesArray_RemoveDuplicates = vocabulariesArray_RemoveEmptyElements.filter(function(item, index){return vocabulariesArray_RemoveEmptyElements.indexOf(item) === index});
                 const userProfileInput={id:userId, vocabularies:vocabulariesArray_RemoveDuplicates};
-                    
+                
                 if(this.isUserProfileSavedInDatabase==false)
                 {
+                    const createUserProfile = /* GraphQL */ `
+                        mutation CreateUserProfile(
+                            $input: CreateUserProfileInput!
+                            $condition: ModelUserProfileConditionInput
+                        ) {
+                            createUserProfile(input: $input, condition: $condition) {
+                            id
+                            vocabularies
+                            }
+                        }`;
                     await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
                 }
                 else
                 {
+                    const updateUserProfile = /* GraphQL */ `
+                        mutation UpdateUserProfile(
+                            $input: UpdateUserProfileInput!
+                            $condition: ModelUserProfileConditionInput
+                        ) {
+                            updateUserProfile(input: $input, condition: $condition) {
+                            id
+                            vocabularies
+                            }
+                        }`;
                     await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
                 }                
                 //#endregion save vocabularies in dynamodb

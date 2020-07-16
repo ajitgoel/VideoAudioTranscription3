@@ -17,6 +17,10 @@
 		"apividaudtranscriptionGraphQLAPIEndpointOutput": {
 			"Type": "String",
 			"Default": "apividaudtranscriptionGraphQLAPIEndpointOutput"
+		},
+		"storages3a41e082fBucketName": {
+			"Type": "String",
+			"Default": "storages3a41e082fBucketName"
 		}
 	},
 	"Conditions": {
@@ -69,6 +73,35 @@
 						},
 						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT": {
 							"Ref": "apividaudtranscriptionGraphQLAPIEndpointOutput"
+						},
+						"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME": {
+							"Fn::ImportValue": {
+								"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+							}
+						},
+						"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN": {
+							"Fn::Join": [
+								"",
+								[
+									"arn:aws:dynamodb:",
+									{
+										"Ref": "AWS::Region"
+									},
+									":",
+									{
+										"Ref": "AWS::AccountId"
+									},
+									":table/",
+									{
+										"Fn::ImportValue": {
+											"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+										}
+									}
+								]
+							]
+						},
+						"STORAGE_S3A41E082F_BUCKETNAME": {
+							"Ref": "storages3a41e082fBucketName"
 						}
 					}
 				},
@@ -82,8 +115,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/TranscribeUpdateCustomVocabulary-5a36615261304b616163-build.zip"
+					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Key": "amplify-builds/TranscribeUpdateCustomVocabulary-57373654795339434268-build.zip"
 				}
 			}
 		},
@@ -213,6 +246,91 @@
 												"Ref": "apividaudtranscriptionGraphQLAPIIdOutput"
 											},
 											"/*"
+										]
+									]
+								}
+							]
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"s3:PutObject",
+								"s3:GetObject",
+								"s3:ListBucket",
+								"s3:DeleteObject"
+							],
+							"Resource": [
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:s3:::",
+											{
+												"Ref": "storages3a41e082fBucketName"
+											},
+											"/*"
+										]
+									]
+								}
+							]
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:Put*",
+								"dynamodb:Create*",
+								"dynamodb:BatchWriteItem",
+								"dynamodb:Get*",
+								"dynamodb:BatchGetItem",
+								"dynamodb:List*",
+								"dynamodb:Describe*",
+								"dynamodb:Scan",
+								"dynamodb:Query",
+								"dynamodb:Update*",
+								"dynamodb:RestoreTable*",
+								"dynamodb:Delete*"
+							],
+							"Resource": [
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:dynamodb:",
+											{
+												"Ref": "AWS::Region"
+											},
+											":",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											":table/",
+											{
+												"Fn::ImportValue": {
+													"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+												}
+											}
+										]
+									]
+								},
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:dynamodb:",
+											{
+												"Ref": "AWS::Region"
+											},
+											":",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											":table/",
+											{
+												"Fn::ImportValue": {
+													"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+												}
+											},
+											"/index/*"
 										]
 									]
 								}

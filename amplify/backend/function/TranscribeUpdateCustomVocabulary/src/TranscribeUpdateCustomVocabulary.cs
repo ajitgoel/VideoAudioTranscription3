@@ -1,12 +1,9 @@
 using System.Threading.Tasks;
-using System.IO;
-using System.Text;
-
-using Newtonsoft.Json;
 
 using Amazon.Lambda.Core;
 using Amazon.Lambda.DynamoDBEvents;
-using Amazon.DynamoDBv2.Model;
+using Extensions = Models.Extensions;
+using System.Linq;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -15,37 +12,23 @@ using Amazon.DynamoDBv2.Model;
 // to match if you intend to test the function with 'amplify mock function'
 namespace TranscribeUpdateCustomVocabulary
 {
-    // If you rename this class, you will need to update the invocation shim
-    // to match if you intend to test the function with 'amplify mock function'
-    public class TranscribeUpdateCustomVocabulary
+  // If you rename this class, you will need to update the invocation shim
+  // to match if you intend to test the function with 'amplify mock function'
+  public class TranscribeUpdateCustomVocabulary
+  {
+    /*API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT, API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT
+      API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN, API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME, STORAGE_S3A41E082F_BUCKETNAME*/
+    #pragma warning disable CS1998
+    public async Task LambdaHandler(DynamoDBEvent dynamoDBEvent, ILambdaContext iLambdaContext)
     {
-        private static readonly JsonSerializer _jsonSerializer = new JsonSerializer();
-
-        #pragma warning disable CS1998
-        public async Task LambdaHandler(DynamoDBEvent dynamoEvent, ILambdaContext context)
-        {
-            context.Logger.LogLine($"Beginning to process {dynamoEvent.Records.Count} records...");
-
-            foreach (var record in dynamoEvent.Records)
-            {
-                context.Logger.LogLine($"Event ID: {record.EventID}");
-                context.Logger.LogLine($"Event Name: {record.EventName}");
-
-                string streamRecordJson = SerializeStreamRecord(record.Dynamodb);
-                context.Logger.LogLine($"DynamoDB Record:");
-                context.Logger.LogLine(streamRecordJson );
-            }
-
-            context.Logger.LogLine("Stream processing complete.");
-        }
-
-        private string SerializeStreamRecord(StreamRecord streamRecord)
-        {
-            using (var writer = new StringWriter())
-            {
-                _jsonSerializer.Serialize(writer, streamRecord);
-                return writer.ToString();
-            }
-        }
+      var newImage =dynamoDBEvent?.Records?[0]?.Dynamodb?.NewImage;
+      var attributeValues =newImage["vocabularies"]?.L;
+      var vocabularies=attributeValues.Select(x => x.S);
+          
+      iLambdaContext?.Logger?.LogLine($"dynamoDBEvent : " +
+        $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(dynamoDBEvent)}\n");
+      iLambdaContext?.Logger?.LogLine($"vocabularies : " +
+        $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(vocabularies)}\n");
     }
+  }
 }

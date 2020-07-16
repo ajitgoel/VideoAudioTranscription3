@@ -9,6 +9,10 @@
 		},
 		"env": {
 			"Type": "String"
+		},
+		"storages3a41e082fBucketName": {
+			"Type": "String",
+			"Default": "storages3a41e082fBucketName"
 		}
 	},
 	"Conditions": {
@@ -55,6 +59,9 @@
 						},
 						"REGION": {
 							"Ref": "AWS::Region"
+						},
+						"STORAGE_S3A41E082F_BUCKETNAME": {
+							"Ref": "storages3a41e082fBucketName"
 						}
 					}
 				},
@@ -68,8 +75,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/transcribeaudiovideo-6843594f337a71456155-build.zip"
+					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Key": "amplify-builds/transcribeaudiovideo-6a4341307947425a394c-build.zip"
 				}
 			}
 		},
@@ -150,30 +157,48 @@
 									}
 								]
 							}
-						},
+						}
+					]
+				}
+			}
+		},
+		"AmplifyResourcesPolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
 						{
+							"Effect": "Allow",
 							"Action": [
 								"s3:PutObject",
 								"s3:GetObject",
 								"s3:ListBucket",
 								"s3:DeleteObject"
 							],
-							"Resource": "*",
-							"Effect": "Allow"
-						},
-						{
-							"Effect": "Allow",
-							"Action": [
-								"transcribe:*"
-							],
-							"Resource": "*"
-						},
-						{
-							"Effect": "Allow",
-							"Action": [
-								"comprehend:*"
-							],
-							"Resource": "*"
+							"Resource": [
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:s3:::",
+											{
+												"Ref": "storages3a41e082fBucketName"
+											},
+											"/*"
+										]
+									]
+								}
+							]
 						}
 					]
 				}

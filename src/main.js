@@ -4,23 +4,14 @@ import '@/mixins/generalMixins.js';
 import Print from 'vue-print-nb'; 
 Vue.use(Print);
 
-//import { GridPlugin, Page, Toolbar, Edit } from "@syncfusion/ej2-vue-grids";
-//Vue.use(GridPlugin);
-//import {TextBoxPlugin, NumericTextBoxPlugin, SliderPlugin, UploaderPlugin} from '@syncfusion/ej2-vue-inputs';
 import {UploaderPlugin, TextBoxPlugin} from '@syncfusion/ej2-vue-inputs';
-//import {ButtonPlugin } from '@syncfusion/ej2-vue-buttons';
-//import { enableRipple } from '@syncfusion/ej2-base';
 import { ListViewPlugin } from '@syncfusion/ej2-vue-lists';
 import { DropDownListPlugin } from '@syncfusion/ej2-vue-dropdowns';
 
 Vue.use(DropDownListPlugin);
-//enableRipple(true);
 Vue.use(ListViewPlugin);
-//Vue.use(ButtonPlugin);
 Vue.use(TextBoxPlugin);
 Vue.use(UploaderPlugin); 
-//Vue.use(SliderPlugin);
-//Vue.use(NumericTextBoxPlugin);
 
 //#region Globally register components
 import TermsConditions from '@/views/pages/TermsConditions.vue';
@@ -29,56 +20,31 @@ Vue.component('TermsConditions', TermsConditions);
 Vue.component('PrivacyPolicy', PrivacyPolicy);
 //#endregion
 
-// Vuesax Component Framework
 import Vuesax from 'vuesax';
 import 'material-icons/iconfont/material-icons.css'; //Material Icons
 import 'vuesax/dist/vuesax.css'; // Vuesax
 Vue.use(Vuesax);
 
-// axios
 // @ts-ignore
 import axios from "./axios.js";
 Vue.prototype.$http = axios;
-
-// API Calls
 import "./http/requests";
-
-// mock
-import "./fake-db/index.js";
-
-// Theme Configurations
 import '../themeConfig.js';
-
-// ACL
 // @ts-ignore
 import acl from './acl/acl';
 
-// Globally Registered Components
-
 import './globalComponents.js';
-
-// Styles: SCSS
 import './assets/scss/main.scss';
-
-// Tailwind
 import '@/assets/css/main.css';
-
-// Vue Router
 // @ts-ignore
 import router from './router';
 
-// Vuex Store
 // @ts-ignore
 import store from './store/store';
-
-// i18n
 // @ts-ignore
 import i18n from './i18n/i18n';
-
-// Vuexy Admin Filters
 import './filters/filters';
 
-// Clipboard
 import VueClipboard from 'vue-clipboard2';
 Vue.use(VueClipboard);
 

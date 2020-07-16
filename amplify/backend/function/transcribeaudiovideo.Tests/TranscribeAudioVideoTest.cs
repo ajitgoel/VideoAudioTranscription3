@@ -13,6 +13,8 @@ using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using Amazon.TranscribeService;
 using System.Linq;
+using Amazon.Runtime.CredentialManagement;
+using Amazon.Runtime;
 
 namespace transcribeaudiovideo.Tests
 {
@@ -21,9 +23,11 @@ namespace transcribeaudiovideo.Tests
     [Fact]
     public async Task TestS3EventLambdaFunction1()
     {
-      var config = new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build();
-      var aws_access_key_id = config["aws_access_key_id"];
-      var aws_secret_access_key=config["aws_secret_access_key"];
+      var credentialProfileStoreChain = new CredentialProfileStoreChain(@"C:\Users\AjitGoel\.aws\credentials");
+      credentialProfileStoreChain.TryGetAWSCredentials("amplify-workshop-user", out AWSCredentials awsCredentials);
+      var credentials= awsCredentials.GetCredentials();
+      var aws_access_key_id = credentials.AccessKey;
+      var aws_secret_access_key= credentials.SecretKey;
 
       var region = "us-east-1";
       var regionendpoint= RegionEndpoint.GetBySystemName(region);
@@ -80,9 +84,11 @@ namespace transcribeaudiovideo.Tests
     [Fact]
     public async Task TestS3EventLambdaFunction2()
     {
-      var config = new ConfigurationBuilder().AddJsonFile("appsettings.test.json").Build();
-      var aws_access_key_id = config["aws_access_key_id"];
-      var aws_secret_access_key = config["aws_secret_access_key"];
+      var credentialProfileStoreChain = new CredentialProfileStoreChain(@"C:\Users\AjitGoel\.aws\credentials");
+      credentialProfileStoreChain.TryGetAWSCredentials("amplify-workshop-user", out AWSCredentials awsCredentials);
+      var credentials = awsCredentials.GetCredentials();
+      var aws_access_key_id = credentials.AccessKey;
+      var aws_secret_access_key = credentials.SecretKey;
 
       var region = "us-east-1";
       var regionendpoint = RegionEndpoint.GetBySystemName(region);
