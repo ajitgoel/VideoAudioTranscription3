@@ -1,6 +1,6 @@
 {
 	"AWSTemplateFormatVersion": "2010-09-09",
-	"Description": "Lambda resource stack creation using Amplify CLI",
+	"Description": "Lambda Function resource stack creation using Amplify CLI",
 	"Parameters": {
 		"CloudWatchRule": {
 			"Type": "String",
@@ -37,16 +37,16 @@
 				"aws:asset:property": "Code"
 			},
 			"Properties": {
-				"Handler": "payments::payments.payments::CreatePaymentIntent",
+				"Handler": "TranscribeUpdateCustomVocabulary::TranscribeUpdateCustomVocabulary.TranscribeUpdateCustomVocabulary::LambdaHandler",
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"payments",
+						"TranscribeUpdateCustomVocabulary",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"payments",
+									"TranscribeUpdateCustomVocabulary",
 									"-",
 									{
 										"Ref": "env"
@@ -69,9 +69,7 @@
 						},
 						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT": {
 							"Ref": "apividaudtranscriptionGraphQLAPIEndpointOutput"
-						},
-						"VUE_APP_STRIPE_PUBLISHABLE_KEY": "pk_test_kcWzN6fwBHhdYKyLP9qBrPgZ00PGq7Ou6g",
-						"VUE_APP_STRIPE_SECRET_KEY": "sk_test_8GAASYcYGl4zvXfXTkfNH3i200HuyvP6fm"
+						}
 					}
 				},
 				"Role": {
@@ -81,10 +79,11 @@
 					]
 				},
 				"Runtime": "dotnetcore3.1",
+				"Layers": [],
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-dev-70417-deployment",
-					"S3Key": "amplify-builds/payments-6c2f7950373264554735-build.zip"
+					"S3Key": "amplify-builds/TranscribeUpdateCustomVocabulary-5a36615261304b616163-build.zip"
 				}
 			}
 		},
@@ -94,12 +93,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"vidaudtranscriptionLambdaRoledda42a13",
+						"vidaudtranscriptionLambdaRoleb7cd5f99",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"vidaudtranscriptionLambdaRoledda42a13",
+									"vidaudtranscriptionLambdaRoleb7cd5f99",
 									"-",
 									{
 										"Ref": "env"
@@ -221,6 +220,62 @@
 						}
 					]
 				}
+			}
+		},
+		"LambdaTriggerPolicyUserProfile": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy-UserProfile",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:DescribeStream",
+								"dynamodb:GetRecords",
+								"dynamodb:GetShardIterator",
+								"dynamodb:ListStreams"
+							],
+							"Resource": {
+								"Fn::ImportValue": {
+									"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		"LambdaEventSourceMappingUserProfile": {
+			"Type": "AWS::Lambda::EventSourceMapping",
+			"DependsOn": [
+				"LambdaTriggerPolicyUserProfile",
+				"LambdaExecutionRole"
+			],
+			"Properties": {
+				"BatchSize": 100,
+				"Enabled": true,
+				"EventSourceArn": {
+					"Fn::ImportValue": {
+						"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"
+					}
+				},
+				"FunctionName": {
+					"Fn::GetAtt": [
+						"LambdaFunction",
+						"Arn"
+					]
+				},
+				"StartingPosition": "LATEST"
 			}
 		}
 	},

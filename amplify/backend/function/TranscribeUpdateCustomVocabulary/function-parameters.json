@@ -1,0 +1,15 @@
+{
+  "mutableParametersState": {
+    "permissions": {
+      "api": {
+        "vidaudtranscription": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      }
+    }
+  },
+  "lambdaLayers": []
+}

@@ -56,7 +56,7 @@ namespace Models
   public static class Extensions
   {
     public static string Default_File_Language_When_File_Is_Transcribed="en-US";
-
+    public static int Max_Speaker_Labels = 10; 
     public static string SerializeObjectIgnoreReferenceLoopHandling(object objectToSerialize)
     {
       return JsonConvert.SerializeObject(objectToSerialize, new JsonSerializerSettings()

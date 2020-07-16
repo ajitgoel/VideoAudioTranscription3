@@ -15,9 +15,3 @@
     11. Social Security Number
   </p>
 </template>
-<script>
-export default {
-  data() {
-  }
-}
-</script>

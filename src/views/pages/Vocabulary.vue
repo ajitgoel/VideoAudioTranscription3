@@ -109,16 +109,15 @@ export default
                 let vocabulariesArray=this.vocabularies.split('\n');  
                 let vocabulariesArray_RemoveEmptyElements = vocabulariesArray.filter(function(item){return item!==''});
                 let vocabulariesArray_RemoveDuplicates = vocabulariesArray_RemoveEmptyElements.filter(function(item, index){return vocabulariesArray_RemoveEmptyElements.indexOf(item) === index});
-
+                const userProfileInput={id:userId, vocabularies:vocabulariesArray_RemoveDuplicates};
+                    
                 if(this.isUserProfileSavedInDatabase==false)
                 {
-                    const createUserProfileInput={id:userId, vocabularies:vocabulariesArray_RemoveDuplicates};
-                    await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
+                    await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
                 }
                 else
                 {
-                    const updateUserProfileInput={id:userId, vocabularies:vocabulariesArray_RemoveDuplicates};
-                    await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
+                    await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
                 }                
                 //#endregion save vocabularies in dynamodb
 

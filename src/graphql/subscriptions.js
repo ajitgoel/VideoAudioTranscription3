@@ -165,7 +165,10 @@ export const onCreateUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      vocabularies
+      vocabularies {
+        text
+        entry
+      }
       paymentInvoices
       notificationSettings {
         notifyWhenTranscriptsCompleted
@@ -193,7 +196,10 @@ export const onUpdateUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      vocabularies
+      vocabularies {
+        text
+        entry
+      }
       paymentInvoices
       notificationSettings {
         notifyWhenTranscriptsCompleted
@@ -221,7 +227,10 @@ export const onDeleteUserProfile = /* GraphQL */ `
       billingAddress
       country
       vatNumber
-      vocabularies
+      vocabularies {
+        text
+        entry
+      }
       paymentInvoices
       notificationSettings {
         notifyWhenTranscriptsCompleted
