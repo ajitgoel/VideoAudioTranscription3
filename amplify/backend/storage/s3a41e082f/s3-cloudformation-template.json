@@ -83,17 +83,17 @@
         "triggerFunction": {
             "Type": "String"
         },
-        "functiontranscribeaudiovideoArn": {
+        "functionTranscribeUploadedFileArn": {
             "Type": "String",
-            "Default": "functiontranscribeaudiovideoArn"
+            "Default": "functionTranscribeUploadedFileArn"
         },
-        "functiontranscribeaudiovideoName": {
+        "functionTranscribeUploadedFileName": {
             "Type": "String",
-            "Default": "functiontranscribeaudiovideoName"
+            "Default": "functionTranscribeUploadedFileName"
         },
-        "functiontranscribeaudiovideoLambdaExecutionRole": {
+        "functionTranscribeUploadedFileLambdaExecutionRole": {
             "Type": "String",
-            "Default": "functiontranscribeaudiovideoLambdaExecutionRole"
+            "Default": "functionTranscribeUploadedFileLambdaExecutionRole"
         }
     },
     "Conditions": {
@@ -274,13 +274,13 @@
                         {
                             "Event": "s3:ObjectCreated:*",
                             "Function": {
-                                "Ref": "functiontranscribeaudiovideoArn"
+                                "Ref": "functionTranscribeUploadedFileArn"
                             }
                         },
                         {
                             "Event": "s3:ObjectRemoved:*",
                             "Function": {
-                                "Ref": "functiontranscribeaudiovideoArn"
+                                "Ref": "functionTranscribeUploadedFileArn"
                             }
                         }
                     ]
@@ -725,7 +725,7 @@
                 "PolicyName": "s3-trigger-lambda-execution-policy",
                 "Roles": [
                     {
-                        "Ref": "functiontranscribeaudiovideoLambdaExecutionRole"
+                        "Ref": "functionTranscribeUploadedFileLambdaExecutionRole"
                     }
                 ],
                 "PolicyDocument": {
@@ -763,7 +763,7 @@
             "Properties": {
                 "Action": "lambda:InvokeFunction",
                 "FunctionName": {
-                    "Ref": "functiontranscribeaudiovideoName"
+                    "Ref": "functionTranscribeUploadedFileName"
                 },
                 "Principal": "s3.amazonaws.com",
                 "SourceAccount": {

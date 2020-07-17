@@ -45,8 +45,35 @@
                 "payments": {},
                 "priceperhour": {},
                 "PaymentIntent": {},
-                "transcribeaudiovideo": {},
                 "TranscribeUpdateCustomVocabulary": {}
+            }
+        }
+    },
+    "featuretwo": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-vidaudtranscription-featuretwo-23616-authRole",
+            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-featuretwo-23616-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-featuretwo-23616-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "amplify-vidaudtranscription-featuretwo-23616-deployment",
+            "UnauthRoleName": "amplify-vidaudtranscription-featuretwo-23616-unauthRole",
+            "StackName": "amplify-vidaudtranscription-featuretwo-23616",
+            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-vidaudtranscription-featuretwo-23616/33d58d50-c800-11ea-8f83-0ee1cf96ccc3",
+            "AmplifyAppId": "d2imx992r72i0h"
+        },
+        "categories": {
+            "auth": {
+                "vidaudtranscription1ea69154": {}
+            },
+            "function": {
+                "vidaudtranscription1ea69154PreSignup": {
+                    "DOMAINBLACKLIST": ""
+                },
+                "payments": {},
+                "priceperhour": {},
+                "PaymentIntent": {},
+                "TranscribeUpdateCustomVocabulary": {},
+                "TranscribeUploadedFile": {}
             }
         }
     }

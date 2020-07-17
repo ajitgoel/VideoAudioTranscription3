@@ -67,7 +67,7 @@
 				"Runtime": "dotnetcore3.1",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Bucket": "amplify-vidaudtranscription-featuretwo-23616-deployment",
 					"S3Key": "amplify-builds/priceperhour-764f55533435616f544a-build.zip"
 				}
 			}

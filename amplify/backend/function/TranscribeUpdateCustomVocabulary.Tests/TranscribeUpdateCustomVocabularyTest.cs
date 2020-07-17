@@ -2,19 +2,7 @@ using Xunit;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Amazon.Lambda.S3Events;
-
-using Amazon;
-using Amazon.S3;
-using Amazon.S3.Model;
-using Amazon.S3.Util;
-using System.IO;
-using Microsoft.Extensions.Configuration;
-using System.Diagnostics;
-using Amazon.TranscribeService;
-using System.Linq;
 using Amazon.Lambda.DynamoDBEvents;
-using AutoFixture;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime;
 

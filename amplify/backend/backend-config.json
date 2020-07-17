@@ -9,16 +9,7 @@
             "build": true,
             "providerPlugin": "awscloudformation",
             "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "api",
-                    "resourceName": "vidaudtranscription",
-                    "attributes": [
-                        "GraphQLAPIIdOutput",
-                        "GraphQLAPIEndpointOutput"
-                    ]
-                }
-            ]
+            "dependsOn": []
         },
         "priceperhour": {
             "build": true,
@@ -29,44 +20,19 @@
             "build": true,
             "providerPlugin": "awscloudformation",
             "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "api",
-                    "resourceName": "vidaudtranscription",
-                    "attributes": [
-                        "GraphQLAPIIdOutput",
-                        "GraphQLAPIEndpointOutput"
-                    ]
-                }
-            ]
-        },
-        "transcribeaudiovideo": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
             "dependsOn": []
         },
         "TranscribeUpdateCustomVocabulary": {
             "build": true,
             "providerPlugin": "awscloudformation",
             "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "api",
-                    "resourceName": "vidaudtranscription",
-                    "attributes": [
-                        "GraphQLAPIIdOutput",
-                        "GraphQLAPIEndpointOutput"
-                    ]
-                },
-                {
-                    "category": "storage",
-                    "resourceName": "s3a41e082f",
-                    "attributes": [
-                        "BucketName"
-                    ]
-                }
-            ]
+            "dependsOn": []
+        },
+        "TranscribeUploadedFile": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": []
         }
     },
     "auth": {
@@ -152,7 +118,7 @@
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "transcribeaudiovideo",
+                    "resourceName": "TranscribeUploadedFile",
                     "attributes": [
                         "Name",
                         "Arn",

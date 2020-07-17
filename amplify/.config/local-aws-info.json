@@ -8,5 +8,10 @@
         "configLevel": "project",
         "useProfile": true,
         "profileName": "videoaudiotranscriptioniamuser"
+    },
+    "featuretwo": {
+        "configLevel": "project",
+        "useProfile": true,
+        "profileName": "amplify-workshop-user"
     }
 }

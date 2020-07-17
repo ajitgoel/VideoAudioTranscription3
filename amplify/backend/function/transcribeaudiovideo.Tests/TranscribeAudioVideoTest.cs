@@ -9,16 +9,15 @@ using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Util;
 using System.IO;
-using Microsoft.Extensions.Configuration;
 using System.Diagnostics;
 using Amazon.TranscribeService;
 using System.Linq;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime;
 
-namespace transcribeaudiovideo.Tests
+namespace TranscribeUploadedFileTests
 {
-  public class TranscribeAudioVideoTest
+  public class TranscribeUploadedFileTest
   {
     [Fact]
     public async Task TestS3EventLambdaFunction1()
@@ -71,8 +70,8 @@ namespace transcribeaudiovideo.Tests
                     }
                   }
         };
-        var transcribeaudiovideo = new transcribeaudiovideo(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
-        var contentType = await transcribeaudiovideo.LambdaHandler(s3Event, null);
+        var transcribeUploadedFile = new TranscribeUploadedFile.TranscribeUploadedFile(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var contentType = await transcribeUploadedFile.LambdaHandler(s3Event, null);
         Assert.Equal(fileContentType, contentType);
       }
       finally
@@ -110,8 +109,8 @@ namespace transcribeaudiovideo.Tests
                     }
                   }
         };
-        var transcribeaudiovideo = new transcribeaudiovideo(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
-        var contentType = await transcribeaudiovideo.LambdaHandler(s3Event, null);
+        var transcribeUploadedFile = new TranscribeUploadedFile.TranscribeUploadedFile(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var contentType = await transcribeUploadedFile.LambdaHandler(s3Event, null);
         Assert.Equal(fileContentType, contentType);
       }
       finally

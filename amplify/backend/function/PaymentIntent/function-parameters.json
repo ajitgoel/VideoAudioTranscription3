@@ -1,12 +1,16 @@
 {
-    "permissions": {
-        "api": {
-            "vidaudtranscription": [
-                "create",
-                "read",
-                "update",
-                "delete"
-            ]
-        }
+  "permissions": {
+    "api": {
+      "vidaudtranscription": [
+        "create",
+        "read",
+        "update",
+        "delete"
+      ]
     }
+  },
+  "mutableParametersState": {
+    "permissions": {}
+  },
+  "lambdaLayers": []
 }

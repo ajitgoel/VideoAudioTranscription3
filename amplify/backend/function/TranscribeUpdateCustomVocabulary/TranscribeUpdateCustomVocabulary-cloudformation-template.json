@@ -115,7 +115,7 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Bucket": "amplify-vidaudtranscription-featuretwo-23616-deployment",
 					"S3Key": "amplify-builds/TranscribeUpdateCustomVocabulary-57373654795339434268-build.zip"
 				}
 			}

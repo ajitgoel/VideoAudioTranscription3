@@ -10,6 +10,14 @@
 		"env": {
 			"Type": "String"
 		},
+		"apividaudtranscriptionGraphQLAPIIdOutput": {
+			"Type": "String",
+			"Default": "apividaudtranscriptionGraphQLAPIIdOutput"
+		},
+		"apividaudtranscriptionGraphQLAPIEndpointOutput": {
+			"Type": "String",
+			"Default": "apividaudtranscriptionGraphQLAPIEndpointOutput"
+		},
 		"storages3a41e082fBucketName": {
 			"Type": "String",
 			"Default": "storages3a41e082fBucketName"
@@ -33,16 +41,16 @@
 				"aws:asset:property": "Code"
 			},
 			"Properties": {
-				"Handler": "transcribeaudiovideo::transcribeaudiovideo.transcribeaudiovideo::LambdaHandler",
+				"Handler": "TranscribeUploadedFile::TranscribeUploadedFile.TranscribeUploadedFile::LambdaHandler",
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"transcribeaudiovideo",
+						"TranscribeUploadedFile",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"transcribeaudiovideo",
+									"TranscribeUploadedFile",
 									"-",
 									{
 										"Ref": "env"
@@ -75,8 +83,8 @@
 				"Layers": [],
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
-					"S3Key": "amplify-builds/transcribeaudiovideo-6a4341307947425a394c-build.zip"
+					"S3Bucket": "amplify-vidaudtranscription-featuretwo-23616-deployment",
+					"S3Key": "amplify-builds/TranscribeUploadedFile-74736c3856622f735166-build.zip"
 				}
 			}
 		},
@@ -86,12 +94,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"vidaudtranscriptionLambdaRolef4cb75fc",
+						"vidaudtranscriptionLambdaRolec3cfaefc",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"vidaudtranscriptionLambdaRolef4cb75fc",
+									"vidaudtranscriptionLambdaRolec3cfaefc",
 									"-",
 									{
 										"Ref": "env"
@@ -202,6 +210,62 @@
 						}
 					]
 				}
+			}
+		},
+		"LambdaTriggerPolicyUserProfile": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy-UserProfile",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:DescribeStream",
+								"dynamodb:GetRecords",
+								"dynamodb:GetShardIterator",
+								"dynamodb:ListStreams"
+							],
+							"Resource": {
+								"Fn::ImportValue": {
+									"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		"LambdaEventSourceMappingUserProfile": {
+			"Type": "AWS::Lambda::EventSourceMapping",
+			"DependsOn": [
+				"LambdaTriggerPolicyUserProfile",
+				"LambdaExecutionRole"
+			],
+			"Properties": {
+				"BatchSize": 100,
+				"Enabled": true,
+				"EventSourceArn": {
+					"Fn::ImportValue": {
+						"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"
+					}
+				},
+				"FunctionName": {
+					"Fn::GetAtt": [
+						"LambdaFunction",
+						"Arn"
+					]
+				},
+				"StartingPosition": "LATEST"
 			}
 		}
 	},

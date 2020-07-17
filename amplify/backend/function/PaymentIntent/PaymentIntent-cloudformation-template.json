@@ -9,14 +9,6 @@
 		},
 		"env": {
 			"Type": "String"
-		},
-		"apividaudtranscriptionGraphQLAPIIdOutput": {
-			"Type": "String",
-			"Default": "apividaudtranscriptionGraphQLAPIIdOutput"
-		},
-		"apividaudtranscriptionGraphQLAPIEndpointOutput": {
-			"Type": "String",
-			"Default": "apividaudtranscriptionGraphQLAPIEndpointOutput"
 		}
 	},
 	"Conditions": {
@@ -65,13 +57,7 @@
 							"Ref": "AWS::Region"
 						},
 						"VUE_APP_STRIPE_PUBLISHABLE_KEY": "pk_test_kcWzN6fwBHhdYKyLP9qBrPgZ00PGq7Ou6g",
-						"VUE_APP_STRIPE_SECRET_KEY": "sk_test_8GAASYcYGl4zvXfXTkfNH3i200HuyvP6fm",
-						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT": {
-							"Ref": "apividaudtranscriptionGraphQLAPIIdOutput"
-						},
-						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT": {
-							"Ref": "apividaudtranscriptionGraphQLAPIEndpointOutput"
-						}
+						"VUE_APP_STRIPE_SECRET_KEY": "sk_test_8GAASYcYGl4zvXfXTkfNH3i200HuyvP6fm"
 					}
 				},
 				"Role": {
@@ -83,9 +69,10 @@
 				"Runtime": "dotnetcore3.1",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Bucket": "amplify-vidaudtranscription-featuretwo-23616-deployment",
 					"S3Key": "amplify-builds/PaymentIntent-77565730765958532b41-build.zip"
-				}
+				},
+				"Layers": []
 			}
 		},
 		"LambdaExecutionRole": {
@@ -165,59 +152,6 @@
 									}
 								]
 							}
-						}
-					]
-				}
-			}
-		},
-		"AmplifyResourcesPolicy": {
-			"DependsOn": [
-				"LambdaExecutionRole"
-			],
-			"Type": "AWS::IAM::Policy",
-			"Properties": {
-				"PolicyName": "amplify-lambda-execution-policy",
-				"Roles": [
-					{
-						"Ref": "LambdaExecutionRole"
-					}
-				],
-				"PolicyDocument": {
-					"Version": "2012-10-17",
-					"Statement": [
-						{
-							"Effect": "Allow",
-							"Action": [
-								"appsync:Create*",
-								"appsync:StartSchemaCreation",
-								"appsync:GraphQL",
-								"appsync:Get*",
-								"appsync:List*",
-								"appsync:Update*",
-								"appsync:Delete*"
-							],
-							"Resource": [
-								{
-									"Fn::Join": [
-										"",
-										[
-											"arn:aws:appsync:",
-											{
-												"Ref": "AWS::Region"
-											},
-											":",
-											{
-												"Ref": "AWS::AccountId"
-											},
-											":apis/",
-											{
-												"Ref": "apividaudtranscriptionGraphQLAPIIdOutput"
-											},
-											"/*"
-										]
-									]
-								}
-							]
 						}
 					]
 				}
