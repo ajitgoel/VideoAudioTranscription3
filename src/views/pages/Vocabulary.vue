@@ -117,7 +117,7 @@ export default
                 
                 if(this.isUserProfileSavedInDatabase==false)
                 {
-                    const createUserProfile = /* GraphQL */ `
+                    const createUserProfile = `
                         mutation CreateUserProfile(
                             $input: CreateUserProfileInput!
                             $condition: ModelUserProfileConditionInput
@@ -131,7 +131,7 @@ export default
                 }
                 else
                 {
-                    const updateUserProfile = /* GraphQL */ `
+                    const updateUserProfile = `
                         mutation UpdateUserProfile(
                             $input: UpdateUserProfileInput!
                             $condition: ModelUserProfileConditionInput
@@ -144,7 +144,6 @@ export default
                     await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
                 }                
                 //#endregion save vocabularies in dynamodb
-
                 this.$vs.notify({title: 'Success', text: 'Your vocabularies have been saved successfully!', iconPack: 'feather',
                     icon: 'icon-check',color: 'success'}); 
             } 

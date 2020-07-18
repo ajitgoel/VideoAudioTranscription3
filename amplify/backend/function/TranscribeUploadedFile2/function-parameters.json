@@ -1,8 +1,16 @@
 {
   "mutableParametersState": {
     "permissions": {
+      "api": {
+        "vidaudtranscription": [
+          "create",
+          "read",
+          "update",
+          "delete"
+        ]
+      },
       "storage": {
-        "s3a41e082f": [
+        "UserProfile:@model(appsync)": [
           "create",
           "read",
           "update",

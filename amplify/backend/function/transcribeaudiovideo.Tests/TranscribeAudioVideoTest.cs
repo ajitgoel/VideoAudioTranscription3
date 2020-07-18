@@ -70,7 +70,10 @@ namespace TranscribeUploadedFileTests
                     }
                   }
         };
-        var transcribeUploadedFile = new TranscribeUploadedFile2.TranscribeUploadedFile2(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var regionEndpoint = RegionEndpoint.GetBySystemName(region);
+        var amazonTranscribeServiceClient=new AmazonTranscribeServiceClient(aws_access_key_id, aws_secret_access_key, regionEndpoint);
+        var transcribeUploadedFile = new TranscribeUploadedFile2.TranscribeUploadedFile2(amazonS3Client1, new Amazon.DynamoDBv2.AmazonDynamoDBClient(),
+          amazonTranscribeServiceClient, region);
         var contentType = await transcribeUploadedFile.LambdaHandler(s3Event, null);
         Assert.Equal(fileContentType, contentType);
       }
@@ -109,7 +112,10 @@ namespace TranscribeUploadedFileTests
                     }
                   }
         };
-        var transcribeUploadedFile = new TranscribeUploadedFile2.TranscribeUploadedFile2(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var regionEndpoint = RegionEndpoint.GetBySystemName(region);
+        var amazonTranscribeServiceClient = new AmazonTranscribeServiceClient(aws_access_key_id, aws_secret_access_key, regionEndpoint);
+        var transcribeUploadedFile = new TranscribeUploadedFile2.TranscribeUploadedFile2(amazonS3Client1, new Amazon.DynamoDBv2.AmazonDynamoDBClient(),
+          amazonTranscribeServiceClient, region);
         var contentType = await transcribeUploadedFile.LambdaHandler(s3Event, null);
         Assert.Equal(fileContentType, contentType);
       }

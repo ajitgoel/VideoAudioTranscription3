@@ -248,7 +248,6 @@ export default {
           try
           {
             var result=await Storage.vault.put(key, objectToBeUploaded, config);
-            //var result=await Storage.put(key, objectToBeUploaded, config);
             console.log(`result : ${JSON.stringify(result)}`);                     
           }
           catch(error)

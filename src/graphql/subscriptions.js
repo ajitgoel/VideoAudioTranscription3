@@ -161,7 +161,6 @@ export const onCreateUserProfile = /* GraphQL */ `
   subscription OnCreateUserProfile($owner: String!) {
     onCreateUserProfile(owner: $owner) {
       id
-      cognitoId
       fullName
       billingAddress
       country
@@ -190,7 +189,6 @@ export const onUpdateUserProfile = /* GraphQL */ `
   subscription OnUpdateUserProfile($owner: String!) {
     onUpdateUserProfile(owner: $owner) {
       id
-      cognitoId
       fullName
       billingAddress
       country
@@ -219,7 +217,6 @@ export const onDeleteUserProfile = /* GraphQL */ `
   subscription OnDeleteUserProfile($owner: String!) {
     onDeleteUserProfile(owner: $owner) {
       id
-      cognitoId
       fullName
       billingAddress
       country
