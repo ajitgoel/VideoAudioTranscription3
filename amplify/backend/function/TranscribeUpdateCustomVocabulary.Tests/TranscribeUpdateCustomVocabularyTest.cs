@@ -56,7 +56,7 @@ namespace TranscribeUpdateCustomVocabulary.Tests
             }          
         };
 
-        var transcribeUpdateCustomVocabulary = new TranscribeUpdateCustomVocabulary();
+        var transcribeUpdateCustomVocabulary = new TranscribeUpdateCustomVocabulary2.TranscribeUpdateCustomVocabulary2();
         await transcribeUpdateCustomVocabulary.LambdaHandler(dynamoDBEvent, null);
         //Assert.Equal(fileContentType, contentType);
       }

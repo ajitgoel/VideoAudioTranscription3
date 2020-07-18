@@ -44,8 +44,7 @@
                 },
                 "payments": {},
                 "priceperhour": {},
-                "PaymentIntent": {},
-                "TranscribeUpdateCustomVocabulary": {}
+                "PaymentIntent": {}
             }
         }
     },
@@ -71,9 +70,7 @@
                 },
                 "payments": {},
                 "priceperhour": {},
-                "PaymentIntent": {},
-                "TranscribeUpdateCustomVocabulary": {},
-                "TranscribeUploadedFile": {}
+                "PaymentIntent": {}
             }
         }
     }

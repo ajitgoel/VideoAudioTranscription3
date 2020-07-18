@@ -70,7 +70,7 @@ namespace TranscribeUploadedFileTests
                     }
                   }
         };
-        var transcribeUploadedFile = new TranscribeUploadedFile.TranscribeUploadedFile(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var transcribeUploadedFile = new TranscribeUploadedFile2.TranscribeUploadedFile2(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
         var contentType = await transcribeUploadedFile.LambdaHandler(s3Event, null);
         Assert.Equal(fileContentType, contentType);
       }
@@ -109,7 +109,7 @@ namespace TranscribeUploadedFileTests
                     }
                   }
         };
-        var transcribeUploadedFile = new TranscribeUploadedFile.TranscribeUploadedFile(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
+        var transcribeUploadedFile = new TranscribeUploadedFile2.TranscribeUploadedFile2(amazonS3Client1, region, aws_access_key_id, aws_secret_access_key);
         var contentType = await transcribeUploadedFile.LambdaHandler(s3Event, null);
         Assert.Equal(fileContentType, contentType);
       }

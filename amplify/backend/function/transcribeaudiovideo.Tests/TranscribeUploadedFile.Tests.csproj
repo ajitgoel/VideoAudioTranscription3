@@ -35,7 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
-    <ProjectReference Include="..\TranscribeUploadedFile\src\TranscribeUploadedFile.csproj" />
+    <ProjectReference Include="..\TranscribeUploadedFile2\src\TranscribeUploadedFile2.csproj" />
   </ItemGroup>
 
 </Project>

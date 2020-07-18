@@ -83,17 +83,17 @@
         "triggerFunction": {
             "Type": "String"
         },
-        "functionTranscribeUploadedFileArn": {
+        "functionTranscribeUploadedFile2Arn": {
             "Type": "String",
-            "Default": "functionTranscribeUploadedFileArn"
+            "Default": "functionTranscribeUploadedFile2Arn"
         },
-        "functionTranscribeUploadedFileName": {
+        "functionTranscribeUploadedFile2Name": {
             "Type": "String",
-            "Default": "functionTranscribeUploadedFileName"
+            "Default": "functionTranscribeUploadedFile2Name"
         },
-        "functionTranscribeUploadedFileLambdaExecutionRole": {
+        "functionTranscribeUploadedFile2LambdaExecutionRole": {
             "Type": "String",
-            "Default": "functionTranscribeUploadedFileLambdaExecutionRole"
+            "Default": "functionTranscribeUploadedFile2LambdaExecutionRole"
         }
     },
     "Conditions": {
@@ -274,13 +274,13 @@
                         {
                             "Event": "s3:ObjectCreated:*",
                             "Function": {
-                                "Ref": "functionTranscribeUploadedFileArn"
+                                "Ref": "functionTranscribeUploadedFile2Arn"
                             }
                         },
                         {
                             "Event": "s3:ObjectRemoved:*",
                             "Function": {
-                                "Ref": "functionTranscribeUploadedFileArn"
+                                "Ref": "functionTranscribeUploadedFile2Arn"
                             }
                         }
                     ]
@@ -725,7 +725,7 @@
                 "PolicyName": "s3-trigger-lambda-execution-policy",
                 "Roles": [
                     {
-                        "Ref": "functionTranscribeUploadedFileLambdaExecutionRole"
+                        "Ref": "functionTranscribeUploadedFile2LambdaExecutionRole"
                     }
                 ],
                 "PolicyDocument": {
@@ -763,7 +763,7 @@
             "Properties": {
                 "Action": "lambda:InvokeFunction",
                 "FunctionName": {
-                    "Ref": "functionTranscribeUploadedFileName"
+                    "Ref": "functionTranscribeUploadedFile2Name"
                 },
                 "Principal": "s3.amazonaws.com",
                 "SourceAccount": {

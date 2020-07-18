@@ -13,11 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Get", "PaymentIntent\src\Ge
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUploadedFile.Tests", "transcribeaudiovideo.Tests\TranscribeUploadedFile.Tests.csproj", "{248DB56E-D16F-4EE0-858A-3F49F31F2C7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUpdateCustomVocabulary", "TranscribeUpdateCustomVocabulary\src\TranscribeUpdateCustomVocabulary.csproj", "{9EF4EF1D-75E4-43C8-AA3C-00E2A62F439C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUpdateCustomVocabulary.Tests", "TranscribeUpdateCustomVocabulary.Tests\TranscribeUpdateCustomVocabulary.Tests.csproj", "{D81BC1D8-CB30-46C6-97C2-05EE411B325D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUploadedFile", "TranscribeUploadedFile\src\TranscribeUploadedFile.csproj", "{4ED6380C-2198-4C7C-A621-D3E831105A2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUploadedFile2", "TranscribeUploadedFile2\src\TranscribeUploadedFile2.csproj", "{58A302B8-A986-48CB-90D1-E6EF757B19CE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUpdateCustomVocabulary2", "TranscribeUpdateCustomVocabulary2\src\TranscribeUpdateCustomVocabulary2.csproj", "{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,18 +45,18 @@ Global
 		{248DB56E-D16F-4EE0-858A-3F49F31F2C7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{248DB56E-D16F-4EE0-858A-3F49F31F2C7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{248DB56E-D16F-4EE0-858A-3F49F31F2C7E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9EF4EF1D-75E4-43C8-AA3C-00E2A62F439C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EF4EF1D-75E4-43C8-AA3C-00E2A62F439C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EF4EF1D-75E4-43C8-AA3C-00E2A62F439C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EF4EF1D-75E4-43C8-AA3C-00E2A62F439C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4ED6380C-2198-4C7C-A621-D3E831105A2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4ED6380C-2198-4C7C-A621-D3E831105A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4ED6380C-2198-4C7C-A621-D3E831105A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4ED6380C-2198-4C7C-A621-D3E831105A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
