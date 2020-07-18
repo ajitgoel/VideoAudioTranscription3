@@ -15,9 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUploadedFile.Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUpdateCustomVocabulary.Tests", "TranscribeUpdateCustomVocabulary.Tests\TranscribeUpdateCustomVocabulary.Tests.csproj", "{D81BC1D8-CB30-46C6-97C2-05EE411B325D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUploadedFile2", "TranscribeUploadedFile2\src\TranscribeUploadedFile2.csproj", "{58A302B8-A986-48CB-90D1-E6EF757B19CE}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUpdateCustomVocabulary2", "TranscribeUpdateCustomVocabulary2\src\TranscribeUpdateCustomVocabulary2.csproj", "{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TranscribeUploadedFile2", "TranscribeUploadedFile2\src\TranscribeUploadedFile2.csproj", "{CF388C8D-099A-4631-84CF-55AA4B9EC154}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,14 +49,14 @@ Global
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D81BC1D8-CB30-46C6-97C2-05EE411B325D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{58A302B8-A986-48CB-90D1-E6EF757B19CE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF45A555-46F0-4F8E-ABC4-45C47AA1EE71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF388C8D-099A-4631-84CF-55AA4B9EC154}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF388C8D-099A-4631-84CF-55AA4B9EC154}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF388C8D-099A-4631-84CF-55AA4B9EC154}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF388C8D-099A-4631-84CF-55AA4B9EC154}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

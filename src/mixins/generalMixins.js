@@ -1,9 +1,7 @@
 import Vue from 'vue';
 import { Auth } from 'aws-amplify';
-import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import {listUserProfilesForGeneral} from '@/graphql/customQueries';
 import API, {graphqlOperation} from '@aws-amplify/api';
-
 
 Vue.mixin({
   methods: 
@@ -16,7 +14,7 @@ Vue.mixin({
     {
       const result=await Auth.currentUserInfo();
       console.log(`currentUserInfo result: ${JSON.stringify(result)}`);
-      return {id:result.username, email:result.attributes.email};
+      return {id:result.id, email:result.attributes.email};
     },
     async getuserprofile()
     {

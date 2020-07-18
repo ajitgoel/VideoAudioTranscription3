@@ -7,6 +7,11 @@
           "read",
           "update",
           "delete"
+        ],
+        "UserProfile:@model(appsync)": [
+          "create",
+          "update",
+          "delete"
         ]
       }
     }

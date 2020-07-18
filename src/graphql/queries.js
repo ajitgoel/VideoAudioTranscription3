@@ -112,6 +112,7 @@ export const getUserProfile = /* GraphQL */ `
   query GetUserProfile($id: String!) {
     getUserProfile(id: $id) {
       id
+      cognitoId
       fullName
       billingAddress
       country
@@ -153,6 +154,7 @@ export const listUserProfiles = /* GraphQL */ `
     ) {
       items {
         id
+        cognitoId
         fullName
         billingAddress
         country

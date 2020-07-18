@@ -1,216 +1,382 @@
 {
-    "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Lambda Function resource stack creation using Amplify CLI",
-    "Parameters": {
-        "CloudWatchRule": {
-            "Type": "String",
-            "Default" : "NONE",
-            "Description" : " Schedule Expression"
-        },
-        "env": {
-            "Type": "String"
-        },
-    
-    
-    
-        "apividaudtranscriptionGraphQLAPIIdOutput": {
-            "Type": "String",
-            "Default": "apividaudtranscriptionGraphQLAPIIdOutput"
-            },
-        
-        "apividaudtranscriptionGraphQLAPIEndpointOutput": {
-            "Type": "String",
-            "Default": "apividaudtranscriptionGraphQLAPIEndpointOutput"
-            },
-        
-    
-        
-    
-        "storages3a41e082fBucketName": {
-            "Type": "String",
-            "Default": "storages3a41e082fBucketName"
-            }
-        
-    
-        
-    
-    },
-    "Conditions": {
-        "ShouldNotCreateEnvResources": {
-            "Fn::Equals": [
-                {
-                    "Ref": "env"
-                },
-                "NONE"
-            ]
-        }
-    },
-    "Resources": {
-        "LambdaFunction": {
-          "Type": "AWS::Lambda::Function",
-          "Metadata": {
-            "aws:asset:path": "./src",
-            "aws:asset:property": "Code"
-          },
-          "Properties": {
-            "Handler": "TranscribeUpdateCustomVocabulary2::TranscribeUpdateCustomVocabulary2.TranscribeUpdateCustomVocabulary2::LambdaHandler",
-            "FunctionName": {
-                "Fn::If": [
-                    "ShouldNotCreateEnvResources",
-                    "TranscribeUpdateCustomVocabulary2",
-                    {
-
-                        "Fn::Join": [
-                            "",
-                            [
-                                "TranscribeUpdateCustomVocabulary2",
-                                "-",
-                                {
-                                    "Ref": "env"
-                                }
-                            ]
-                        ]
-                    }
-                ]
-            },
-            "Environment": {
-                "Variables" : {"ENV":{"Ref":"env"},"REGION":{"Ref":"AWS::Region"},"STORAGE_S3A41E082F_BUCKETNAME":{"Ref":"storages3a41e082fBucketName"}}
-            },
-            "Role": { "Fn::GetAtt" : ["LambdaExecutionRole", "Arn"] },
-            "Runtime": "dotnetcore3.1",
-            "Layers": [],
-            "Timeout": "25"
-          }
-        },
-        "LambdaExecutionRole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "RoleName": {
-                    "Fn::If": [
-                        "ShouldNotCreateEnvResources",
-                        "vidaudtranscriptionLambdaRole914f7d31",
-                        {
-
-                            "Fn::Join": [
-                                "",
-                                [
-                                    "vidaudtranscriptionLambdaRole914f7d31",
-                                    "-",
-                                    {
-                                        "Ref": "env"
-                                    }
-                                ]
-                            ]
-                        }
-                    ]
-                },
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": [
-                                    "lambda.amazonaws.com"
-                                ]
-                            },
-                            "Action": [
-                                "sts:AssumeRole"
-                            ]
-                        }
-                    ]
-                }
-            }
-        }
-        ,"lambdaexecutionpolicy": {
-            "DependsOn": ["LambdaExecutionRole"],
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "lambda-execution-policy",
-                "Roles": [{ "Ref": "LambdaExecutionRole" }],
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Action":["logs:CreateLogGroup",
-                            "logs:CreateLogStream",
-                            "logs:PutLogEvents"],
-                            "Resource": { "Fn::Sub" : [ "arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*", { "region": {"Ref": "AWS::Region"},  "account": {"Ref": "AWS::AccountId"}, "lambda": {"Ref": "LambdaFunction"}} ]}
-                        }
-                    ]
-                }
-            }
-        }
-        ,"AmplifyResourcesPolicy": {
-            "DependsOn": ["LambdaExecutionRole"],
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "amplify-lambda-execution-policy",
-                "Roles": [{ "Ref": "LambdaExecutionRole" }],
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [{"Effect":"Allow","Action":["s3:PutObject","s3:GetObject","s3:ListBucket","s3:DeleteObject"],"Resource":[{"Fn::Join":["",["arn:aws:s3:::",{"Ref":"storages3a41e082fBucketName"},"/*"]]}]}]
-                }
-            }
-        }
-        
-        
-        
-        ,"LambdaTriggerPolicyUserProfile": {
-            "DependsOn": ["LambdaExecutionRole"],
-            "Type": "AWS::IAM::Policy",
-            "Properties": {
-                "PolicyName": "amplify-lambda-execution-policy-UserProfile",
-                "Roles": [{ "Ref": "LambdaExecutionRole" }],
-                "PolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [{"Effect":"Allow","Action":["dynamodb:DescribeStream","dynamodb:GetRecords","dynamodb:GetShardIterator","dynamodb:ListStreams"],"Resource":{"Fn::ImportValue":{"Fn::Sub":"${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"}}}]
-                }
-            }
-        }
-        ,"LambdaEventSourceMappingUserProfile": {
-            "Type": "AWS::Lambda::EventSourceMapping",
-            "DependsOn": [
-                "LambdaTriggerPolicyUserProfile",
-                "LambdaExecutionRole"
-            ],
-            "Properties": {
-                "BatchSize": 100,
-                "Enabled": true,
-                "EventSourceArn": {"Fn::ImportValue":{"Fn::Sub":"${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"}},
-                "FunctionName": {
-                    "Fn::GetAtt": [
-                        "LambdaFunction",
-                        "Arn"
-                    ]
-                },
-                "StartingPosition": "LATEST"
-            }
-        }
-        
-        
-        
-    },
-    "Outputs": {
-        "Name": {
-            "Value": {
-                "Ref": "LambdaFunction"
-            }
-        },
-        "Arn": {
-            "Value": {"Fn::GetAtt": ["LambdaFunction", "Arn"]}
-        },
-        "Region": {
-            "Value": {
-                "Ref": "AWS::Region"
-            }
-        },
-        "LambdaExecutionRole": {
-            "Value": {
-                "Ref": "LambdaExecutionRole"
-            }
-        }
-        
-    }
+	"AWSTemplateFormatVersion": "2010-09-09",
+	"Description": "Lambda Function resource stack creation using Amplify CLI",
+	"Parameters": {
+		"CloudWatchRule": {
+			"Type": "String",
+			"Default": "NONE",
+			"Description": " Schedule Expression"
+		},
+		"env": {
+			"Type": "String"
+		},
+		"apividaudtranscriptionGraphQLAPIIdOutput": {
+			"Type": "String",
+			"Default": "apividaudtranscriptionGraphQLAPIIdOutput"
+		},
+		"apividaudtranscriptionGraphQLAPIEndpointOutput": {
+			"Type": "String",
+			"Default": "apividaudtranscriptionGraphQLAPIEndpointOutput"
+		},
+		"storages3a41e082fBucketName": {
+			"Type": "String",
+			"Default": "storages3a41e082fBucketName"
+		}
+	},
+	"Conditions": {
+		"ShouldNotCreateEnvResources": {
+			"Fn::Equals": [
+				{
+					"Ref": "env"
+				},
+				"NONE"
+			]
+		}
+	},
+	"Resources": {
+		"LambdaFunction": {
+			"Type": "AWS::Lambda::Function",
+			"Metadata": {
+				"aws:asset:path": "./src",
+				"aws:asset:property": "Code"
+			},
+			"Properties": {
+				"Handler": "TranscribeUpdateCustomVocabulary2::TranscribeUpdateCustomVocabulary2.TranscribeUpdateCustomVocabulary2::LambdaHandler",
+				"FunctionName": {
+					"Fn::If": [
+						"ShouldNotCreateEnvResources",
+						"TranscribeUpdateCustomVocabulary2",
+						{
+							"Fn::Join": [
+								"",
+								[
+									"TranscribeUpdateCustomVocabulary2",
+									"-",
+									{
+										"Ref": "env"
+									}
+								]
+							]
+						}
+					]
+				},
+				"Environment": {
+					"Variables": {
+						"ENV": {
+							"Ref": "env"
+						},
+						"REGION": {
+							"Ref": "AWS::Region"
+						},
+						"STORAGE_S3A41E082F_BUCKETNAME": {
+							"Ref": "storages3a41e082fBucketName"
+						},
+						"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME": {
+							"Fn::ImportValue": {
+								"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+							}
+						},
+						"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN": {
+							"Fn::Join": [
+								"",
+								[
+									"arn:aws:dynamodb:",
+									{
+										"Ref": "AWS::Region"
+									},
+									":",
+									{
+										"Ref": "AWS::AccountId"
+									},
+									":table/",
+									{
+										"Fn::ImportValue": {
+											"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+										}
+									}
+								]
+							]
+						},
+						"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT": {
+							"Ref": "apividaudtranscriptionGraphQLAPIIdOutput"
+						}
+					}
+				},
+				"Role": {
+					"Fn::GetAtt": [
+						"LambdaExecutionRole",
+						"Arn"
+					]
+				},
+				"Runtime": "dotnetcore3.1",
+				"Layers": [],
+				"Timeout": "25",
+				"Code": {
+					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
+					"S3Key": "amplify-builds/TranscribeUpdateCustomVocabulary2-6d77486e4c6f5754574c-build.zip"
+				}
+			}
+		},
+		"LambdaExecutionRole": {
+			"Type": "AWS::IAM::Role",
+			"Properties": {
+				"RoleName": {
+					"Fn::If": [
+						"ShouldNotCreateEnvResources",
+						"vidaudtranscriptionLambdaRole914f7d31",
+						{
+							"Fn::Join": [
+								"",
+								[
+									"vidaudtranscriptionLambdaRole914f7d31",
+									"-",
+									{
+										"Ref": "env"
+									}
+								]
+							]
+						}
+					]
+				},
+				"AssumeRolePolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Principal": {
+								"Service": [
+									"lambda.amazonaws.com"
+								]
+							},
+							"Action": [
+								"sts:AssumeRole"
+							]
+						}
+					]
+				}
+			}
+		},
+		"lambdaexecutionpolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "lambda-execution-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"logs:CreateLogGroup",
+								"logs:CreateLogStream",
+								"logs:PutLogEvents"
+							],
+							"Resource": {
+								"Fn::Sub": [
+									"arn:aws:logs:${region}:${account}:log-group:/aws/lambda/${lambda}:log-stream:*",
+									{
+										"region": {
+											"Ref": "AWS::Region"
+										},
+										"account": {
+											"Ref": "AWS::AccountId"
+										},
+										"lambda": {
+											"Ref": "LambdaFunction"
+										}
+									}
+								]
+							}
+						}
+					]
+				}
+			}
+		},
+		"AmplifyResourcesPolicy": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"s3:PutObject",
+								"s3:GetObject",
+								"s3:ListBucket",
+								"s3:DeleteObject"
+							],
+							"Resource": [
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:s3:::",
+											{
+												"Ref": "storages3a41e082fBucketName"
+											},
+											"/*"
+										]
+									]
+								}
+							]
+						},
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:Put*",
+								"dynamodb:Create*",
+								"dynamodb:BatchWriteItem",
+								"dynamodb:Update*",
+								"dynamodb:RestoreTable*",
+								"dynamodb:Delete*"
+							],
+							"Resource": [
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:dynamodb:",
+											{
+												"Ref": "AWS::Region"
+											},
+											":",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											":table/",
+											{
+												"Fn::ImportValue": {
+													"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+												}
+											}
+										]
+									]
+								},
+								{
+									"Fn::Join": [
+										"",
+										[
+											"arn:aws:dynamodb:",
+											{
+												"Ref": "AWS::Region"
+											},
+											":",
+											{
+												"Ref": "AWS::AccountId"
+											},
+											":table/",
+											{
+												"Fn::ImportValue": {
+													"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:Name"
+												}
+											},
+											"/index/*"
+										]
+									]
+								}
+							]
+						}
+					]
+				}
+			}
+		},
+		"LambdaTriggerPolicyUserProfile": {
+			"DependsOn": [
+				"LambdaExecutionRole"
+			],
+			"Type": "AWS::IAM::Policy",
+			"Properties": {
+				"PolicyName": "amplify-lambda-execution-policy-UserProfile",
+				"Roles": [
+					{
+						"Ref": "LambdaExecutionRole"
+					}
+				],
+				"PolicyDocument": {
+					"Version": "2012-10-17",
+					"Statement": [
+						{
+							"Effect": "Allow",
+							"Action": [
+								"dynamodb:DescribeStream",
+								"dynamodb:GetRecords",
+								"dynamodb:GetShardIterator",
+								"dynamodb:ListStreams"
+							],
+							"Resource": {
+								"Fn::ImportValue": {
+									"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"
+								}
+							}
+						}
+					]
+				}
+			}
+		},
+		"LambdaEventSourceMappingUserProfile": {
+			"Type": "AWS::Lambda::EventSourceMapping",
+			"DependsOn": [
+				"LambdaTriggerPolicyUserProfile",
+				"LambdaExecutionRole"
+			],
+			"Properties": {
+				"BatchSize": 100,
+				"Enabled": true,
+				"EventSourceArn": {
+					"Fn::ImportValue": {
+						"Fn::Sub": "${apividaudtranscriptionGraphQLAPIIdOutput}:GetAtt:UserProfileTable:StreamArn"
+					}
+				},
+				"FunctionName": {
+					"Fn::GetAtt": [
+						"LambdaFunction",
+						"Arn"
+					]
+				},
+				"StartingPosition": "LATEST"
+			}
+		}
+	},
+	"Outputs": {
+		"Name": {
+			"Value": {
+				"Ref": "LambdaFunction"
+			}
+		},
+		"Arn": {
+			"Value": {
+				"Fn::GetAtt": [
+					"LambdaFunction",
+					"Arn"
+				]
+			}
+		},
+		"Region": {
+			"Value": {
+				"Ref": "AWS::Region"
+			}
+		},
+		"LambdaExecutionRole": {
+			"Value": {
+				"Ref": "LambdaExecutionRole"
+			}
+		}
+	}
 }

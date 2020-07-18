@@ -25,12 +25,23 @@ namespace TranscribeUpdateCustomVocabulary2
       var newImage = dynamoDBEvent?.Records?[0]?.Dynamodb?.NewImage;
       var attributeValues = newImage["vocabularies"]?.L;
       var vocabularies = attributeValues.Select(x => x.S);
+      var API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT = Environment.GetEnvironmentVariable("API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT");
+      var API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN = Environment.GetEnvironmentVariable("API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN");
       var storageBucketName = Environment.GetEnvironmentVariable("STORAGE_S3A41E082F_BUCKETNAME");
+      var API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME = Environment.GetEnvironmentVariable("API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME");
 
-      iLambdaContext?.Logger?.LogLine($"storageBucketName: {storageBucketName} dynamoDBEvent : " +
+      iLambdaContext?.Logger?.LogLine($"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT: {API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT} " +
+        $"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN: {API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN} " +
+        $"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME: {API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME} " +
+        $"storageBucketName: {storageBucketName} dynamoDBEvent : " +
         $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(dynamoDBEvent)}\n");
       iLambdaContext?.Logger?.LogLine($"vocabularies : " +
         $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(vocabularies)}\n");
+
+      //store file in https://vidaudtranscriptionb772eac002c6449096461a128cad10533-feature.s3.amazonaws.com/private/us-east-1%3A5c90f58e-f8f4-4189-98ce-a07abb60d230/ folder
+      //dynamod id is abebf63e-adcc-486b-a0a2-05700367f194
+      // cognito id is 
+      //storageBucketName: vidaudtranscriptionb772eac002c6449096461a128cad10533-feature
     }
   }
 }
