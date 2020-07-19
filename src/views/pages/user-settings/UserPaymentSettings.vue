@@ -34,6 +34,26 @@
       </div>    
     </vx-card>
 
+     <vx-card title="Unwanted words for vocabulary filtering">
+        <span>
+            You can mask or remove words that you don't want to appear in your transcription results with
+            vocabulary filtering. <br/>
+            For example, you can use vocabulary filtering to prevent the display of offensive
+            or profane terms. <br/>
+            This enables you to generate family-friendly captions of a TV show or transcripts of
+            conferences that are appropriate for your audiences. <br/>
+            Use vocabulary filtering for any word that you consider profane, obscene, offensive, or otherwise 
+            unsuitable for the readers of your transcripts.
+            <br/>
+            To use it simply add words, and select <code>Unwanted words for vocabulary filtering</code> when uploading a file.<br/>
+        </span>
+        <div>
+            <ejs-textbox cssClass="height:500px;" id='vocabularies' :multiline="true" 
+            placeholder="Unwanted words for vocaulary filtering" floatLabelType="Auto" :input= "inputHandler" 
+              v-model="vocabularies" ref="vocabularies"/>     
+        </div> 
+    </vx-card> 
+
     <!--Notifications:Start-->
     <vx-card no-shadow>
       <div class="mb-base">

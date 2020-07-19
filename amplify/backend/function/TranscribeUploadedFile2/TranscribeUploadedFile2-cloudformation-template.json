@@ -116,7 +116,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-vidaudtranscription-feature-10533-deployment",
-					"S3Key": "amplify-builds/TranscribeUploadedFile2-6678424844566b6a7755-build.zip"
+					"S3Key": "amplify-builds/TranscribeUploadedFile2-754d38544d7549497659-build.zip"
 				}
 			}
 		},

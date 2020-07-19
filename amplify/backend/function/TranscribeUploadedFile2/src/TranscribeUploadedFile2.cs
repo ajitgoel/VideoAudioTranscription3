@@ -124,6 +124,13 @@ namespace TranscribeUploadedFile2
         throw;
       }
     }
+    /*API_VIDAUDTRANSCRIPTION_GRAPHQLAPIENDPOINTOUTPUT	https://o6kmmh3h5bhjzaswsrkdqccybq.appsync-api.us-east-1.amazonaws.com/graphql
+    API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT	dhrkexlojfhgjb54fd4snnurgm
+    API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN	arn:aws:dynamodb:us-east-1:529627678433:table/UserProfile-dhrkexlojfhgjb54fd4snnurgm-feature
+    API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME	UserProfile-dhrkexlojfhgjb54fd4snnurgm-feature
+    ENV	feature
+    REGION	us-east-1
+    STORAGE_S3A41E082F_BUCKETNAME	storages3a41e082fBucketName*/
     private async Task ProcessTranscribe(string bucket, string key, LanguageCode languageCode, MediaFormat mediaFormat,
       bool useAutomaticContentRedaction, ILambdaContext iLambdaContext)
     {
@@ -136,8 +143,8 @@ namespace TranscribeUploadedFile2
 
       #region create vocabulary
       var vocabularyName = transcriptionJobName;
-      var table = Table.LoadTable(amazonDynamoDBClient, "user");
-      //var item = table.GetItem(3, "Horse");
+      var API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table = Table.LoadTable(amazonDynamoDBClient, API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME);
+      var item = await API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table.GetItemAsync(3, "Horse");
 
       var createVocabularyRequest = new CreateVocabularyRequest
       {

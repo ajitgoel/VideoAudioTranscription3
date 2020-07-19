@@ -28,7 +28,6 @@ type UserProfile @model
   billingAddress: String
   country: String
   vatNumber: String
-  vocabularies: [String!]
   paymentInvoices: [String!]
   notificationSettings: NotificationSettings
   paymentSettings: PaymentSettings
@@ -45,6 +44,8 @@ type TranscriptionSettings {
     defaultFileLanguageWhenFileIsTranscribed: String
     useVocabularyWhenFileIsTranscribed: Boolean
     useAutomaticContentRedaction:Boolean
+    vocabularies: [String!]
+    unwantedWords: [String!]  
 }
 
 type VideoS3Info {
