@@ -65,7 +65,6 @@
 </template>
 <script>
 import { Auth } from 'aws-amplify';
-import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import {COUNTRIES} from '@/static.js';
 
@@ -121,17 +120,44 @@ export default {
         }
         console.log(`userId: ${userId}`);          
         //#region save user profile in dynamodb
+        const userProfileInput={id:userId, fullName: this.general.fullName, 
+              billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
+            
         if(this.isUserProfileSavedInDatabase==false)
         {
-            const createUserProfileInput={id:userId, fullName: this.general.fullName, 
-              billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
-            await API.graphql(graphqlOperation(createUserProfile,{input: createUserProfileInput}));
+          const createUserProfile = `
+            mutation CreateUserProfile(
+              $input: CreateUserProfileInput!
+              $condition: ModelUserProfileConditionInput
+            ) {
+              createUserProfile(input: $input, condition: $condition) {
+                id
+                fullName
+                billingAddress
+                country
+                vatNumber
+              }
+            }
+          `;
+          await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
         }
         else
         {
-            const updateUserProfileInput={id:userId, fullName: this.general.fullName,
-              billingAddress:this.general.billingAddress, country: this.general.country, vatNumber: this.general.vatNumber,};
-            await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
+          const updateUserProfile = `
+            mutation UpdateUserProfile(
+              $input: UpdateUserProfileInput!
+              $condition: ModelUserProfileConditionInput
+            ) {
+              updateUserProfile(input: $input, condition: $condition) {
+                id
+                fullName
+                billingAddress
+                country
+                vatNumber
+              }
+            }
+          `;
+          await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
         }                
         //#endregion save user profile in dynamodb
         this.$vs.notify({title: 'Success', text: 'User profile have been saved successfully!', iconPack: 'feather',

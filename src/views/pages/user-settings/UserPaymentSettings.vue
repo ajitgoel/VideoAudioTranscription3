@@ -48,9 +48,9 @@
             To use it simply add words, and select <code>Unwanted words for vocabulary filtering</code> when uploading a file.<br/>
         </span>
         <div>
-            <ejs-textbox cssClass="height:500px;" id='vocabularies' :multiline="true" 
+            <ejs-textbox cssClass="height:500px;" id='unwantedwords' :multiline="true" 
             placeholder="Unwanted words for vocaulary filtering" floatLabelType="Auto" :input= "inputHandler" 
-              v-model="vocabularies" ref="vocabularies"/>     
+              v-model="unwantedwords" ref="unwantedwords"/>     
         </div> 
     </vx-card> 
 
@@ -77,7 +77,6 @@
 </template>
 <script>
 import { Auth } from 'aws-amplify';
-import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import {FILE_LANGUAGES} from '@/static.js';
 import AutomaticContentRedactionHelp from "@/views/pages/AutomaticContentRedactionHelp.vue";
@@ -95,6 +94,14 @@ export default {
       notificationSettings: {notifyWhenTranscriptsCompleted:false, notifyWhenTranscriptsError:false},
       fileLanguagesFields : { groupBy: 'Category', text: 'Text', value: 'Id' },
       showAutomaticContentRedactionHelp:false,
+      //#region unwanted words
+      unwantedwords: '',
+      inputHandler: (args) => 
+      {
+          args.event.currentTarget.style.height = "auto";
+          args.event.currentTarget.style.height = (args.event.currentTarget.scrollHeight)+"px";
+      },
+      //#endregion
     }
   },
   computed: { 
@@ -108,7 +115,7 @@ export default {
     const currentUserInfoResult=await this.currentUserInfo();
     const userId=currentUserInfoResult.id;
     const listUserProfilesFilter={id:{eq:userId}};
-    const listUserProfilesForPaymentSettings = /* GraphQL */ `
+    const listUserProfilesForPaymentSettings = `
       query ListUserProfiles(
         $filter: ModelUserProfileFilterInput
         $limit: Int
@@ -124,6 +131,7 @@ export default {
               defaultFileLanguageWhenFileIsTranscribed
               useVocabularyWhenFileIsTranscribed
               useAutomaticContentRedaction
+              unwantedWords
             }
             notificationSettings {
               notifyWhenTranscriptsCompleted
@@ -134,10 +142,10 @@ export default {
         }
       }
     `;
-
     const result = await API.graphql(graphqlOperation(listUserProfilesForPaymentSettings, {filter: listUserProfilesFilter}));
     console.log(`result: ${JSON.stringify(result)}`);
-    const items=result.data.listUserProfiles.items;
+    const items=result.data.listUserProfiles.items;      
+    let unwantedwordsTemp;
     if(items.length>0)
     {
       this.id=items[0].id;
@@ -151,7 +159,18 @@ export default {
       this.transcriptionSettings.useAutomaticContentRedaction=
         (items[0].transcriptionSettings==null || items[0].transcriptionSettings.useAutomaticContentRedaction==null) ? 
         false:items[0].transcriptionSettings.useAutomaticContentRedaction;  
-        
+      
+      //#region unwanted words
+      if(items[0].transcriptionSettings!=null && items[0].transcriptionSettings.unwantedWords != null)
+      {
+        unwantedwordsTemp=items[0].transcriptionSettings.unwantedWords;
+      }
+      else
+      {
+        unwantedwordsTemp=[''];
+      }
+      //#endregion
+
       this.notificationSettings.notifyWhenTranscriptsCompleted=
         (items[0].notificationSettings==null || items[0].notificationSettings.notifyWhenTranscriptsCompleted==null) ? 
         false:items[0].notificationSettings.notifyWhenTranscriptsCompleted;
@@ -163,9 +182,12 @@ export default {
     }
     else
     {
+      unwantedwordsTemp=[''];
       this.isUserProfileSavedInDatabase=false;
     }
-  },
+    this.unwantedwords=unwantedwordsTemp.join('\n');
+    console.log(`this.unwantedwords: ${JSON.stringify(this.unwantedwords)}`);
+  },  
   methods: 
   {
     async save() 
@@ -183,13 +205,18 @@ export default {
         console.log(`userId: ${userId}`);
         
         //#region save user profile in dynamodb
-        const createOrUpdateUserProfileInput={
+        let unwantedwordsArray=this.unwantedwords.split('\n');  
+        let unwantedwordsArray_RemoveEmptyElements = unwantedwordsArray.filter(function(item){return item!==''});
+        let unwantedwordsArray_RemoveDuplicates = unwantedwordsArray_RemoveEmptyElements.filter(function(item, index){return unwantedwordsArray_RemoveEmptyElements.indexOf(item) === index});
+        
+        const userProfileInput={
               id:userId, 
               paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,},
               transcriptionSettings:{
                 defaultFileLanguageWhenFileIsTranscribed: this.transcriptionSettings.defaultFileLanguageWhenFileIsTranscribed,
                 useVocabularyWhenFileIsTranscribed: this.transcriptionSettings.useVocabularyWhenFileIsTranscribed,
                 useAutomaticContentRedaction: this.transcriptionSettings.useAutomaticContentRedaction,
+                unwantedWords:unwantedwordsArray_RemoveDuplicates
                 },
               notificationSettings:{
                 notifyWhenTranscriptsCompleted: this.notificationSettings.notifyWhenTranscriptsCompleted,
@@ -198,14 +225,62 @@ export default {
             };
         if(this.isUserProfileSavedInDatabase==false)
         {
-          await API.graphql(graphqlOperation(createUserProfile,{input: createOrUpdateUserProfileInput}));
+          const createUserProfile = `
+            mutation CreateUserProfile(
+              $input: CreateUserProfileInput!
+              $condition: ModelUserProfileConditionInput
+            ) {
+              createUserProfile(input: $input, condition: $condition) {
+                id
+                notificationSettings {
+                  notifyWhenTranscriptsCompleted
+                  notifyWhenTranscriptsError
+                }
+                paymentSettings {
+                  autoRecharge
+                }
+                transcriptionSettings {
+                  defaultFileLanguageWhenFileIsTranscribed
+                  useVocabularyWhenFileIsTranscribed
+                  useAutomaticContentRedaction
+                  unwantedWords
+                }
+              }
+            }
+          `;
+          await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
         }
         else
-        {
-          await API.graphql(graphqlOperation(updateUserProfile, {input: createOrUpdateUserProfileInput}));
+        {          
+          const updateUserProfile =`
+            mutation UpdateUserProfile(
+              $input: UpdateUserProfileInput!
+              $condition: ModelUserProfileConditionInput
+            ) {
+              updateUserProfile(input: $input, condition: $condition) {
+                id
+                notificationSettings {
+                  notifyWhenTranscriptsCompleted
+                  notifyWhenTranscriptsError
+                }
+                paymentSettings {
+                  autoRecharge
+                }
+                transcriptionSettings {
+                  defaultFileLanguageWhenFileIsTranscribed
+                  useVocabularyWhenFileIsTranscribed
+                  useAutomaticContentRedaction
+                  unwantedWords
+                }
+              }
+            }
+          `;
+          await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
         }                
         //#endregion save user profile in dynamodb
-        this.$vs.notify({title: 'Success', text: 'Payment, transcription and notification settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+        this.$vs.notify({title: 'Success', 
+          text: 'Payment, transcription and notification settings have been saved successfully!', iconPack: 'feather', 
+          icon: 'icon-check',color: 'success'}); 
       } 
       catch (error) 
       {
