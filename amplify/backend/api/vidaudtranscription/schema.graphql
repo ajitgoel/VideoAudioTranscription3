@@ -5,7 +5,6 @@ type Album @model
     name: String!
     Videos: [Video] @connection(fields: ["id"], keyName: "byAlbum")
 }
-
 type Video @model 
 @key(fields:["albumId"],name: "byAlbum", queryField: "listVideosByAlbum")
 @auth(rules: [{allow: owner},{allow: private}])
@@ -18,7 +17,6 @@ type Video @model
     thumbnail: VideoS3Info!
     labels: [String]
 }
-
 type UserProfile @model 
 @key(fields:["id"])
 @auth(rules: [{allow: owner}])
@@ -26,6 +24,9 @@ type UserProfile @model
 	id: String!
   fullName: String
   billingAddress: String
+  city: String
+  zip:String
+  state:String
   country: String
   vatNumber: String
   paymentInvoices: [String!]
@@ -47,13 +48,11 @@ type TranscriptionSettings {
     vocabularies: [String!]
     unwantedWords: [String!]  
 }
-
 type VideoS3Info {
     key: String!
     width: Int!
     height: Int!
 }
-
 input CreateVideoInput {
 	id: ID
   owner: String
@@ -63,7 +62,6 @@ input CreateVideoInput {
 	thumbnail: VideoS3InfoInput!
   labels: [String]
 }
-
 input VideoS3InfoInput {
 	key: String!
 	width: Int!

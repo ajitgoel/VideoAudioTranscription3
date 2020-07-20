@@ -57,7 +57,7 @@ export default
         const userId=currentUserInfoResult.id;
         
         const listUserProfilesFilter={id:{eq:userId}};
-        const listUserProfilesForVocabularies = /* GraphQL */ `
+        const listUserProfilesForVocabularies = `
         query ListUserProfiles(
             $filter: ModelUserProfileFilterInput
             $limit: Int
@@ -66,7 +66,9 @@ export default
             listUserProfiles(filter: $filter, limit: $limit, nextToken: $nextToken) {
             items {
                 id
-                vocabularies
+                transcriptionSettings {
+                    vocabularies
+                }                   
             }
             nextToken
             }
@@ -78,7 +80,14 @@ export default
         let vocabulariesTemp;
         if(items.length>0)
         {
-            vocabulariesTemp=items[0].vocabularies;
+            if(items[0].transcriptionSettings!=null && items[0].transcriptionSettings.vocabularies != null)
+            {
+                vocabulariesTemp=items[0].transcriptionSettings.vocabularies;
+            }
+            else
+            {
+                vocabulariesTemp=[''];
+            }            
             this.isUserProfileSavedInDatabase =true;
         }
         else
@@ -113,7 +122,7 @@ export default
                 let vocabulariesArray=this.vocabularies.split('\n');  
                 let vocabulariesArray_RemoveEmptyElements = vocabulariesArray.filter(function(item){return item!==''});
                 let vocabulariesArray_RemoveDuplicates = vocabulariesArray_RemoveEmptyElements.filter(function(item, index){return vocabulariesArray_RemoveEmptyElements.indexOf(item) === index});
-                const userProfileInput={id:userId, vocabularies:vocabulariesArray_RemoveDuplicates};
+                const userProfileInput={id:userId, transcriptionSettings:{vocabularies:vocabulariesArray_RemoveDuplicates}};
                 
                 if(this.isUserProfileSavedInDatabase==false)
                 {
@@ -124,7 +133,9 @@ export default
                         ) {
                             createUserProfile(input: $input, condition: $condition) {
                             id
-                            vocabularies
+                            transcriptionSettings {
+                                    vocabularies
+                                }   
                             }
                         }`;
                     await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
@@ -138,7 +149,9 @@ export default
                         ) {
                             updateUserProfile(input: $input, condition: $condition) {
                             id
-                            vocabularies
+                            transcriptionSettings {
+                                    vocabularies
+                                }   
                             }
                         }`;
                     await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
