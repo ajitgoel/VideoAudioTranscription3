@@ -5,6 +5,10 @@ using System.Threading.Tasks;
 using Amazon.Lambda.DynamoDBEvents;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime;
+using Amazon.S3;
+using Amazon;
+using Amazon.DynamoDBv2;
+using Amazon.TranscribeService;
 
 namespace TranscribeUpdateCustomVocabulary.Tests
 {
@@ -19,24 +23,13 @@ namespace TranscribeUpdateCustomVocabulary.Tests
       var aws_access_key_id = credentials.AccessKey;
       var aws_secret_access_key = credentials.SecretKey;
       var newimage=new Dictionary<string, Amazon.DynamoDBv2.Model.AttributeValue>();
-      var vocabularies = new Amazon.DynamoDBv2.Model.AttributeValue();
-      vocabularies.L = new List<Amazon.DynamoDBv2.Model.AttributeValue>();
-      var l1 = new Amazon.DynamoDBv2.Model.AttributeValue
+      var vocabularies = new Amazon.DynamoDBv2.Model.AttributeValue
       {
-        S = "F.B.I"
+        L = new List<Amazon.DynamoDBv2.Model.AttributeValue>()
       };
-      var l2 = new Amazon.DynamoDBv2.Model.AttributeValue
-      {
-        S = "F.B.I.s"
-      };
-      var l3 = new Amazon.DynamoDBv2.Model.AttributeValue
-      {
-        S = "baba"
-      };
-
-      vocabularies.L.Add(l1);
-      vocabularies.L.Add(l2);
-      vocabularies.L.Add(l3);
+      vocabularies.L.Add(new Amazon.DynamoDBv2.Model.AttributeValue{S = "F.B.I"});
+      vocabularies.L.Add(new Amazon.DynamoDBv2.Model.AttributeValue { S = "F.B.I.s" });
+      vocabularies.L.Add(new Amazon.DynamoDBv2.Model.AttributeValue { S = "baba" });
 
       newimage.Add("vocabularies", vocabularies);
 
@@ -56,7 +49,18 @@ namespace TranscribeUpdateCustomVocabulary.Tests
             }          
         };
 
-        var transcribeUpdateCustomVocabulary = new TranscribeUpdateCustomVocabulary2.TranscribeUpdateCustomVocabulary2();
+        var region = "us-east-1";
+        var regionendpoint = RegionEndpoint.GetBySystemName(region);
+        AmazonS3Client amazonS3Client =new AmazonS3Client(aws_access_key_id,aws_secret_access_key, regionendpoint);
+        AmazonDynamoDBClient amazonDynamoDBClient = null;
+        AmazonTranscribeServiceClient amazonTranscribeServiceClient = null;
+        string API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT=string.Empty;
+        string API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN = string.Empty;
+        string storageBucketName = string.Empty;
+        string API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME = string.Empty;
+        var transcribeUpdateCustomVocabulary = new TranscribeUpdateCustomVocabulary2.TranscribeUpdateCustomVocabulary2(
+          amazonS3Client, amazonDynamoDBClient, amazonTranscribeServiceClient, region, API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT,
+          API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN, storageBucketName, API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME);
         await transcribeUpdateCustomVocabulary.LambdaHandler(dynamoDBEvent, null);
         //Assert.Equal(fileContentType, contentType);
       }

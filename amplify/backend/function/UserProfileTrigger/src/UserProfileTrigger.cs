@@ -19,11 +19,11 @@ using Amazon.TranscribeService;
 
 // If you rename this namespace, you will need to update the invocation shim
 // to match if you intend to test the function with 'amplify mock function'
-namespace TranscribeUpdateCustomVocabulary2
+namespace UserProfileTrigger
 {
   // If you rename this class, you will need to update the invocation shim
   // to match if you intend to test the function with 'amplify mock function'
-  public class TranscribeUpdateCustomVocabulary2
+  public class UserProfileTrigger
   {
     readonly AmazonS3Client amazonS3Client;
     private readonly AmazonDynamoDBClient amazonDynamoDBClient;
@@ -34,7 +34,7 @@ namespace TranscribeUpdateCustomVocabulary2
     private string storageBucketName;
     private string API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME;
 
-    public TranscribeUpdateCustomVocabulary2()
+    public UserProfileTrigger()
     {
       region = Environment.GetEnvironmentVariable("REGION");
       API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT = Environment.GetEnvironmentVariable("API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT");
@@ -45,7 +45,7 @@ namespace TranscribeUpdateCustomVocabulary2
       amazonDynamoDBClient = new AmazonDynamoDBClient(RegionEndpoint);
       amazonTranscribeServiceClient = new AmazonTranscribeServiceClient(RegionEndpoint);
     }
-    public TranscribeUpdateCustomVocabulary2(AmazonS3Client amazonS3Client, AmazonDynamoDBClient amazonDynamoDBClient,
+    public UserProfileTrigger(AmazonS3Client amazonS3Client, AmazonDynamoDBClient amazonDynamoDBClient,
       AmazonTranscribeServiceClient amazonTranscribeServiceClient, string region,
       string API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT, string API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN, string storageBucketName,
       string API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME)
@@ -72,7 +72,7 @@ namespace TranscribeUpdateCustomVocabulary2
     public async Task LambdaHandler(DynamoDBEvent dynamoDBEvent, ILambdaContext iLambdaContext)
     {
       PutObjectRequest putObjectRequest = null;
-      System.Collections.Generic.IEnumerable<string> vocabularies = null;
+      IEnumerable<string> vocabularies = null;
       try
       {
         var newImage = dynamoDBEvent?.Records?[0]?.Dynamodb?.NewImage;
@@ -83,7 +83,7 @@ namespace TranscribeUpdateCustomVocabulary2
         //dynamod id is abebf63e-adcc-486b-a0a2-05700367f194
         // cognito id is 
         //storageBucketName: vidaudtranscriptionb772eac002c6449096461a128cad10533-feature
-        string vocabulariesAsString = string.Join(Environment.NewLine, vocabularies.Select(x=>x).ToArray());
+        string vocabulariesAsString = string.Join(Environment.NewLine, vocabularies.Select(x => x).ToArray());
         putObjectRequest = new PutObjectRequest
         {
           BucketName = storageBucketName,
@@ -109,11 +109,11 @@ namespace TranscribeUpdateCustomVocabulary2
       }
     }
 
-    public async Task CreateUpdateTranscriptionFilter(string userId,ILambdaContext iLambdaContext)
-      {
+    public async Task CreateUpdateTranscriptionFilter(string userId, ILambdaContext iLambdaContext)
+    {
       //iLambdaContext?.Logger.LogLine($"createVocabularyFilterRequest : {Extensions.SerializeObjectIgnoreReferenceLoopHandling(createVocabularyFilterRequest)}\n " +
       //  $"createVocabularyFilterResponse: {Extensions.SerializeObjectIgnoreReferenceLoopHandling(createVocabularyFilterResponse)}");
-      }
+    }
 
   }
 }

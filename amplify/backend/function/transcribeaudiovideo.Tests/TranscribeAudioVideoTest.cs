@@ -14,6 +14,8 @@ using Amazon.TranscribeService;
 using System.Linq;
 using Amazon.Runtime.CredentialManagement;
 using Amazon.Runtime;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DocumentModel;
 
 namespace TranscribeUploadedFileTests
 {
@@ -140,6 +142,29 @@ namespace TranscribeUploadedFileTests
 
       var file=System.Net.WebUtility.UrlDecode("private/us-east-1%3A5e9adf47-2390-4860-842e-27e75527ce3f/6425f78c-a23d-4a71-aee2-f6b1a0a1e355.mp4");
       Assert.Equal("private/us-east-1:5e9adf47-2390-4860-842e-27e75527ce3f/6425f78c-a23d-4a71-aee2-f6b1a0a1e355.mp4", file);
+    }
+    [Fact]
+    public async Task DynamoDBTest()
+    {
+      var credentialProfileStoreChain = new CredentialProfileStoreChain(@"C:\Users\AjitGoel\.aws\credentials");
+      credentialProfileStoreChain.TryGetAWSCredentials("amplify-workshop-user", out AWSCredentials awsCredentials);
+      var credentials = awsCredentials.GetCredentials();
+      var aws_access_key_id = credentials.AccessKey;
+      var aws_secret_access_key = credentials.SecretKey;
+      var region = "us-east-1";
+      var regionendpoint = RegionEndpoint.GetBySystemName(region);
+      var amazonDynamoDBClient = new AmazonDynamoDBClient(aws_access_key_id, aws_secret_access_key, regionendpoint);
+      var API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table =
+        Table.LoadTable(amazonDynamoDBClient, "UserProfile-dhrkexlojfhgjb54fd4snnurgm-feature");
+      var getItemOperationConfig = new GetItemOperationConfig()
+        {
+          AttributesToGet = new List<string>() { "transcriptionSettings" },
+          ConsistentRead = true
+        };
+      var document = await API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table.GetItemAsync("us-east-1:ef78fb2b-3768-4f64-b7c2-84516424ca9b",
+        getItemOperationConfig);
+      Document transcriptionSettings = document["transcriptionSettings"].AsDocument();
+      var unwantedWords = transcriptionSettings["unwantedWords"].AsListOfString();
     }
   }
 }

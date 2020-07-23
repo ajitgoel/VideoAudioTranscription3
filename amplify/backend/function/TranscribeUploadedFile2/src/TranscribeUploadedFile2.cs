@@ -59,7 +59,7 @@ namespace TranscribeUploadedFile2
 
       amazonTranscribeServiceClient = new AmazonTranscribeServiceClient(RegionEndpoint);
       amazonS3Client1 = new AmazonS3Client(RegionEndpoint);
-      amazonDynamoDBClient = new AmazonDynamoDBClient();
+      amazonDynamoDBClient = new AmazonDynamoDBClient(RegionEndpoint);
     }
     public TranscribeUploadedFile2(IAmazonS3 iAmazonS3, AmazonDynamoDBClient amazonDynamoDBClient,
       AmazonTranscribeServiceClient amazonTranscribeServiceClient, string region)
@@ -74,16 +74,16 @@ namespace TranscribeUploadedFile2
       this.amazonS3Client1 = iAmazonS3;
       this.amazonDynamoDBClient = amazonDynamoDBClient;
     }
-    public async Task<string> LambdaHandler(S3Event environment, ILambdaContext iLambdaContext)
+    public async Task<string> LambdaHandler(S3Event s3Event, ILambdaContext iLambdaContext)
     {
-      var s3Event = environment.Records?[0].S3;
-      if (s3Event == null)
+      var s3 = s3Event.Records?[0].S3;
+      if (s3 == null)
       {
         return null;
       }
       try
       {
-        var filename = WebUtility.UrlDecode(s3Event.Object.Key);
+        var filename = WebUtility.UrlDecode(s3.Object.Key);
         var fileExtension = filename.Split('.').Last();
         var storageBucketName = Environment.GetEnvironmentVariable("STORAGE_S3A41E082F_BUCKETNAME");
  
@@ -92,9 +92,9 @@ namespace TranscribeUploadedFile2
           $"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN: {API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_ARN} " +
           $"API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME: {API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME} " +
           $"storageBucketName: {storageBucketName} environment : " +
-          $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(environment)}\n");
+          $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(s3Event)}\n");
 
-        var getObjectMetadataResponse = await this.amazonS3Client1.GetObjectMetadataAsync(s3Event.Bucket.Name, filename);
+        var getObjectMetadataResponse = await this.amazonS3Client1.GetObjectMetadataAsync(s3.Bucket.Name, filename);
         iLambdaContext?.Logger.LogLine($"getObjectMetadataResponse : " +
           $"{Extensions.SerializeObjectIgnoreReferenceLoopHandling(getObjectMetadataResponse)}\n");
 
@@ -110,11 +110,11 @@ namespace TranscribeUploadedFile2
           getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptscompleted"].IsNullOrWhiteSpaceWithDefault(false);
         var notifyWhenTranscriptsError =
           getObjectMetadataResponse.Metadata[$"{keyprefix}notifywhentranscriptserror"].IsNullOrWhiteSpaceWithDefault(false);
-
+        var userId = getObjectMetadataResponse.Metadata[$"{keyprefix}userid"].IsNullOrWhiteSpaceWithDefault("");
         var languageCode = LanguageCode.FindValue(defaultFileLanguageWhenFileIsTranscribed);
         var mediaFormat = MediaFormat.FindValue(fileExtension);
 
-        await ProcessTranscribe(s3Event.Bucket.Name, filename, languageCode, mediaFormat, useAutomaticContentRedaction, iLambdaContext);
+        await ProcessTranscribe(s3.Bucket.Name, filename, languageCode, mediaFormat, useAutomaticContentRedaction, userId, iLambdaContext);
         return getObjectMetadataResponse.Headers.ContentType;
       }
       catch (Exception exception)
@@ -132,7 +132,7 @@ namespace TranscribeUploadedFile2
     REGION	us-east-1
     STORAGE_S3A41E082F_BUCKETNAME	storages3a41e082fBucketName*/
     private async Task ProcessTranscribe(string bucket, string key, LanguageCode languageCode, MediaFormat mediaFormat,
-      bool useAutomaticContentRedaction, ILambdaContext iLambdaContext)
+      bool useAutomaticContentRedaction, string userId, ILambdaContext iLambdaContext)
     {
       var transcriptionJobName = Guid.NewGuid().ToString();
       ContentRedaction contentRedaction = null;
@@ -141,10 +141,10 @@ namespace TranscribeUploadedFile2
         contentRedaction = new ContentRedaction() { RedactionOutput = RedactionOutput.Redacted, RedactionType = RedactionType.PII };
       }
 
-      #region create vocabulary
+      //#region create or update vocabulary filter
       var vocabularyName = transcriptionJobName;
-      var API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table = Table.LoadTable(amazonDynamoDBClient, API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME);
-      var item = await API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table.GetItemAsync(3, "Horse");
+      //var API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table = Table.LoadTable(amazonDynamoDBClient, API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME);
+      //var document = await API_VIDAUDTRANSCRIPTION_USERPROFILETABLE_NAME_Table.GetItemAsync(userId, getItemOperationConfig);
 
       var createVocabularyRequest = new CreateVocabularyRequest
       {
@@ -156,7 +156,7 @@ namespace TranscribeUploadedFile2
       var createVocabularyResponse = await amazonTranscribeServiceClient.CreateVocabularyAsync(createVocabularyRequest);
       iLambdaContext?.Logger.LogLine($"createVocabularyRequest : {Extensions.SerializeObjectIgnoreReferenceLoopHandling(createVocabularyRequest)}\n " +
         $"createVocabularyResponse: {Extensions.SerializeObjectIgnoreReferenceLoopHandling(createVocabularyResponse)}");
-      #endregion
+      
 
       var settings = new Settings
       {

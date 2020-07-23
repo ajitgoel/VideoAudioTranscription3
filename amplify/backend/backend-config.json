@@ -57,6 +57,20 @@
                     ]
                 }
             ]
+        },
+        "UserProfileTrigger": {
+            "build": true,
+            "providerPlugin": "awscloudformation",
+            "service": "Lambda",
+            "dependsOn": [
+                {
+                    "category": "api",
+                    "resourceName": "vidaudtranscription",
+                    "attributes": [
+                        "GraphQLAPIIdOutput"
+                    ]
+                }
+            ]
         }
     },
     "auth": {
