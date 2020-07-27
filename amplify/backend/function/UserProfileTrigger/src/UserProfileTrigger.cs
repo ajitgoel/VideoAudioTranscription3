@@ -92,11 +92,11 @@ namespace UserProfileTrigger
         };
         var putObjectResponse = await amazonS3Client.PutObjectAsync(putObjectRequest);
       }
-      catch (Exception exception)
-      {
-        iLambdaContext?.Logger.LogLine($"exception : {Extensions.SerializeObjectIgnoreReferenceLoopHandling(exception)}\n");
-        throw;
-      }
+      //catch (Exception exception)
+      //{
+      //  iLambdaContext?.Logger.LogLine($"exception : {Extensions.SerializeObjectIgnoreReferenceLoopHandling(exception)}\n");
+      //  throw;
+      //}
       finally
       {
         iLambdaContext?.Logger?.LogLine($"API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT: {API_VIDAUDTRANSCRIPTION_GRAPHQLAPIIDOUTPUT} " +

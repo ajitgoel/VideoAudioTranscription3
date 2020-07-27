@@ -29,7 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
-    <ProjectReference Include="..\TranscribeUpdateCustomVocabulary2\src\TranscribeUpdateCustomVocabulary2.csproj" />
+    <ProjectReference Include="..\UserProfileTrigger\src\UserProfileTrigger.csproj" />
   </ItemGroup>
 
 </Project>

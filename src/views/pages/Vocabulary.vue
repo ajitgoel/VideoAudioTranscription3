@@ -24,6 +24,8 @@
 </template>
 <script>
 import API, {graphqlOperation} from '@aws-amplify/api';
+//import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
+
 export default
 {
     data() {

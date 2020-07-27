@@ -2,12 +2,6 @@
   "mutableParametersState": {
     "permissions": {
       "storage": {
-        "s3a41e082f": [
-          "create",
-          "read",
-          "update",
-          "delete"
-        ],
         "UserProfile:@model(appsync)": [
           "create",
           "update",

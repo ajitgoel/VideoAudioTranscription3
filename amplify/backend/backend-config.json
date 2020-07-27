@@ -43,13 +43,6 @@
             "service": "Lambda",
             "dependsOn": [
                 {
-                    "category": "storage",
-                    "resourceName": "s3a41e082f",
-                    "attributes": [
-                        "BucketName"
-                    ]
-                },
-                {
                     "category": "api",
                     "resourceName": "vidaudtranscription",
                     "attributes": [
@@ -91,21 +84,6 @@
         }
     },
     "api": {
-        "vidaudtranscription": {
-            "service": "AppSync",
-            "providerPlugin": "awscloudformation",
-            "output": {
-                "authConfig": {
-                    "additionalAuthenticationProviders": [],
-                    "defaultAuthentication": {
-                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
-                        "userPoolConfig": {
-                            "userPoolId": "authvidaudtranscription1ea69154"
-                        }
-                    }
-                }
-            }
-        },
         "priceperhour": {
             "service": "API Gateway",
             "providerPlugin": "awscloudformation",
@@ -147,6 +125,21 @@
                     ]
                 }
             ]
+        },
+        "vidaudtranscription": {
+            "service": "AppSync",
+            "providerPlugin": "awscloudformation",
+            "output": {
+                "authConfig": {
+                    "additionalAuthenticationProviders": [],
+                    "defaultAuthentication": {
+                        "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+                        "userPoolConfig": {
+                            "userPoolId": "authvidaudtranscription1ea69154"
+                        }
+                    }
+                }
+            }
         }
     },
     "storage": {

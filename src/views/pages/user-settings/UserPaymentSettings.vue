@@ -80,6 +80,7 @@ import { Auth } from 'aws-amplify';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import {FILE_LANGUAGES} from '@/static.js';
 import AutomaticContentRedactionHelp from "@/views/pages/AutomaticContentRedactionHelp.vue";
+import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 
 export default {
   components: {
@@ -225,7 +226,7 @@ export default {
             };
         if(this.isUserProfileSavedInDatabase==false)
         {
-          const createUserProfile = `
+          /* const createUserProfile = `
             mutation CreateUserProfile(
               $input: CreateUserProfileInput!
               $condition: ModelUserProfileConditionInput
@@ -247,12 +248,12 @@ export default {
                 }
               }
             }
-          `;
+          `; */
           await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
         }
         else
         {          
-          const updateUserProfile =`
+          /* const updateUserProfile =`
             mutation UpdateUserProfile(
               $input: UpdateUserProfileInput!
               $condition: ModelUserProfileConditionInput
@@ -274,7 +275,7 @@ export default {
                 }
               }
             }
-          `;
+          `; */
           await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
         }                
         //#endregion save user profile in dynamodb

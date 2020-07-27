@@ -413,11 +413,13 @@ export default {
         else
         {
           this.paymentInvoices.push(paymentIntentId);
-          const updateUserProfileInput={id:userId, paymentInvoices:this.paymentInvoices, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
+          const updateUserProfileInput=
+            {id:userId, paymentInvoices:this.paymentInvoices, paymentSettings:{autoRecharge: this.paymentSettings.autoRecharge,}};
           await API.graphql(graphqlOperation(updateUserProfile, {input: updateUserProfileInput}));
         }                
         //#endregion save user profile in dynamodb
-        this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather', icon: 'icon-check',color: 'success'}); 
+        this.$vs.notify({title: 'Success', text: 'Payment settings have been saved successfully!', iconPack: 'feather', 
+          icon: 'icon-check',color: 'success'}); 
       } 
       catch (error) 
       {

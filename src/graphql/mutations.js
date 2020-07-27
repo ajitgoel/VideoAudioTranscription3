@@ -184,9 +184,11 @@ export const createUserProfile = /* GraphQL */ `
       id
       fullName
       billingAddress
+      city
+      zip
+      state  
       country
       vatNumber
-      vocabularies
       paymentInvoices
       notificationSettings {
         notifyWhenTranscriptsCompleted
@@ -198,7 +200,9 @@ export const createUserProfile = /* GraphQL */ `
       transcriptionSettings {
         defaultFileLanguageWhenFileIsTranscribed
         useVocabularyWhenFileIsTranscribed
-        useAutomaticContentRedaction
+        useAutomaticContentRedaction        
+        vocabularies
+        unwantedWords
       }
       createdAt
       updatedAt
@@ -215,9 +219,11 @@ export const updateUserProfile = /* GraphQL */ `
       id
       fullName
       billingAddress
+      city
+      zip
+      state  
       country
       vatNumber
-      vocabularies
       paymentInvoices
       notificationSettings {
         notifyWhenTranscriptsCompleted
@@ -229,7 +235,9 @@ export const updateUserProfile = /* GraphQL */ `
       transcriptionSettings {
         defaultFileLanguageWhenFileIsTranscribed
         useVocabularyWhenFileIsTranscribed
-        useAutomaticContentRedaction
+        useAutomaticContentRedaction        
+        vocabularies
+        unwantedWords
       }
       createdAt
       updatedAt

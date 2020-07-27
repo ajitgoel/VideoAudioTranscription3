@@ -67,6 +67,7 @@
 import { Auth } from 'aws-amplify';
 import API, {graphqlOperation} from '@aws-amplify/api';
 import {COUNTRIES} from '@/static.js';
+import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
 
 export default {
   data() {
@@ -125,7 +126,7 @@ export default {
             
         if(this.isUserProfileSavedInDatabase==false)
         {
-          const createUserProfile = `
+          /* const createUserProfile = `
             mutation CreateUserProfile(
               $input: CreateUserProfileInput!
               $condition: ModelUserProfileConditionInput
@@ -138,12 +139,12 @@ export default {
                 vatNumber
               }
             }
-          `;
+          `; */
           await API.graphql(graphqlOperation(createUserProfile,{input: userProfileInput}));
         }
         else
         {
-          const updateUserProfile = `
+         /*  const updateUserProfile = `
             mutation UpdateUserProfile(
               $input: UpdateUserProfileInput!
               $condition: ModelUserProfileConditionInput
@@ -156,7 +157,7 @@ export default {
                 vatNumber
               }
             }
-          `;
+          `; */
           await API.graphql(graphqlOperation(updateUserProfile, {input: userProfileInput}));
         }                
         //#endregion save user profile in dynamodb
