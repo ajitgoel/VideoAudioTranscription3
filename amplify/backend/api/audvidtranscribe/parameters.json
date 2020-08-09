@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "audvidtranscribe",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authaudvidtranscribe9e775fd9",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

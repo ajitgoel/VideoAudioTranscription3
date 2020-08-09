@@ -1,6 +1,6 @@
 projects:
-  vidaudtranscription:
-    schemaPath: amplify/backend/api/vidaudtranscription/build/schema.graphql
+  audvidtranscribe:
+    schemaPath: src/graphql/schema.json
     includes:
       - src/graphql/**/*.js
     excludes:

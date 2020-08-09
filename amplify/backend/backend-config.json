@@ -1,79 +1,19 @@
 {
     "function": {
-        "vidaudtranscription1ea69154PreSignup": {
+        "audvidtranscribe9e775fd9PreSignup": {
             "build": true,
             "providerPlugin": "awscloudformation",
             "service": "Lambda"
-        },
-        "payments": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": []
-        },
-        "priceperhour": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda"
-        },
-        "PaymentIntent": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": []
-        },
-        "TranscribeUploadedFile2": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "api",
-                    "resourceName": "vidaudtranscription",
-                    "attributes": [
-                        "GraphQLAPIIdOutput",
-                        "GraphQLAPIEndpointOutput"
-                    ]
-                }
-            ]
-        },
-        "TranscribeUpdateCustomVocabulary2": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "api",
-                    "resourceName": "vidaudtranscription",
-                    "attributes": [
-                        "GraphQLAPIIdOutput"
-                    ]
-                }
-            ]
-        },
-        "UserProfileTrigger": {
-            "build": true,
-            "providerPlugin": "awscloudformation",
-            "service": "Lambda",
-            "dependsOn": [
-                {
-                    "category": "api",
-                    "resourceName": "vidaudtranscription",
-                    "attributes": [
-                        "GraphQLAPIIdOutput"
-                    ]
-                }
-            ]
         }
     },
     "auth": {
-        "vidaudtranscription1ea69154": {
+        "audvidtranscribe9e775fd9": {
             "service": "Cognito",
             "providerPlugin": "awscloudformation",
             "dependsOn": [
                 {
                     "category": "function",
-                    "resourceName": "vidaudtranscription1ea69154PreSignup",
+                    "resourceName": "audvidtranscribe9e775fd9PreSignup",
                     "triggerProvider": "Cognito",
                     "attributes": [
                         "Arn",
@@ -84,85 +24,33 @@
         }
     },
     "api": {
-        "priceperhour": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "priceperhour",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "PaymentIntent": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "PaymentIntent",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "CreatePaymentIntent": {
-            "service": "API Gateway",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "payments",
-                    "attributes": [
-                        "Name",
-                        "Arn"
-                    ]
-                }
-            ]
-        },
-        "vidaudtranscription": {
+        "audvidtranscribe": {
             "service": "AppSync",
             "providerPlugin": "awscloudformation",
             "output": {
                 "authConfig": {
-                    "additionalAuthenticationProviders": [],
                     "defaultAuthentication": {
                         "authenticationType": "AMAZON_COGNITO_USER_POOLS",
                         "userPoolConfig": {
-                            "userPoolId": "authvidaudtranscription1ea69154"
+                            "userPoolId": "authaudvidtranscribe9e775fd9"
                         }
-                    }
+                    },
+                    "additionalAuthenticationProviders": []
                 }
             }
         }
     },
     "storage": {
-        "s3a41e082f": {
+        "storage": {
             "service": "S3",
-            "providerPlugin": "awscloudformation",
-            "dependsOn": [
-                {
-                    "category": "function",
-                    "resourceName": "TranscribeUploadedFile2",
-                    "attributes": [
-                        "Name",
-                        "Arn",
-                        "LambdaExecutionRole"
-                    ]
-                }
-            ]
+            "providerPlugin": "awscloudformation"
         }
     },
     "hosting": {
-        "S3AndCloudFront": {
-            "service": "S3AndCloudFront",
-            "providerPlugin": "awscloudformation"
+        "amplifyhosting": {
+            "service": "amplifyhosting",
+            "providerPlugin": "awscloudformation",
+            "type": "manual"
         }
     }
 }

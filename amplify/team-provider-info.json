@@ -1,76 +1,30 @@
 {
-    "dev": {
+    "green": {
         "awscloudformation": {
-            "AuthRoleName": "amplify-vidaudtranscription-dev-70417-authRole",
-            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-dev-70417-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-dev-70417-authRole",
+            "AuthRoleName": "amplify-audvidtranscribe-green-220211-authRole",
+            "UnauthRoleArn": "arn:aws:iam::707721706070:role/amplify-audvidtranscribe-green-220211-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::707721706070:role/amplify-audvidtranscribe-green-220211-authRole",
             "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-vidaudtranscription-dev-70417-deployment",
-            "UnauthRoleName": "amplify-vidaudtranscription-dev-70417-unauthRole",
-            "StackName": "amplify-vidaudtranscription-dev-70417",
-            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-vidaudtranscription-dev-70417/e3bad4b0-905a-11ea-95df-0e1b8dfea4f7",
-            "AmplifyAppId": "d2imx992r72i0h"
+            "DeploymentBucketName": "amplify-audvidtranscribe-green-220211-deployment",
+            "UnauthRoleName": "amplify-audvidtranscribe-green-220211-unauthRole",
+            "StackName": "amplify-audvidtranscribe-green-220211",
+            "StackId": "arn:aws:cloudformation:us-east-1:707721706070:stack/amplify-audvidtranscribe-green-220211/b957cdf0-d9ec-11ea-8bd1-12cd1b220bcb",
+            "AmplifyAppId": "d1atf93befhwf5"
         },
         "categories": {
             "function": {
-                "vidaudtranscription1ea69154PreSignup": {
+                "audvidtranscribe9e775fd9PreSignup": {
                     "DOMAINBLACKLIST": ""
                 }
             },
             "auth": {
-                "vidaudtranscription1ea69154": {}
-            }
-        }
-    },
-    "feature": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-vidaudtranscription-feature-10533-authRole",
-            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-feature-10533-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-feature-10533-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-vidaudtranscription-feature-10533-deployment",
-            "UnauthRoleName": "amplify-vidaudtranscription-feature-10533-unauthRole",
-            "StackName": "amplify-vidaudtranscription-feature-10533",
-            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-vidaudtranscription-feature-10533/5e0a5230-c72a-11ea-99ab-0e403b617781",
-            "AmplifyAppId": "d2imx992r72i0h"
-        },
-        "categories": {
-            "auth": {
-                "vidaudtranscription1ea69154": {}
+                "audvidtranscribe9e775fd9": {}
             },
-            "function": {
-                "vidaudtranscription1ea69154PreSignup": {
-                    "DOMAINBLACKLIST": ""
-                },
-                "payments": {},
-                "priceperhour": {},
-                "PaymentIntent": {}
-            }
-        }
-    },
-    "featuretwo": {
-        "awscloudformation": {
-            "AuthRoleName": "amplify-vidaudtranscription-featuretwo-23616-authRole",
-            "UnauthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-featuretwo-23616-unauthRole",
-            "AuthRoleArn": "arn:aws:iam::529627678433:role/amplify-vidaudtranscription-featuretwo-23616-authRole",
-            "Region": "us-east-1",
-            "DeploymentBucketName": "amplify-vidaudtranscription-featuretwo-23616-deployment",
-            "UnauthRoleName": "amplify-vidaudtranscription-featuretwo-23616-unauthRole",
-            "StackName": "amplify-vidaudtranscription-featuretwo-23616",
-            "StackId": "arn:aws:cloudformation:us-east-1:529627678433:stack/amplify-vidaudtranscription-featuretwo-23616/33d58d50-c800-11ea-8f83-0ee1cf96ccc3",
-            "AmplifyAppId": "d2imx992r72i0h"
-        },
-        "categories": {
-            "auth": {
-                "vidaudtranscription1ea69154": {}
-            },
-            "function": {
-                "vidaudtranscription1ea69154PreSignup": {
-                    "DOMAINBLACKLIST": ""
-                },
-                "payments": {},
-                "priceperhour": {},
-                "PaymentIntent": {}
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d1atf93befhwf5",
+                    "type": "manual"
+                }
             }
         }
     }

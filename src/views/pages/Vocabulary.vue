@@ -25,6 +25,7 @@
 <script>
 import API, {graphqlOperation} from '@aws-amplify/api';
 //import { createUserProfile, updateUserProfile} from '@/graphql/mutations';
+import { getUserProfile} from '@/graphql/queries';
 
 export default
 {
@@ -58,7 +59,7 @@ export default
         const currentUserInfoResult=await this.currentUserInfo();
         const userId=currentUserInfoResult.id;
         
-        const listUserProfilesFilter={id:{eq:userId}};
+        /* const listUserProfilesFilter={id:{eq:userId}};
         const listUserProfilesForVocabularies = `
         query ListUserProfiles(
             $filter: ModelUserProfileFilterInput
@@ -75,10 +76,13 @@ export default
             nextToken
             }
         }
-        `;
+        `; 
         const result = await API.graphql(graphqlOperation(listUserProfilesForVocabularies, {filter: listUserProfilesFilter}));
+        */
+        const result = await API.graphql(graphqlOperation(getUserProfile, {id: userId}));
+        
         console.log(`result: ${JSON.stringify(result)}`);
-        const items=result.data.listUserProfiles.items;
+        const items=result.data.getUserProfile.items;
         let vocabulariesTemp;
         if(items.length>0)
         {
@@ -102,7 +106,7 @@ export default
         this.$nextTick(function()
         {
             this.$refs.vocabularies.ej2Instances.addAttributes({ rows: vocabulariesTemp.length+1 }); 
-        });  
+        });
     }, 
     methods: 
     {

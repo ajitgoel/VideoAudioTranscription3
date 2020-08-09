@@ -1,0 +1,31 @@
+type UserProfile @model 
+@key(fields:["id"])
+@auth(rules: [{allow: owner}])
+{
+	id: String!
+  fullName: String
+  billingAddress: String
+  city: String
+  zip:String
+  state:String
+  country: String
+  vatNumber: String
+  paymentInvoices: [String!]
+  notificationSettings: NotificationSettings
+  paymentSettings: PaymentSettings
+  transcriptionSettings: TranscriptionSettings
+}
+type NotificationSettings {
+  notifyWhenTranscriptsCompleted: Boolean
+  notifyWhenTranscriptsError: Boolean
+}
+type PaymentSettings {
+    autoRecharge: Boolean
+}
+type TranscriptionSettings {
+    defaultFileLanguageWhenFileIsTranscribed: String
+    useVocabularyWhenFileIsTranscribed: Boolean
+    useAutomaticContentRedaction:Boolean
+    vocabularies: [String!]
+    unwantedWords: [String!]  
+}

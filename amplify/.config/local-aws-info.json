@@ -1,17 +1,7 @@
 {
-    "dev": {
+    "green": {
         "configLevel": "project",
-        "useProfile": true,
-        "profileName": "amplify-workshop-user"
-    },
-    "feature": {
-        "configLevel": "project",
-        "useProfile": true,
-        "profileName": "videoaudiotranscriptioniamuser"
-    },
-    "featuretwo": {
-        "configLevel": "project",
-        "useProfile": true,
-        "profileName": "amplify-workshop-user"
+        "useProfile": false,
+        "awsConfigFilePath": "C:\\Users\\AjitGoel\\.amplify\\awscloudformation\\q8FJh1Llzy"
     }
 }
